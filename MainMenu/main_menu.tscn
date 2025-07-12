@@ -56,5 +56,3 @@ layout_mode = 2
 size_flags_vertical = 3
 text = "Quit
 "
-
-[connection signal="pressed" from="VBoxContainer/Start" to="." method="_on_start_pressed"]
