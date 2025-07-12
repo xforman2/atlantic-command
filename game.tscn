@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d2ubo147hsvmd"]
 
-[ext_resource type="Texture2D" uid="uid://cf2m2iu86fjlm" path="res://icon.svg" id="1_ig7tw"]
+[ext_resource type="Texture2D" uid="uid://cf2m2iu86fjlm" path="res://icon.svg" id="1_80nbo"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_0xm2m"]
 
@@ -11,5 +11,5 @@
 [node name="Sprite2D" type="Sprite2D" parent="CharacterBody2D"]
 material = SubResource("CanvasItemMaterial_0xm2m")
 position = Vector2(601, 301)
-rotation = 0.00623846
-texture = ExtResource("1_ig7tw")
+rotation = -1.33748
+texture = ExtResource("1_80nbo")

@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Atlantic Command"
-run/main_scene="res://main.tscn"
-config/features=PackedStringArray("4.4", "GL Compatibility")
+run/main_scene="uid://c5q022ru6fc8l"
+config/features=PackedStringArray("4.4", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[display]
+
+window/size/mode=3
 
 [dotnet]
 
