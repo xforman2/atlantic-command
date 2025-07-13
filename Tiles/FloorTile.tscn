@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://c2i7b2x53cmvn"]
+
+[ext_resource type="Texture2D" uid="uid://cf2m2iu86fjlm" path="res://icon.svg" id="1_qedu5"]
+[ext_resource type="Script" uid="uid://bij1y8hx6ggvk" path="res://Tiles/FloorTile.cs" id="1_rb1gj"]
+
+[node name="FloorTile" type="Node2D"]
+script = ExtResource("1_rb1gj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_qedu5")
+centered = false
