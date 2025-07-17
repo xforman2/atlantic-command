@@ -1,0 +1,46 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvx5or7onxqop"]
+
+[ext_resource type="Script" uid="uid://24dgpo444nqa" path="res://UIOverlay/UIOverlay.cs" id="1_cp5pi"]
+
+[node name="UIOverlayCanvas" type="CanvasLayer"]
+
+[node name="UIOverlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -40.0
+grow_horizontal = 0
+grow_vertical = 0
+script = ExtResource("1_cp5pi")
+
+[node name="Wood" type="Label" parent="UIOverlay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 23.0
+text = "0"
+
+[node name="Iron" type="Label" parent="UIOverlay"]
+layout_mode = 0
+offset_left = -20.0
+offset_right = -10.0
+offset_bottom = 23.0
+text = "0"
+
+[node name="Coal" type="Label" parent="UIOverlay"]
+layout_mode = 0
+offset_left = -40.0
+offset_bottom = 49.0
+text = "0
+"
+
+[node name="Copper" type="Label" parent="UIOverlay"]
+layout_mode = 0
+offset_left = -60.0
+offset_right = -20.0
+offset_bottom = 49.0
+text = "0
+"
