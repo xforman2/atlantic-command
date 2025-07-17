@@ -17,7 +17,7 @@ public partial class MainMenu : Control
 
     private void OnStartPressed()
     {
-        GetTree().ChangeSceneToFile("res://game.tscn");
+        GetTree().ChangeSceneToFile("res://Game.tscn");
 
     }
 
@@ -29,7 +29,7 @@ public partial class MainMenu : Control
 
     private void OnOptionsPressed()
     {
-        GetTree().ChangeSceneToFile("res://MainMenu/options.tscn");
+        GetTree().ChangeSceneToFile("res://MainMenu/Options.tscn");
 
     }
 }
