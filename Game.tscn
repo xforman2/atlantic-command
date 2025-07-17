@@ -10,6 +10,8 @@ ShipScene = ExtResource("2_xkndl")
 
 [node name="Ship" parent="." instance=ExtResource("2_xkndl")]
 
+[node name="Camera2D" type="Camera2D" parent="Ship"]
+
 [node name="Button" type="Button" parent="."]
 offset_left = 200.0
 offset_top = 300.0
