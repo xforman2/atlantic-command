@@ -1,11 +1,12 @@
-[gd_scene load_steps=11 format=3 uid="uid://c5q022ru6fc8l"]
+[gd_scene load_steps=13 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://csxat17eu472s" path="res://background.png" id="2_5de1l"]
-[ext_resource type="Texture2D" uid="uid://4yyjqmwttfvo" path="res://Assets/play button pressed.png" id="3_lbqne"]
-[ext_resource type="Texture2D" uid="uid://dayvqs77di7xe" path="res://Assets/play button.png" id="4_430ii"]
-[ext_resource type="Texture2D" uid="uid://b8d703xxqtpjr" path="res://Assets/options button pressed.png" id="5_3p42x"]
-[ext_resource type="Texture2D" uid="uid://dbuevcss21rit" path="res://Assets/options button.png" id="6_3clmd"]
+[ext_resource type="Texture2D" uid="uid://dc4lxfidivqb8" path="res://Assets/play button pressed.png" id="3_lbqne"]
+[ext_resource type="Texture2D" uid="uid://ckcn4wl8qddlv" path="res://Assets/play button.png" id="4_430ii"]
+[ext_resource type="Texture2D" uid="uid://bdu77ftp0i70m" path="res://Assets/options button pressed.png" id="5_3p42x"]
+[ext_resource type="Texture2D" uid="uid://bkqn044lp648x" path="res://Assets/options button.png" id="6_3clmd"]
+[ext_resource type="Texture2D" uid="uid://r1nyx6ux0a8" path="res://Assets/quit button.png" id="7_3clmd"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
@@ -18,6 +19,9 @@ texture = ExtResource("5_3p42x")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kftou"]
 texture = ExtResource("6_3clmd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
+texture = ExtResource("7_3clmd")
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -65,18 +69,18 @@ size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_lbqne")
 theme_override_styles/normal = SubResource("StyleBoxTexture_3clmd")
 action_mode = 0
-text = "Start"
 
 [node name="Options" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_bsanu")
 theme_override_styles/normal = SubResource("StyleBoxTexture_kftou")
-text = "Options
+text = "
 "
 
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
-text = "Quit
+theme_override_styles/normal = SubResource("StyleBoxTexture_nre7b")
+text = "
 "
