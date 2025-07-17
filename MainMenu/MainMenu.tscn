@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://c5q022ru6fc8l"]
+[gd_scene load_steps=15 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://csxat17eu472s" path="res://background.png" id="2_5de1l"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://bdu77ftp0i70m" path="res://Assets/options button pressed.png" id="5_3p42x"]
 [ext_resource type="Texture2D" uid="uid://bkqn044lp648x" path="res://Assets/options button.png" id="6_3clmd"]
 [ext_resource type="Texture2D" uid="uid://r1nyx6ux0a8" path="res://Assets/quit button.png" id="7_3clmd"]
+[ext_resource type="Texture2D" uid="uid://s84y014qlbwv" path="res://Assets/quit button pressed.png" id="7_bsanu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
@@ -19,6 +20,9 @@ texture = ExtResource("5_3p42x")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kftou"]
 texture = ExtResource("6_3clmd")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
+texture = ExtResource("7_bsanu")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
 texture = ExtResource("7_3clmd")
@@ -81,6 +85,7 @@ text = "
 [node name="Quit" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/hover = SubResource("StyleBoxTexture_nxm3p")
 theme_override_styles/normal = SubResource("StyleBoxTexture_nre7b")
 text = "
 "
