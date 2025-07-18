@@ -8,15 +8,36 @@ public partial class Ship : Node2D
     public int CurrentHP { get; set; }
     public int MaxHP = 100;
 
-    public PlayerResourceManager _resourceManager;
+    public PlayerResourceManager playerResourceManager;
 
     private PackedScene _shipSlotScene;
 
+    public void Init()
+    {
+
+        GD.Print("SHIP INIT");
+        CurrentHP = MaxHP;
+        if (playerResourceManager == null)
+        {
+            playerResourceManager = new PlayerResourceManager();
+        }
+        _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
+        playerResourceManager.IncreaseCoal(100);
+        playerResourceManager.IncreaseWood(100);
+        playerResourceManager.IncreaseCopper(100);
+        playerResourceManager.IncreaseIron(100);
+
+    }
+
     public override void _Ready()
     {
-        CurrentHP = MaxHP;
-        _resourceManager = new PlayerResourceManager();
-        _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
+        // GD.Print("SHIP READY");
+        // CurrentHP = MaxHP;
+        // if (playerResourceManager == null)
+        // {
+        //     playerResourceManager = new PlayerResourceManager();
+        // }
+        // _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
     }
 
     public void SetFloor(Vector2I gridPos, FloorTile floor)

@@ -10,12 +10,15 @@ public partial class UIOverlay : Control
 
     public override void _Ready()
     {
+
         woodLabel = GetNode<Label>("Wood");
         coalLabel = GetNode<Label>("Coal");
         ironLabel = GetNode<Label>("Iron");
         copperLabel = GetNode<Label>("Copper");
 
+
         ResourceMediator.OnResourceChanged += OnResourceChanged;
+        ResourceMediator.NotifyResourceWanted(this); //
     }
 
     public override void _ExitTree()

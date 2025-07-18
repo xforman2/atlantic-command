@@ -19,4 +19,5 @@ public partial class FloorTile : Node2D
             QueueFree();
         }
     }
+
 }
