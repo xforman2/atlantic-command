@@ -12,7 +12,7 @@ public partial class ShipBuilder : Node2D
 {
     [Export] public Sprite2D GhostTile;
     [Export] public PackedScene FloorTileScene;
-    private Ship ship;
+    private Ship _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
 
     private Button buildMenuButton;
@@ -34,17 +34,16 @@ public partial class ShipBuilder : Node2D
         if (ShipManager.Instance.CurrentShip == null)
         {
             var shipScene = GD.Load<PackedScene>("res://Ship.tscn");
-            ship = shipScene.Instantiate<Ship>();
-            ShipManager.Instance.SetShip(ship);
-            AddChild(ship);
+            _ship = shipScene.Instantiate<Ship>();
+            AddChild(_ship);
         }
         else
         {
-            ship = ShipManager.Instance.CurrentShip;
+            _ship = ShipManager.Instance.CurrentShip;
 
-            if (ship.GetParent() != this)
+            if (_ship.GetParent() != this)
             {
-                ship.Reparent(this);
+                _ship.Reparent(this);
             }
         }
 
@@ -64,7 +63,6 @@ public partial class ShipBuilder : Node2D
         Vector2 mouseWorld = GetGlobalMousePosition();
         Vector2I gridPos = WorldToGrid(mouseWorld);
         Vector2 snappedPos = GridToWorld(gridPos);
-
         GhostTile.Position = snappedPos;
 
     }
@@ -76,6 +74,7 @@ public partial class ShipBuilder : Node2D
         {
             if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
             {
+                GD.Print($"mouse: {mouseEvent.Position}");
                 Vector2I gridPos = WorldToGrid(mouseEvent.Position);
                 TryPlaceTile(gridPos);
             }
@@ -84,7 +83,10 @@ public partial class ShipBuilder : Node2D
         {
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
-                ShipManager.Instance.SetShip(ship);
+                ShipManager.Instance.SetShip(_ship);
+                _ship.Position = _ship.GetCenterWorldPosition();
+                GD.Print($"center ship {_ship.Position}");
+                _ship.EnableMovement();
                 GetTree().ChangeSceneToFile("res://Game.tscn");
             }
 
@@ -118,7 +120,7 @@ public partial class ShipBuilder : Node2D
 
     private void TryPlaceTile(Vector2I gridPos)
     {
-        if (ship.Slots.ContainsKey(gridPos))
+        if (_ship.Slots.ContainsKey(gridPos))
             return;
         if (!tileScenes.ContainsKey(currentTile))
         {
@@ -126,8 +128,10 @@ public partial class ShipBuilder : Node2D
             return;
         }
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        var tilePos = GridToWorld(gridPos);
-        ship.SetFloor(tilePos, tile);
+        var worldPos = GridToWorld(gridPos);
+        _ship.UpdateBounds(worldPos);
+        _ship.SetFloor(worldPos, tile);
+        GD.Print($"world pos: {worldPos}");
 
     }
 

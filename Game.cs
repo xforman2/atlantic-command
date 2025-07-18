@@ -3,55 +3,53 @@ using System;
 
 public partial class Game : Node2D
 {
-	private Ship _ship;
-	private Button _button;
+    private Ship _ship;
+    private Button _button;
 
-	[Export]
-	public PackedScene ShipScene;
+    [Export]
+    public PackedScene ShipScene;
 
-	public override void _Ready()
-	{
-		_button = GetNode<Button>("Button");
-		_button.Pressed += OnButtonPressed;
-		_ship = ShipManager.Instance.CurrentShip;
+    public override void _Ready()
+    {
+        _button = GetNode<Button>("Button");
+        _button.Pressed += OnButtonPressed;
+        _ship = ShipManager.Instance.CurrentShip;
+        GD.Print("test hey");
 
-		if (_ship == null)
-		{
-			_ship = ShipScene.Instantiate<Ship>();
-			AddChild(_ship);
+        if (_ship == null)
+        {
+            _ship = ShipScene.Instantiate<Ship>();
+            AddChild(_ship);
+        }
+        else
+        {
+            if (_ship.GetParent() != this)
+            {
+                _ship.Reparent(this);
+            }
 
-			ShipManager.Instance.SetShip(_ship);
+        }
 
-			GD.Print("New ship instantiated and assigned to ShipManager.");
-		}
-		else
-		{
-			if (_ship.GetParent() != this)
-			{
-				_ship.Reparent(this);
-			}
+    }
 
-			GD.Print("Existing ship loaded from ShipManager.");
-		}
+    public override void _Input(InputEvent @event)
+    {
+        if (@event is InputEventKey keyEvent)
+        {
+            if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
+            {
+                ShipManager.Instance.SetShip(_ship);
+                _ship.Position = new Vector2(0, 0);
 
-		_ship.Position = new Vector2(0, 0);
-	}
+                GD.Print(_ship.Position);
+                GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+            }
+        }
+    }
 
-	public override void _Input(InputEvent @event)
-	{
-		if (@event is InputEventKey keyEvent)
-		{
-			if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
-			{
-				ShipManager.Instance.SetShip(_ship);
-				GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
-			}
-		}
-	}
+    private void OnButtonPressed()
+    {
+        _ship._resourceManager.DecreaseWood(10);
 
-	private void OnButtonPressed()
-	{
-		_ship._resourceManager.DecreaseWood(10);
-
-	}
+    }
 }

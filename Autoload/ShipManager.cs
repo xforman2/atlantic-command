@@ -19,6 +19,8 @@ public partial class ShipManager : Node
         CurrentShip = ship;
         if (CurrentShip != null && CurrentShip.GetParent() != this)
         {
+            GD.Print("test");
+            ship.DisableMovement();
             CurrentShip.Reparent(this);
         }
     }
