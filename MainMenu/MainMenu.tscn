@@ -2,12 +2,12 @@
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://csxat17eu472s" path="res://background.png" id="2_5de1l"]
-[ext_resource type="Texture2D" uid="uid://dc4lxfidivqb8" path="res://Assets/play button pressed.png" id="3_lbqne"]
-[ext_resource type="Texture2D" uid="uid://ckcn4wl8qddlv" path="res://Assets/play button.png" id="4_430ii"]
-[ext_resource type="Texture2D" uid="uid://bdu77ftp0i70m" path="res://Assets/options button pressed.png" id="5_3p42x"]
-[ext_resource type="Texture2D" uid="uid://bkqn044lp648x" path="res://Assets/options button.png" id="6_3clmd"]
-[ext_resource type="Texture2D" uid="uid://r1nyx6ux0a8" path="res://Assets/quit button.png" id="7_3clmd"]
-[ext_resource type="Texture2D" uid="uid://s84y014qlbwv" path="res://Assets/quit button pressed.png" id="7_bsanu"]
+[ext_resource type="Texture2D" uid="uid://bsdkuw2d6ysnk" path="res://Assets/play button pressed.png" id="3_lbqne"]
+[ext_resource type="Texture2D" uid="uid://digo6ehxi0v3u" path="res://Assets/play button.png" id="4_430ii"]
+[ext_resource type="Texture2D" uid="uid://bv2neaxqnbr6w" path="res://Assets/options button pressed.png" id="5_3p42x"]
+[ext_resource type="Texture2D" uid="uid://dqj7x6gymyxyu" path="res://Assets/options button.png" id="6_3clmd"]
+[ext_resource type="Texture2D" uid="uid://do2s3bga2xttp" path="res://Assets/quit button.png" id="7_3clmd"]
+[ext_resource type="Texture2D" uid="uid://cosnslcs5p13m" path="res://Assets/quit button pressed.png" id="7_bsanu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
