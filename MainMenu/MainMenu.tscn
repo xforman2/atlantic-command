@@ -35,6 +35,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_3w4mj")
+metadata/_edit_horizontal_guides_ = [-209.0]
 
 [node name="TextureRect" type="TextureRect" parent="."]
 layout_mode = 1

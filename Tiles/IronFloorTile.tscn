@@ -1,11 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://vdoi03le0uuk"]
+[gd_scene load_steps=3 format=3 uid="uid://bexj8l3crvj68"]
 
-[ext_resource type="Texture2D" uid="uid://b5p0n4045f8yv" path="res://d3d_default_38008_09..._imresizer.png" id="1_iof0e"]
 [ext_resource type="Script" uid="uid://b8ew5l6hchjxj" path="res://Tiles/IronFloorTile.cs" id="1_mpkea"]
+[ext_resource type="Texture2D" uid="uid://dyxxbhcvkfdk3" path="res://Assets/floor_iron.png" id="2_mpkea"]
 
 [node name="IronFloorTile" type="Node2D"]
 script = ExtResource("1_mpkea")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("1_iof0e")
+texture = ExtResource("2_mpkea")
 centered = false
