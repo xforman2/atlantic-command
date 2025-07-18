@@ -1,13 +1,13 @@
 [gd_scene load_steps=15 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
-[ext_resource type="Texture2D" uid="uid://1om8od7gabon" path="res://Assets/background.png" id="2_bsanu"]
-[ext_resource type="Texture2D" uid="uid://bsdkuw2d6ysnk" path="res://Assets/play button pressed.png" id="3_lbqne"]
-[ext_resource type="Texture2D" uid="uid://digo6ehxi0v3u" path="res://Assets/play button.png" id="4_430ii"]
-[ext_resource type="Texture2D" uid="uid://bv2neaxqnbr6w" path="res://Assets/options button pressed.png" id="5_3p42x"]
-[ext_resource type="Texture2D" uid="uid://dqj7x6gymyxyu" path="res://Assets/options button.png" id="6_3clmd"]
-[ext_resource type="Texture2D" uid="uid://do2s3bga2xttp" path="res://Assets/quit button.png" id="7_3clmd"]
-[ext_resource type="Texture2D" uid="uid://cosnslcs5p13m" path="res://Assets/quit button pressed.png" id="7_bsanu"]
+[ext_resource type="Texture2D" uid="uid://cuvhhvckghhxt" path="res://Assets/background_final.png" id="2_bsanu"]
+[ext_resource type="Texture2D" uid="uid://bk8k5cp1sc20j" path="res://Assets/play button pressed.png" id="3_lbqne"]
+[ext_resource type="Texture2D" uid="uid://cybra3qvw0rnd" path="res://Assets/play button.png" id="4_430ii"]
+[ext_resource type="Texture2D" uid="uid://vviay3kx47nx" path="res://Assets/options button pressed.png" id="5_3p42x"]
+[ext_resource type="Texture2D" uid="uid://bve6dm3jhg7qa" path="res://Assets/options button.png" id="6_3clmd"]
+[ext_resource type="Texture2D" uid="uid://nnlqwqvx2cra" path="res://Assets/quit button.png" id="7_3clmd"]
+[ext_resource type="Texture2D" uid="uid://c33ilp6x307eo" path="res://Assets/quit button pressed.png" id="7_bsanu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
@@ -59,10 +59,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -103.0
-offset_top = -102.0
-offset_right = 103.0
-offset_bottom = 102.0
+offset_left = -250.0
+offset_top = -174.0
+offset_right = 250.0
+offset_bottom = 326.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/separation = 50

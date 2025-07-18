@@ -9,7 +9,8 @@ public partial class Ship : Node2D
     [Export]
     public int Speed { get; set; } = 300;
 
-    public PlayerResourceManager _resourceManager;
+    public PlayerResourceManager playerResourceManager;
+
     private PackedScene _shipSlotScene;
     private Camera2D _camera;
 
@@ -18,11 +19,20 @@ public partial class Ship : Node2D
     private int _minY = int.MaxValue;
     private int _maxY = int.MinValue;
 
-    public override void _Ready()
+    public void Init()
     {
-        _resourceManager = new PlayerResourceManager();
+
+        GD.Print("SHIP INIT");
+        if (playerResourceManager == null)
+        {
+            playerResourceManager = new PlayerResourceManager();
+        }
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
-        _camera = GetNode<Camera2D>("Camera");
+        playerResourceManager.IncreaseCoal(100);
+        playerResourceManager.IncreaseWood(100);
+        playerResourceManager.IncreaseCopper(100);
+        playerResourceManager.IncreaseIron(100);
+
     }
 
     public void SetFloor(Vector2I gridPos, FloorTile floor)

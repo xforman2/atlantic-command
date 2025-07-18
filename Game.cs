@@ -14,12 +14,15 @@ public partial class Game : Node2D
         _button = GetNode<Button>("Button");
         _button.Pressed += OnButtonPressed;
         _ship = ShipManager.Instance.CurrentShip;
-        GD.Print("test hey");
-
         if (_ship == null)
         {
             _ship = ShipScene.Instantiate<Ship>();
+            _ship.Init();
             AddChild(_ship);
+
+            ShipManager.Instance.SetShip(_ship);
+
+            GD.Print("New ship instantiated and assigned to ShipManager.");
         }
         else
         {
@@ -28,8 +31,10 @@ public partial class Game : Node2D
                 _ship.Reparent(this);
             }
 
+            GD.Print("Existing ship loaded from ShipManager.");
         }
 
+        _ship.Position = new Vector2(0, 0);
     }
 
     public override void _Input(InputEvent @event)
@@ -39,9 +44,6 @@ public partial class Game : Node2D
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
                 ShipManager.Instance.SetShip(_ship);
-                _ship.Position = new Vector2(0, 0);
-
-                GD.Print(_ship.Position);
                 GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
             }
         }
@@ -49,7 +51,6 @@ public partial class Game : Node2D
 
     private void OnButtonPressed()
     {
-        _ship._resourceManager.DecreaseWood(10);
-
+        _ship.playerResourceManager.DecreaseWood(10);
     }
 }

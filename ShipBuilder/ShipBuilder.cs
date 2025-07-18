@@ -11,6 +11,9 @@ public enum FloorTileType
 public partial class ShipBuilder : Node2D
 {
     [Export] public Sprite2D GhostTile;
+    private Texture2D ghostTileRedTexture;
+    private Texture2D ghostTileGreenTexture;
+
     [Export] public PackedScene FloorTileScene;
     private Ship _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
@@ -27,10 +30,20 @@ public partial class ShipBuilder : Node2D
         { FloorTileType.Iron, GD.Load<PackedScene>("res://Tiles/IronFloorTile.tscn") }
     };
 
+
+    private readonly Dictionary<FloorTileType, Dictionary<string, int>> tileCosts = new()
+    {
+        { FloorTileType.Wood, new Dictionary<string, int> { { "Wood", 4 } } },
+        { FloorTileType.Iron, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } }
+    };
+
     const int TILE_SIZE = 32;
 
     public override void _Ready()
     {
+        ghostTileRedTexture = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
+        ghostTileGreenTexture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
+
         if (ShipManager.Instance.CurrentShip == null)
         {
             var shipScene = GD.Load<PackedScene>("res://Ship.tscn");
@@ -62,8 +75,12 @@ public partial class ShipBuilder : Node2D
     {
         Vector2 mouseWorld = GetGlobalMousePosition();
         Vector2I gridPos = WorldToGrid(mouseWorld);
-        Vector2 snappedPos = GridToWorld(gridPos);
+        Vector2I snappedPos = GridToWorld(gridPos);
+
+        bool canPlace = CanPlaceTile(snappedPos);
+
         GhostTile.Position = snappedPos;
+        GhostTile.Texture = canPlace ? ghostTileGreenTexture : ghostTileRedTexture;
 
     }
 
@@ -127,12 +144,107 @@ public partial class ShipBuilder : Node2D
             GD.PrintErr($"Tile type '{currentTile}' not found!");
             return;
         }
-        FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        var worldPos = GridToWorld(gridPos);
-        _ship.UpdateBounds(worldPos);
-        _ship.SetFloor(worldPos, tile);
-        GD.Print($"world pos: {worldPos}");
+        var cost = tileCosts[currentTile];
+        if (!HasEnoughResources(cost))
+        {
+            GD.Print("Not enough resources to build this tile.");
+            return;
+        }
 
+
+        var tilePos = GridToWorld(gridPos);
+
+        if (!CanPlaceTile(tilePos))
+        {
+            GD.Print("Tile cannot be placed here");
+            return;
+        }
+
+        DeductResources(cost);
+
+        FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
+        _ship.SetFloor(tilePos, tile);
+        _ship.UpdateBounds(tilePos);
+
+    }
+
+    private bool CanPlaceTile(Vector2I position)
+    {
+        if (_ship.Slots.Count == 0)
+            return true;
+
+        Vector2I[] neighbors = new Vector2I[]
+        {
+            new Vector2I(0, -TILE_SIZE),
+            new Vector2I(0, TILE_SIZE),
+            new Vector2I(-TILE_SIZE, 0),
+            new Vector2I(TILE_SIZE, 0)
+        };
+
+        foreach (var offset in neighbors)
+        {
+            var neighborPos = position + offset;
+            if (_ship.Slots.ContainsKey(neighborPos))
+                return true;
+        }
+
+        return false;
+    }
+
+
+    private bool HasEnoughResources(Dictionary<string, int> cost)
+    {
+        foreach (var resource in cost)
+        {
+            var resourceName = resource.Key;
+            var amountRequired = resource.Value;
+            int playerAmount = GetPlayerResourceAmount(resourceName);
+
+            if (playerAmount < amountRequired)
+                return false;
+        }
+        return true;
+    }
+
+    private void DeductResources(Dictionary<string, int> cost)
+    {
+        foreach (var resource in cost)
+        {
+            var resourceName = resource.Key;
+            var amount = resource.Value;
+            DecreasePlayerResource(resourceName, amount);
+        }
+    }
+
+    private int GetPlayerResourceAmount(string resourceName)
+    {
+        return resourceName switch
+        {
+            "Wood" => _ship.playerResourceManager.Wood,
+            "Coal" => _ship.playerResourceManager.Coal,
+            "Iron" => _ship.playerResourceManager.Iron,
+            "Copper" => _ship.playerResourceManager.Copper,
+            _ => 0
+        };
+    }
+
+    private void DecreasePlayerResource(string resourceName, int amount)
+    {
+        switch (resourceName)
+        {
+            case "Wood":
+                _ship.playerResourceManager.DecreaseWood(amount);
+                break;
+            case "Coal":
+                _ship.playerResourceManager.DecreaseCoal(amount);
+                break;
+            case "Iron":
+                _ship.playerResourceManager.DecreaseIron(amount);
+                break;
+            case "Copper":
+                _ship.playerResourceManager.DecreaseCopper(amount);
+                break;
+        }
     }
 
     private Vector2I WorldToGrid(Vector2 worldPos)
