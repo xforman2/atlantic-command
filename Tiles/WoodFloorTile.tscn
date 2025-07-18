@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://bcjoflius5vgp"]
+
+[ext_resource type="Script" uid="uid://bqjdwaaidfvm2" path="res://Tiles/WoodFloorTile.cs" id="1_1u71l"]
+[ext_resource type="Texture2D" uid="uid://byelqtyh3a0co" path="res://h7jxd8q0yd591_imresizer.jpg" id="1_mu45o"]
+
+[node name="WoodFloorTile" type="Node2D"]
+script = ExtResource("1_1u71l")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_mu45o")
+centered = false

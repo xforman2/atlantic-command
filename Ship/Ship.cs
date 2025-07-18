@@ -3,25 +3,50 @@ using System.Collections.Generic;
 
 public partial class Ship : Node2D
 {
-	public Dictionary<Vector2I, FloorTile> Tiles = new();
+    public Dictionary<Vector2I, ShipSlot> Slots = new();
 
-	public PlayerResourceManager _resourceManager;
+    public int CurrentHP { get; set; }
+    public int MaxHP = 100;
 
-	public override void _Ready()
-	{
-		_resourceManager = new PlayerResourceManager();
-	}
+    public PlayerResourceManager _resourceManager;
 
-	public void AddTile(FloorTile tile, Vector2I gridPos)
-	{
-		tile.Init(gridPos);
-		AddChild(tile);
-		Tiles[gridPos] = tile;
-	}
+    private PackedScene _shipSlotScene;
 
-	private Vector2 GridToWorld(Vector2I gridPos)
-	{
-		const int TILE_SIZE = 128;
-		return new Vector2(gridPos.X * TILE_SIZE, gridPos.Y * TILE_SIZE);
-	}
+    public override void _Ready()
+    {
+        CurrentHP = MaxHP;
+        _resourceManager = new PlayerResourceManager();
+        _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
+    }
+
+    public void SetFloor(Vector2I gridPos, FloorTile floor)
+    {
+        if (!Slots.ContainsKey(gridPos))
+            AddSlot(gridPos);
+
+        Slots[gridPos].SetFloor(floor);
+    }
+
+    public void TakeDamage(int amount)
+    {
+        CurrentHP -= amount;
+        if (CurrentHP <= 0)
+            Sink();
+    }
+
+    private void AddSlot(Vector2I position)
+    {
+        if (Slots.ContainsKey(position))
+            return;
+
+        var slot = _shipSlotScene.Instantiate<ShipSlot>();
+        slot.Init(position);
+        AddChild(slot);
+        Slots[position] = slot;
+    }
+
+    private void Sink()
+    {
+        GD.Print("Ship sunk!");
+    }
 }

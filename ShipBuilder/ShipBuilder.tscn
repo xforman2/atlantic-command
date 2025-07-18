@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
 [ext_resource type="PackedScene" uid="uid://c2i7b2x53cmvn" path="res://Tiles/FloorTile.tscn" id="2_rhkma"]
-[ext_resource type="Texture2D" uid="uid://cf2m2iu86fjlm" path="res://icon.svg" id="2_xiafq"]
+[ext_resource type="Texture2D" uid="uid://6t6j5grrfgty" path="res://Assets/ghost_tile.png" id="3_cx8ke"]
 
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
 script = ExtResource("1_7vw3h")
@@ -12,5 +12,47 @@ FloorTileScene = ExtResource("2_rhkma")
 [node name="GhostTile" type="Node2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="GhostTile"]
-texture = ExtResource("2_xiafq")
+texture = ExtResource("3_cx8ke")
 centered = false
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="BuildMenuButton" type="Button" parent="UI"]
+offset_left = 926.0
+offset_top = 16.0
+offset_right = 1133.0
+offset_bottom = 102.0
+text = "Build Menu"
+
+[node name="BuildMenu" type="PanelContainer" parent="UI"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -555.0
+offset_bottom = 367.0
+grow_horizontal = 0
+
+[node name="TabContainer" type="TabContainer" parent="UI/BuildMenu"]
+layout_mode = 2
+current_tab = 0
+
+[node name="Floors" type="VBoxContainer" parent="UI/BuildMenu/TabContainer"]
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Wood" type="Button" parent="UI/BuildMenu/TabContainer/Floors"]
+layout_mode = 2
+text = "Wood"
+
+[node name="Iron" type="Button" parent="UI/BuildMenu/TabContainer/Floors"]
+layout_mode = 2
+text = "Iron"
+
+[node name="Guns" type="VBoxContainer" parent="UI/BuildMenu/TabContainer"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Cannon" type="Button" parent="UI/BuildMenu/TabContainer/Guns"]
+layout_mode = 2
+text = "Canon"
