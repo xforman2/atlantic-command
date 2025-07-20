@@ -14,7 +14,6 @@ public partial class Game : Node2D
         _button = GetNode<Button>("Button");
         _button.Pressed += OnButtonPressed;
         _ship = ShipManager.Instance.CurrentShip;
-
         if (_ship == null)
         {
             _ship = ShipScene.Instantiate<Ship>();
@@ -45,6 +44,7 @@ public partial class Game : Node2D
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
                 ShipManager.Instance.SetShip(_ship);
+                _ship.GoToDock();
                 GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
             }
         }
@@ -53,6 +53,5 @@ public partial class Game : Node2D
     private void OnButtonPressed()
     {
         _ship.playerResourceManager.DecreaseWood(10);
-
     }
 }

@@ -15,7 +15,7 @@ public partial class ShipBuilder : Node2D
     private Texture2D ghostTileGreenTexture;
 
     [Export] public PackedScene FloorTileScene;
-    private Ship ship;
+    private Ship _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
 
     private Button buildMenuButton;
@@ -47,17 +47,16 @@ public partial class ShipBuilder : Node2D
         if (ShipManager.Instance.CurrentShip == null)
         {
             var shipScene = GD.Load<PackedScene>("res://Ship.tscn");
-            ship = shipScene.Instantiate<Ship>();
-            ShipManager.Instance.SetShip(ship);
-            AddChild(ship);
+            _ship = shipScene.Instantiate<Ship>();
+            AddChild(_ship);
         }
         else
         {
-            ship = ShipManager.Instance.CurrentShip;
+            _ship = ShipManager.Instance.CurrentShip;
 
-            if (ship.GetParent() != this)
+            if (_ship.GetParent() != this)
             {
-                ship.Reparent(this);
+                _ship.Reparent(this);
             }
         }
 
@@ -100,7 +99,8 @@ public partial class ShipBuilder : Node2D
         {
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
-                ShipManager.Instance.SetShip(ship);
+                ShipManager.Instance.SetShip(_ship);
+                _ship.GoOutOfDock();
                 GetTree().ChangeSceneToFile("res://Game.tscn");
             }
 
@@ -134,14 +134,13 @@ public partial class ShipBuilder : Node2D
 
     private void TryPlaceTile(Vector2I gridPos)
     {
-        if (ship.Slots.ContainsKey(gridPos))
+        if (_ship.Slots.ContainsKey(gridPos))
             return;
         if (!tileScenes.ContainsKey(currentTile))
         {
             GD.PrintErr($"Tile type '{currentTile}' not found!");
             return;
         }
-
         var cost = tileCosts[currentTile];
         if (!HasEnoughResources(cost))
         {
@@ -161,13 +160,14 @@ public partial class ShipBuilder : Node2D
         DeductResources(cost);
 
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        ship.SetFloor(tilePos, tile);
+        _ship.SetFloor(tilePos, tile);
+        _ship.UpdateBounds(tilePos, TILE_SIZE);
 
     }
 
     private bool CanPlaceTile(Vector2I position)
     {
-        if (ship.Slots.Count == 0)
+        if (_ship.Slots.Count == 0)
             return true;
 
         Vector2I[] neighbors = new Vector2I[]
@@ -181,7 +181,7 @@ public partial class ShipBuilder : Node2D
         foreach (var offset in neighbors)
         {
             var neighborPos = position + offset;
-            if (ship.Slots.ContainsKey(neighborPos))
+            if (_ship.Slots.ContainsKey(neighborPos))
                 return true;
         }
 
@@ -217,10 +217,10 @@ public partial class ShipBuilder : Node2D
     {
         return resourceName switch
         {
-            "Wood" => ship.playerResourceManager.Wood,
-            "Coal" => ship.playerResourceManager.Coal,
-            "Iron" => ship.playerResourceManager.Iron,
-            "Copper" => ship.playerResourceManager.Copper,
+            "Wood" => _ship.playerResourceManager.Wood,
+            "Coal" => _ship.playerResourceManager.Coal,
+            "Iron" => _ship.playerResourceManager.Iron,
+            "Copper" => _ship.playerResourceManager.Copper,
             _ => 0
         };
     }
@@ -230,16 +230,16 @@ public partial class ShipBuilder : Node2D
         switch (resourceName)
         {
             case "Wood":
-                ship.playerResourceManager.DecreaseWood(amount);
+                _ship.playerResourceManager.DecreaseWood(amount);
                 break;
             case "Coal":
-                ship.playerResourceManager.DecreaseCoal(amount);
+                _ship.playerResourceManager.DecreaseCoal(amount);
                 break;
             case "Iron":
-                ship.playerResourceManager.DecreaseIron(amount);
+                _ship.playerResourceManager.DecreaseIron(amount);
                 break;
             case "Copper":
-                ship.playerResourceManager.DecreaseCopper(amount);
+                _ship.playerResourceManager.DecreaseCopper(amount);
                 break;
         }
     }
