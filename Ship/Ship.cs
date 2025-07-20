@@ -1,13 +1,13 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class Ship : Node2D
+public partial class Ship : RigidBody2D
 {
     public Dictionary<Vector2I, ShipSlot> Slots = new();
 
 
     [Export]
-    public int Speed { get; set; } = 300;
+    public int Speed { get; set; } = 100;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -34,7 +34,13 @@ public partial class Ship : Node2D
         playerResourceManager.IncreaseIron(100);
 
     }
-
+    public override void _Ready()
+    {
+        Inertia = 1;
+        GravityScale = 0;
+        LinearDamp = 2f;
+        AngularDamp = 2f;
+    }
     public void SetFloor(Vector2I position, FloorTile floor)
     {
         if (!Slots.ContainsKey(position))
@@ -81,12 +87,20 @@ public partial class Ship : Node2D
     {
         GlobalPosition = Vector2.Zero;
         _camera.Enabled = false;
+        StopMovement();
         // go to dock will make the position of the ship (0, 0), and we need to put positions of all tiles to previous
         // positions, and these positions are inside of the Slot.Keys.
         foreach (var (position, slot) in Slots)
         {
             slot.Position = position;
         }
+    }
+
+    private void StopMovement()
+    {
+        LinearVelocity = Vector2.Zero;
+        AngularVelocity = 0f;
+        Rotation = 0f;
     }
 
     private void AddSlot(Vector2I position)
@@ -100,25 +114,26 @@ public partial class Ship : Node2D
         Slots[position] = slot;
     }
 
-    public override void _Process(double delta)
+    public override void _PhysicsProcess(double delta)
     {
         if (!_camera?.Enabled ?? false) return;
 
-        Vector2 direction = Vector2.Zero;
+        Vector2 forward = -Transform.Y;
 
         if (Input.IsActionPressed("ui_up"))
-            direction.Y -= 1;
-        if (Input.IsActionPressed("ui_down"))
-            direction.Y += 1;
-        if (Input.IsActionPressed("ui_left"))
-            direction.X -= 1;
-        if (Input.IsActionPressed("ui_right"))
-            direction.X += 1;
-
-        if (direction != Vector2.Zero)
         {
-            direction = direction.Normalized();
-            Position += direction * Speed * (float)delta;
+            ApplyCentralForce(forward * Speed);
         }
+
+        if (Input.IsActionPressed("ui_left"))
+        {
+            ApplyTorque(-1f);
+        }
+
+        if (Input.IsActionPressed("ui_right"))
+        {
+            ApplyTorque(1f);
+        }
+        GD.Print($"AngularVelocity: {AngularVelocity}");
     }
 }
