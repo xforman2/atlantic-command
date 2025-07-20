@@ -22,12 +22,12 @@ public partial class Ship : Node2D
     public void Init()
     {
 
-        GD.Print("SHIP INIT");
         if (playerResourceManager == null)
         {
             playerResourceManager = new PlayerResourceManager();
         }
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
+        _camera = GetNode<Camera2D>("Camera");
         playerResourceManager.IncreaseCoal(100);
         playerResourceManager.IncreaseWood(100);
         playerResourceManager.IncreaseCopper(100);
@@ -43,7 +43,7 @@ public partial class Ship : Node2D
         Slots[gridPos].SetFloor(floor);
     }
 
-    public Vector2 GetCenterWorldPosition()
+    private Vector2 GetCenterWorldPosition()
     {
         if (_minX > _maxX || _minY > _maxY)
         {
@@ -55,22 +55,38 @@ public partial class Ship : Node2D
         float centerY = (_minY + _maxY) / 2f;
         return new Vector2(centerX, centerY);
     }
-    public void UpdateBounds(Vector2I worldPos)
+    public void UpdateBounds(Vector2I worldPos, int tileSize)
     {
         if (worldPos.X < _minX) _minX = worldPos.X;
-        if (worldPos.X > _maxX) _maxX = worldPos.X;
+        if ((worldPos.X + tileSize) > _maxX) _maxX = worldPos.X + tileSize;
         if (worldPos.Y < _minY) _minY = worldPos.Y;
-        if (worldPos.Y > _maxY) _maxY = worldPos.Y;
+        if ((worldPos.Y + tileSize) > _maxY) _maxY = worldPos.Y + tileSize;
     }
 
-    public void EnableMovement()
+    public void GoOutOfDock()
     {
+        GlobalPosition = GetCenterWorldPosition();
         _camera.Enabled = true;
+        // since go out of dock means that the position of the ship will be the middle position of all the tiles
+        // we need to make sure that the tiles do not move with the ship (they are children of the ship), so we 
+        // decrease with the current position of the ship
+        foreach (var slot in Slots.Values)
+        {
+            slot.Position -= this.Position;
+
+        }
     }
 
-    public void DisableMovement()
+    public void GoToDock()
     {
+        GlobalPosition = Vector2.Zero;
         _camera.Enabled = false;
+        // go to dock will make the position of the ship (0, 0), and we need to put positions of all tiles to previous
+        // positions, and these positions are inside of the Slot.Keys.
+        foreach (var (position, slot) in Slots)
+        {
+            slot.Position = position;
+        }
     }
 
     private void AddSlot(Vector2I position)
@@ -86,7 +102,7 @@ public partial class Ship : Node2D
 
     public override void _Process(double delta)
     {
-        if (!_camera.Enabled) return;
+        if (!_camera?.Enabled ?? false) return;
 
         Vector2 direction = Vector2.Zero;
 

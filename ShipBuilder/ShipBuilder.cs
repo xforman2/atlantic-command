@@ -91,7 +91,6 @@ public partial class ShipBuilder : Node2D
         {
             if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
             {
-                GD.Print($"mouse: {mouseEvent.Position}");
                 Vector2I gridPos = WorldToGrid(mouseEvent.Position);
                 TryPlaceTile(gridPos);
             }
@@ -101,9 +100,7 @@ public partial class ShipBuilder : Node2D
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
                 ShipManager.Instance.SetShip(_ship);
-                _ship.Position = _ship.GetCenterWorldPosition();
-                GD.Print($"center ship {_ship.Position}");
-                _ship.EnableMovement();
+                _ship.GoOutOfDock();
                 GetTree().ChangeSceneToFile("res://Game.tscn");
             }
 
@@ -164,7 +161,7 @@ public partial class ShipBuilder : Node2D
 
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
         _ship.SetFloor(tilePos, tile);
-        _ship.UpdateBounds(tilePos);
+        _ship.UpdateBounds(tilePos, TILE_SIZE);
 
     }
 
