@@ -3,8 +3,8 @@ using System;
 
 public partial class ShipSlot : Node2D
 {
-    private FloorTile floorTile;
-    private Node2D buildable;
+    public FloorTile floorTile;
+    public Node2D gun;
 
     public void Init(Vector2I position)
     {

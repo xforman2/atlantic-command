@@ -5,7 +5,8 @@ using System.Collections.Generic;
 public enum FloorTileType
 {
     Wood,
-    Iron
+    Iron,
+    Steel
 }
 
 public partial class ShipBuilder : Node2D
@@ -22,19 +23,22 @@ public partial class ShipBuilder : Node2D
     private PanelContainer buildMenuPanel;
     private Button woodTileButton;
     private Button ironTileButton;
+    private Button steelTileButton;
 
 
     private readonly Dictionary<FloorTileType, PackedScene> tileScenes = new()
     {
         { FloorTileType.Wood, GD.Load<PackedScene>("res://Tiles/WoodFloorTile.tscn") },
-        { FloorTileType.Iron, GD.Load<PackedScene>("res://Tiles/IronFloorTile.tscn") }
+        { FloorTileType.Iron, GD.Load<PackedScene>("res://Tiles/IronFloorTile.tscn") },
+        { FloorTileType.Steel, GD.Load<PackedScene>("res://Tiles/SteelFloorTile.tscn") }
     };
 
 
     private readonly Dictionary<FloorTileType, Dictionary<string, int>> tileCosts = new()
     {
         { FloorTileType.Wood, new Dictionary<string, int> { { "Wood", 4 } } },
-        { FloorTileType.Iron, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } }
+        { FloorTileType.Iron, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } },
+        { FloorTileType.Steel, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } }
     };
 
     const int TILE_SIZE = 32;
@@ -64,9 +68,11 @@ public partial class ShipBuilder : Node2D
         buildMenuPanel = GetNode<PanelContainer>("UI/BuildMenu");
         woodTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Wood");
         ironTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Iron");
+        steelTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Steel");
         buildMenuButton.Pressed += OnBuildMenuButtonPressed;
         woodTileButton.Pressed += () => SelectTile(FloorTileType.Wood);
         ironTileButton.Pressed += () => SelectTile(FloorTileType.Iron);
+        steelTileButton.Pressed += () => SelectTile(FloorTileType.Steel);
 
         buildMenuPanel.Visible = false;
     }
@@ -94,6 +100,11 @@ public partial class ShipBuilder : Node2D
                 Vector2I gridPos = WorldToGrid(mouseEvent.Position);
                 TryPlaceTile(gridPos);
             }
+            else if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
+            {
+                Vector2I gridPos = WorldToGrid(mouseEvent.Position);
+                TryRemoveTile(gridPos);
+            }
         }
         else if (@event is InputEventKey keyEvent)
         {
@@ -102,16 +113,6 @@ public partial class ShipBuilder : Node2D
                 ShipManager.Instance.SetShip(_ship);
                 _ship.GoOutOfDock();
                 GetTree().ChangeSceneToFile("res://Game.tscn");
-            }
-
-            else if (keyEvent.Keycode == Key.W && keyEvent.Pressed && !keyEvent.Echo)
-            {
-                currentTile = FloorTileType.Wood;
-            }
-
-            else if (keyEvent.Keycode == Key.I && keyEvent.Pressed && !keyEvent.Echo)
-            {
-                currentTile = FloorTileType.Iron;
             }
         }
     }
@@ -134,7 +135,9 @@ public partial class ShipBuilder : Node2D
 
     private void TryPlaceTile(Vector2I gridPos)
     {
-        if (_ship.Slots.ContainsKey(gridPos))
+
+        var tilePos = GridToWorld(gridPos);
+        if (_ship.Slots.ContainsKey(tilePos))
             return;
         if (!tileScenes.ContainsKey(currentTile))
         {
@@ -148,9 +151,6 @@ public partial class ShipBuilder : Node2D
             return;
         }
 
-
-        var tilePos = GridToWorld(gridPos);
-
         if (!CanPlaceTile(tilePos))
         {
             GD.Print("Tile cannot be placed here");
@@ -163,6 +163,35 @@ public partial class ShipBuilder : Node2D
         _ship.SetFloor(tilePos, tile);
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
+    }
+
+    private void TryRemoveTile(Vector2I gridPos)
+    {
+        var tilePos = GridToWorld(gridPos);
+
+        if (!_ship.Slots.ContainsKey(tilePos))
+        {
+            GD.Print("Ship slot does not exist");
+            return;
+        }
+
+
+        ShipSlot slot = _ship.Slots[tilePos];
+
+        if (slot.floorTile != null)
+        {
+            slot.floorTile.QueueFree();
+            slot.floorTile = null;
+        }
+        if (slot.gun != null)
+        {
+            slot.gun.QueueFree();
+            slot.gun = null;
+        }
+
+        _ship.Slots.Remove(tilePos);
+
+        slot.QueueFree();
     }
 
     private bool CanPlaceTile(Vector2I position)
