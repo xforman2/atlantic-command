@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://cdb7j0jenakts"]
+
+[ext_resource type="Script" uid="uid://cl45xw8g32w7b" path="res://Tiles/SteelFloorTile.cs" id="1_ouvvw"]
+[ext_resource type="Texture2D" uid="uid://bh4it0mw3k7ec" path="res://Assets/floor_steel.png" id="1_v8hsy"]
+
+[node name="SteelFloorTile" type="Node2D"]
+script = ExtResource("1_ouvvw")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("1_v8hsy")
+centered = false
