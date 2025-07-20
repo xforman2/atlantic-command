@@ -35,12 +35,12 @@ public partial class Ship : Node2D
 
     }
 
-    public void SetFloor(Vector2I gridPos, FloorTile floor)
+    public void SetFloor(Vector2I position, FloorTile floor)
     {
-        if (!Slots.ContainsKey(gridPos))
-            AddSlot(gridPos);
+        if (!Slots.ContainsKey(position))
+            AddSlot(position);
 
-        Slots[gridPos].SetFloor(floor);
+        Slots[position].SetFloor(floor);
     }
 
     private Vector2 GetCenterWorldPosition()
