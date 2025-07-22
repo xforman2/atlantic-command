@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dmsax1s6pps4v"]
 
 [ext_resource type="Script" uid="uid://bqjdwaaidfvm2" path="res://Tiles/WoodFloorTile.cs" id="1_1u71l"]
-[ext_resource type="Texture2D" uid="uid://bnbcga4swp81r" path="res://Assets/floor_wood.png" id="2_1u71l"]
+[ext_resource type="Texture2D" uid="uid://c43urd2xc4veh" path="res://Assets/floor_wood.png" id="2_1u71l"]
 
 [node name="WoodFloorTile" type="Node2D"]
 script = ExtResource("1_1u71l")
