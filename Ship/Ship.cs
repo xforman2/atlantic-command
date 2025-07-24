@@ -7,7 +7,7 @@ public partial class Ship : RigidBody2D
 
 
     [Export]
-    public int Speed { get; set; } = 100;
+    public int Speed { get; set; } = 300;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -127,13 +127,12 @@ public partial class Ship : RigidBody2D
 
         if (Input.IsActionPressed("ui_left"))
         {
-            ApplyTorque(-1f);
+            ApplyTorque(-3f);
         }
 
         if (Input.IsActionPressed("ui_right"))
         {
-            ApplyTorque(1f);
+            ApplyTorque(3f);
         }
-        GD.Print($"AngularVelocity: {AngularVelocity}");
     }
 }
