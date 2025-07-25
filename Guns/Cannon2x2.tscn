@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://5j4xntm6fcm5"]
+
+[ext_resource type="Script" uid="uid://c2lb70h4b6wxp" path="res://Guns/Cannon2x2.cs" id="1_expwk"]
+[ext_resource type="Texture2D" uid="uid://d31biphuvy7wk" path="res://Assets/cannon_64x64.png" id="2_54oe1"]
+
+[node name="Cannon2x2" type="Node2D"]
+script = ExtResource("1_expwk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 1
+texture = ExtResource("2_54oe1")
+centered = false
+
+[node name="Muzzle" type="Marker2D" parent="."]
+position = Vector2(32, 10)

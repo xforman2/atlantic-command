@@ -4,7 +4,7 @@ using System;
 public partial class ShipSlot : Node2D
 {
     public FloorTile floorTile;
-    public Node2D gun;
+    public BuildableStructure buildableStructure;
 
     public void Init(Vector2I position)
     {
@@ -18,6 +18,19 @@ public partial class ShipSlot : Node2D
 
         floorTile = floor;
         AddChild(floorTile);
+    }
+    public void SetStructure(BuildableStructure structure)
+    {
+        buildableStructure = structure;
+    }
+
+    public void RemoveStructure()
+    {
+        if (buildableStructure != null)
+        {
+            buildableStructure.QueueFree();
+            buildableStructure = null;
+        }
     }
 
 }
