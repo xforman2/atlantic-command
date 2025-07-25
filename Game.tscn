@@ -1,7 +1,6 @@
-[gd_scene load_steps=7 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=6 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
-[ext_resource type="PackedScene" uid="uid://dl1qladbn0web" path="res://Ship/Ship.tscn" id="2_xkndl"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="3_u44n3"]
 [ext_resource type="TileSet" uid="uid://dajgth4q73mmf" path="res://Assets/tile_set.tres" id="4_sb48q"]
 
@@ -15,10 +14,7 @@ noise = SubResource("FastNoiseLite_sb48q")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbfu4")
-ShipScene = ExtResource("2_xkndl")
 NoiseTexture2D = SubResource("NoiseTexture2D_t88pq")
-
-[node name="Ship" parent="." instance=ExtResource("2_xkndl")]
 
 [node name="UIOverlay" parent="." instance=ExtResource("3_u44n3")]
 

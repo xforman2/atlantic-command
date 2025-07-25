@@ -147,13 +147,13 @@ public partial class ShipBuilder : Node2D
         var cost = tileCosts[currentTile];
         if (!HasEnoughResources(cost))
         {
-            GD.Print("Not enough resources to build this tile.");
+            GD.PrintErr("Not enough resources to build this tile.");
             return;
         }
 
         if (!CanPlaceTile(tilePos))
         {
-            GD.Print("Tile cannot be placed here");
+            GD.PrintErr("Tile cannot be placed here");
             return;
         }
 

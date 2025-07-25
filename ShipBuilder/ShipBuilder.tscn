@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
 [ext_resource type="PackedScene" uid="uid://c2i7b2x53cmvn" path="res://Tiles/FloorTile.tscn" id="2_rhkma"]
-[ext_resource type="Texture2D" uid="uid://4sere7je1ye0" path="res://Assets/ghost_tile_green.png" id="3_cygug"]
+[ext_resource type="Texture2D" uid="uid://d18ghdartulh7" path="res://Assets/ghost_tile_green2x2.png" id="3_cygug"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="4_cygug"]
 
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
