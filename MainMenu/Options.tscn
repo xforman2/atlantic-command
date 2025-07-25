@@ -1,3 +1,10 @@
-[gd_scene format=3 uid="uid://cv4s6hhp5j24m"]
+[gd_scene load_steps=2 format=3 uid="uid://cv4s6hhp5j24m"]
+
+[ext_resource type="Texture2D" uid="uid://cc6ytec5hkq2l" path="res://Assets/options bg_v1.png" id="1_mldbs"]
 
 [node name="Options" type="Node2D"]
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_mldbs")
