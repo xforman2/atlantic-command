@@ -6,9 +6,9 @@ public partial class FloorTile : Node2D
     [Export]
     public int HP { get; set; } = 10;
 
-    public void Init(Vector2 position)
+    public void Init(Vector2I position)
     {
-        Position = new Vector2(position.X, position.Y);
+        Position = position;
     }
 
     public void TakeDamage(int amount)

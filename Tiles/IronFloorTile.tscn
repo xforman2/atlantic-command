@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bexj8l3crvj68"]
 
 [ext_resource type="Script" uid="uid://b8ew5l6hchjxj" path="res://Tiles/IronFloorTile.cs" id="1_mpkea"]
-[ext_resource type="Texture2D" uid="uid://ctukpxtxi02g7" path="res://Assets/floor_iron.png" id="2_mpkea"]
+[ext_resource type="Texture2D" uid="uid://cltop0l72ysll" path="res://Assets/floor_iron.png" id="2_mpkea"]
 
 [node name="IronFloorTile" type="Node2D"]
 script = ExtResource("1_mpkea")

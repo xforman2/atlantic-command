@@ -3,7 +3,8 @@ using System.Collections.Generic;
 
 public partial class Ship : RigidBody2D
 {
-    public Dictionary<Vector2I, ShipSlot> Slots = new();
+    public Dictionary<Vector2I, FloorTile> Floors = new();
+    public Dictionary<Vector2I, BuildableStructure> Structures = new();
 
 
     [Export]
@@ -38,13 +39,76 @@ public partial class Ship : RigidBody2D
         AngularDamp = 2f;
 
     }
-
-    public void SetFloor(Vector2I position, FloorTile floor)
+    public void AddFloor(Vector2I position, FloorTile floor)
     {
-        if (!Slots.ContainsKey(position))
-            AddSlot(position);
+        if (Floors.ContainsKey(position))
+        {
+            GD.Print("Floor is already present on: ", position);
+            return;
+        }
+        Floors[position] = floor;
+        AddChild(floor);
+    }
 
-        Slots[position].SetFloor(floor);
+    public bool CanAddFloor(Vector2I position)
+    {
+        if (Floors.Count == 0)
+            return true;
+        if (Floors.ContainsKey(position))
+            return false;
+
+        Vector2I[] neighbors = new Vector2I[]
+        {
+            new Vector2I(0, -Globals.TILE_SIZE),
+            new Vector2I(0, Globals.TILE_SIZE),
+            new Vector2I(-Globals.TILE_SIZE, 0),
+            new Vector2I(Globals.TILE_SIZE, 0)
+        };
+
+        foreach (var offset in neighbors)
+        {
+            var neighborPos = position + offset;
+            if (Floors.ContainsKey(neighborPos))
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool CanPlaceStructure(GunType gunType, Vector2I position)
+    {
+        var offsets = GetOccupiedTileOffsets(gunType);
+        foreach (var offset in offsets)
+        {
+            var occupiedPos = position + offset;
+            if (!Floors.ContainsKey(occupiedPos) || Structures.ContainsKey(occupiedPos))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void PlaceStructure(BuildableStructure structure)
+    {
+        Structures[structure.Origin] = structure;
+        AddChild(structure);
+
+    }
+
+    private List<Vector2I> GetOccupiedTileOffsets(GunType gunType)
+    {
+        return gunType switch
+        {
+            GunType.Cannon => new List<Vector2I>
+            {
+                new Vector2I(0, 0),
+                new Vector2I(Globals.TILE_SIZE, 0),
+                new Vector2I(0, Globals.TILE_SIZE),
+                new Vector2I(Globals.TILE_SIZE, Globals.TILE_SIZE)
+            },
+            _ => new List<Vector2I> { new Vector2I(0, 0) }
+        };
     }
 
     private Vector2 GetCenterWorldPosition()
@@ -74,10 +138,14 @@ public partial class Ship : RigidBody2D
         // since go out of dock means that the position of the ship will be the middle position of all the tiles
         // we need to make sure that the tiles do not move with the ship (they are children of the ship), so we 
         // decrease with the current position of the ship
-        foreach (var slot in Slots.Values)
+        foreach (var floor in Floors.Values)
         {
-            slot.Position -= this.Position;
+            floor.Position -= this.Position;
 
+        }
+        foreach (var structure in Structures.Values)
+        {
+            structure.Position -= this.Position;
         }
     }
 
@@ -88,9 +156,13 @@ public partial class Ship : RigidBody2D
         StopMovement();
         // go to dock will make the position of the ship (0, 0), and we need to put positions of all tiles to previous
         // positions, and these positions are inside of the Slot.Keys.
-        foreach (var (position, slot) in Slots)
+        foreach (var (position, floor) in Floors)
         {
-            slot.Position = position;
+            floor.Position = position;
+        }
+        foreach (var (position, structure) in Structures)
+        {
+            structure.Position = position;
         }
     }
 
@@ -101,16 +173,6 @@ public partial class Ship : RigidBody2D
         Rotation = 0f;
     }
 
-    private void AddSlot(Vector2I position)
-    {
-        if (Slots.ContainsKey(position))
-            return;
-
-        var slot = _shipSlotScene.Instantiate<ShipSlot>();
-        slot.Init(position);
-        AddChild(slot);
-        Slots[position] = slot;
-    }
 
     public override void _PhysicsProcess(double delta)
     {
