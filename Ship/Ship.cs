@@ -29,6 +29,7 @@ public partial class Ship : RigidBody2D
         }
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
+        // _camera.Zoom = new Vector2(0.25f, 0.25f);
         playerResourceManager.IncreaseCoal(100);
         playerResourceManager.IncreaseWood(100);
         playerResourceManager.IncreaseCopper(100);
