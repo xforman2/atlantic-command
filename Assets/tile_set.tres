@@ -1,0 +1,20 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://dajgth4q73mmf"]
+
+[ext_resource type="Texture2D" uid="uid://jf7bh4svdo5y" path="res://Assets/sand.png" id="1_utoss"]
+[ext_resource type="Texture2D" uid="uid://cqv82docg2eyp" path="res://Assets/water_light_v2.png" id="2_utoss"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_utoss"]
+texture = ExtResource("1_utoss")
+0:0/size_in_atlas = Vector2i(2, 2)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0y1uu"]
+texture = ExtResource("2_utoss")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+terrain_set_0/mode = 0
+sources/1 = SubResource("TileSetAtlasSource_utoss")
+sources/2 = SubResource("TileSetAtlasSource_0y1uu")

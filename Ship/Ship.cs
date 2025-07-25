@@ -7,7 +7,7 @@ public partial class Ship : RigidBody2D
 
 
     [Export]
-    public int Speed { get; set; } = 100;
+    public int Speed { get; set; } = 300;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -19,7 +19,7 @@ public partial class Ship : RigidBody2D
     private int _minY = int.MaxValue;
     private int _maxY = int.MinValue;
 
-    public void Init()
+    public override void _Ready()
     {
 
         if (playerResourceManager == null)
@@ -32,15 +32,13 @@ public partial class Ship : RigidBody2D
         playerResourceManager.IncreaseWood(100);
         playerResourceManager.IncreaseCopper(100);
         playerResourceManager.IncreaseIron(100);
-
-    }
-    public override void _Ready()
-    {
         Inertia = 1;
         GravityScale = 0;
         LinearDamp = 2f;
         AngularDamp = 2f;
+
     }
+
     public void SetFloor(Vector2I position, FloorTile floor)
     {
         if (!Slots.ContainsKey(position))
@@ -116,6 +114,7 @@ public partial class Ship : RigidBody2D
 
     public override void _PhysicsProcess(double delta)
     {
+        GD.Print($"Ship ID {GetInstanceId()} position aa {GlobalPosition}");
         if (!_camera?.Enabled ?? false) return;
 
         Vector2 forward = -Transform.Y;
@@ -127,13 +126,12 @@ public partial class Ship : RigidBody2D
 
         if (Input.IsActionPressed("ui_left"))
         {
-            ApplyTorque(-1f);
+            ApplyTorque(-3f);
         }
 
         if (Input.IsActionPressed("ui_right"))
         {
-            ApplyTorque(1f);
+            ApplyTorque(3f);
         }
-        GD.Print($"AngularVelocity: {AngularVelocity}");
     }
 }
