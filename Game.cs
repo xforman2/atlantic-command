@@ -6,20 +6,23 @@ using System.Linq;
 public partial class Game : Node2D
 {
     private Ship _ship;
-    private TileMapLayer _tileMapLayer;
+    private TileMapLayer _groundLayer;
+    private TileMapLayer _environmentLayer;
 
     [Export] public int ChunkSize = 32;
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
     [Export] public float SandThreshold = 0.1f;
-    [Export] public NoiseTexture2D NoiseTexture2D;
+    [Export] public NoiseTexture2D HeightNoise;
+    [Export] public NoiseTexture2D EnvironmentNoise;
 
     private Dictionary<Vector2I, bool> _loadedChunks = new();
     private Vector2I _lastChunkPos = new(-9999, -9999);
 
     public override void _Ready()
     {
-        _tileMapLayer = GetNode<TileMapLayer>("WorldTileMapLayer");
+        _groundLayer = GetNode<TileMapLayer>("GroundLayer");
+        _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
 
         _ship = ShipManager.Instance.CurrentShip;
         if (_ship == null)
@@ -45,10 +48,10 @@ public partial class Game : Node2D
 
     public override void _Process(double delta)
     {
-        if (_ship == null || _tileMapLayer == null || NoiseTexture2D == null)
+        if (_ship == null || _groundLayer == null || HeightNoise == null)
             return;
 
-        Vector2I tileSize = _tileMapLayer.TileSet.TileSize;
+        Vector2I tileSize = _groundLayer.TileSet.TileSize;
         Vector2I currentChunk = new Vector2I(
             Mathf.FloorToInt(_ship.Position.X / (ChunkSize * tileSize.X)),
             Mathf.FloorToInt(_ship.Position.Y / (ChunkSize * tileSize.Y))
@@ -90,7 +93,8 @@ public partial class Game : Node2D
 
     private void GenerateChunk(Vector2I chunkPos)
     {
-        var noise = NoiseTexture2D.Noise;
+        var heightNoise = HeightNoise.Noise;
+        var environmentNoise = EnvironmentNoise.Noise;
         Vector2I start = chunkPos * ChunkSize;
 
         for (int x = 0; x < ChunkSize; x++)
@@ -98,9 +102,20 @@ public partial class Game : Node2D
             for (int y = 0; y < ChunkSize; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
-                float noiseVal = noise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
-                int sourceId = noiseVal > SandThreshold ? 1 : 2;
-                _tileMapLayer.SetCell(tilePos, sourceId, Vector2I.Zero);
+                float heightValue = heightNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
+
+                int groundId = heightValue > SandThreshold
+                    ? (int)GroundTextureEnum.Sand
+                    : (int)GroundTextureEnum.Water;
+
+                _groundLayer.SetCell(tilePos, groundId, Vector2I.Zero);
+
+                GD.Print($"{groundId} == {(int)GroundTextureEnum.Sand}");
+                if (groundId == (int)GroundTextureEnum.Sand)
+                {
+                    GD.Print("here");
+                    _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
+                }
             }
         }
 
@@ -116,7 +131,8 @@ public partial class Game : Node2D
             for (int y = 0; y < ChunkSize; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
-                _tileMapLayer.SetCell(tilePos, -1, Vector2I.Zero);
+                _groundLayer.SetCell(tilePos, -1, Vector2I.Zero);
+                _environmentLayer.SetCell(tilePos, -1, Vector2I.Zero);
             }
         }
 

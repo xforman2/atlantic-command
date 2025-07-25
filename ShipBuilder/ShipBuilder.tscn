@@ -1,14 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://t2tnu0qdh1uu"]
+[gd_scene load_steps=4 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
-[ext_resource type="PackedScene" uid="uid://c2i7b2x53cmvn" path="res://Tiles/FloorTile.tscn" id="2_rhkma"]
 [ext_resource type="Texture2D" uid="uid://d18ghdartulh7" path="res://Assets/ghost_tile_green2x2.png" id="3_cygug"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="4_cygug"]
 
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
 script = ExtResource("1_7vw3h")
 GhostTile = NodePath("GhostTile/Sprite2D")
-FloorTileScene = ExtResource("2_rhkma")
 
 [node name="GhostTile" type="Node2D" parent="."]
 

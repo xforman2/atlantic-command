@@ -1,0 +1,20 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://d2t30ury2cuya"]
+
+[ext_resource type="Texture2D" uid="uid://cqyx3wwdwkwcl" path="res://Assets/rock.png" id="1_cjaix"]
+[ext_resource type="Texture2D" uid="uid://b3u8c1u8i0rpf" path="res://Assets/palm_small.png" id="2_q3kub"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_hitke"]
+texture = ExtResource("2_q3kub")
+texture_region_size = Vector2i(32, 32)
+0:0/size_in_atlas = Vector2i(1, 2)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_eo6tn"]
+texture = ExtResource("1_cjaix")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[resource]
+tile_size = Vector2i(32, 32)
+sources/1 = SubResource("TileSetAtlasSource_hitke")
+sources/2 = SubResource("TileSetAtlasSource_eo6tn")
