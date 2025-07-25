@@ -6,20 +6,26 @@ using System.Linq;
 public partial class Game : Node2D
 {
     private Ship _ship;
-    private TileMapLayer _tileMapLayer;
+    private TileMapLayer _groundLayer;
+    private TileMapLayer _environmentLayer;
 
     [Export] public int ChunkSize = 32;
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
-    [Export] public float SandThreshold = 0.1f;
-    [Export] public NoiseTexture2D NoiseTexture2D;
+    public const float SandThreshold = 0.15f;
+    public const float GrassThreshold = 0.2f;
+    public const float TreeThreshold = 0.5f;
+    public const float RockThreshold = -0.5f;
+    [Export] public NoiseTexture2D HeightNoise;
+    [Export] public NoiseTexture2D EnvironmentNoise;
 
     private Dictionary<Vector2I, bool> _loadedChunks = new();
     private Vector2I _lastChunkPos = new(-9999, -9999);
 
     public override void _Ready()
     {
-        _tileMapLayer = GetNode<TileMapLayer>("WorldTileMapLayer");
+        _groundLayer = GetNode<TileMapLayer>("GroundLayer");
+        _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
 
         _ship = ShipManager.Instance.CurrentShip;
         if (_ship == null)
@@ -40,15 +46,14 @@ public partial class Game : Node2D
         }
 
         _ship.Position = GetViewportRect().GetCenter();
-        GD.Print($"Ship position {_ship.Position}");
     }
 
     public override void _Process(double delta)
     {
-        if (_ship == null || _tileMapLayer == null || NoiseTexture2D == null)
+        if (_ship == null || _groundLayer == null || HeightNoise == null)
             return;
 
-        Vector2I tileSize = _tileMapLayer.TileSet.TileSize;
+        Vector2I tileSize = _groundLayer.TileSet.TileSize;
         Vector2I currentChunk = new Vector2I(
             Mathf.FloorToInt(_ship.Position.X / (ChunkSize * tileSize.X)),
             Mathf.FloorToInt(_ship.Position.Y / (ChunkSize * tileSize.Y))
@@ -90,21 +95,49 @@ public partial class Game : Node2D
 
     private void GenerateChunk(Vector2I chunkPos)
     {
-        var noise = NoiseTexture2D.Noise;
+        var heightNoise = HeightNoise.Noise;
+        var environmentNoise = EnvironmentNoise.Noise;
         Vector2I start = chunkPos * ChunkSize;
+
+        float minHeight = float.MaxValue;
+        float maxHeight = float.MinValue;
+        float minEnv = float.MaxValue;
+        float maxEnv = float.MinValue;
 
         for (int x = 0; x < ChunkSize; x++)
         {
             for (int y = 0; y < ChunkSize; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
-                float noiseVal = noise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
-                int sourceId = noiseVal > SandThreshold ? 1 : 2;
-                _tileMapLayer.SetCell(tilePos, sourceId, Vector2I.Zero);
+                float heightValue = heightNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
+                float envValue = environmentNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
+
+                minHeight = MathF.Min(minHeight, heightValue);
+                maxHeight = MathF.Max(maxHeight, heightValue);
+                minEnv = MathF.Min(minEnv, envValue);
+                maxEnv = MathF.Max(maxEnv, envValue);
+
+                GroundTextureEnum groundId = GetGroundType(heightValue);
+                _groundLayer.SetCell(tilePos, (int)groundId, Vector2I.Zero);
+
+                if (groundId == GroundTextureEnum.Sand)
+                {
+                    if (envValue > TreeThreshold)
+                    {
+                        GD.Print(tilePos);
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
+                    }
+                    else if (envValue < RockThreshold)
+                    {
+                        GD.Print(tilePos);
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
+                    }
+                }
             }
         }
 
-        GD.Print($"[LOAD] Chunk {chunkPos}");
+        GD.Print($"Chunk {chunkPos} Height Noise: min={minHeight:F3}, max={maxHeight:F3}");
+        GD.Print($"Chunk {chunkPos} Env Noise:    min={minEnv:F3}, max={maxEnv:F3}");
     }
 
     private void UnloadChunk(Vector2I chunkPos)
@@ -116,11 +149,10 @@ public partial class Game : Node2D
             for (int y = 0; y < ChunkSize; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
-                _tileMapLayer.SetCell(tilePos, -1, Vector2I.Zero);
+                _groundLayer.SetCell(tilePos, -1, Vector2I.Zero);
+                _environmentLayer.SetCell(tilePos, -1, Vector2I.Zero);
             }
         }
-
-        GD.Print($"[UNLOAD] Chunk {chunkPos}");
     }
 
     public override void _Input(InputEvent @event)
@@ -135,4 +167,11 @@ public partial class Game : Node2D
             }
         }
     }
+
+    private GroundTextureEnum GetGroundType(float heightValue) => heightValue switch
+    {
+        >= GrassThreshold => GroundTextureEnum.Grass,
+        >= SandThreshold => GroundTextureEnum.Sand,
+        _ => GroundTextureEnum.Water
+    };
 }
