@@ -47,6 +47,7 @@ public partial class ShipBuilder : Node2D
         { FloorTileType.Steel, GD.Load<PackedScene>("res://Tiles/SteelFloorTile.tscn") }
     };
 
+
     private readonly Dictionary<GunType, PackedScene> gunScenes = new()
     {
         { GunType.Cannon, GD.Load<PackedScene>("res://Guns/Cannon2x2.tscn") }
@@ -63,6 +64,10 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
 
         { GunType.Cannon, GD.Load<Texture2D>("res://Assets/cannon_64x64.png") }
+    };
+
+    private readonly Dictionary<GunType, Vector2I> gunSizes = new() {
+        { GunType.Cannon, new Vector2I(64, 64)}
     };
 
 
@@ -114,8 +119,7 @@ public partial class ShipBuilder : Node2D
     public override void _Process(double delta)
     {
         Vector2 mouseWorld = GetGlobalMousePosition();
-        Vector2I gridPos = WorldToGrid(mouseWorld);
-        Vector2I snappedPos = GridToWorld(gridPos);
+        Vector2I snappedPos = GetStructureSnappedPosition(mouseWorld);
 
         bool canPlace = CanPlaceTile(snappedPos);
 
@@ -145,22 +149,22 @@ public partial class ShipBuilder : Node2D
         {
             if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
             {
-                Vector2I gridPos = WorldToGrid(mouseEvent.Position);
+                Vector2I position = GetStructureSnappedPosition(mouseEvent.Position);
 
                 switch (currentBuildMode)
                 {
                     case BuildMode.Floor:
-                        TryPlaceTile(gridPos);
+                        TryPlaceTile(position);
                         break;
                     case BuildMode.Gun:
-                        TryPlaceGun(gridPos);
+                        TryPlaceGun(position);
                         break;
                 }
             }
             else if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
             {
-                Vector2I gridPos = WorldToGrid(mouseEvent.Position);
-                TryRemoveTile(gridPos);
+                Vector2I position = GetStructureSnappedPosition(mouseEvent.Position);
+                TryRemoveTile(position);
             }
         }
         else if (@event is InputEventKey keyEvent)
@@ -170,6 +174,11 @@ public partial class ShipBuilder : Node2D
                 ShipManager.Instance.SetShip(_ship);
                 _ship.GoOutOfDock();
                 GetTree().ChangeSceneToFile("res://Game.tscn");
+            }
+
+            else if (keyEvent.Keycode == Key.R && keyEvent.Pressed && !keyEvent.Echo)
+            {
+                GhostTile.RotationDegrees = (GhostTile.RotationDegrees + 90) % 360;
             }
         }
     }
@@ -190,10 +199,8 @@ public partial class ShipBuilder : Node2D
         }
     }
 
-    private void TryPlaceTile(Vector2I gridPos)
+    private void TryPlaceTile(Vector2I tilePos)
     {
-
-        var tilePos = GridToWorld(gridPos);
 
         if (!tileScenes.ContainsKey(currentTile))
         {
@@ -221,10 +228,9 @@ public partial class ShipBuilder : Node2D
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
     }
-    private void TryPlaceGun(Vector2I gridPos)
+    private void TryPlaceGun(Vector2I worldPos)
     {
 
-        var worldPos = GridToWorld(gridPos);
         if (!_ship.CanPlaceStructure(currentGun, worldPos))
         {
             GD.Print("Cannot place gun here.");
@@ -232,7 +238,7 @@ public partial class ShipBuilder : Node2D
         }
 
         BuildableStructure structure = gunScenes[currentGun].Instantiate<BuildableStructure>();
-        structure.Init(worldPos);
+        structure.Init(worldPos, GhostTile.RotationDegrees);
 
 
         _ship.PlaceStructure(structure);
@@ -240,9 +246,8 @@ public partial class ShipBuilder : Node2D
         GD.Print("Placed a gun.");
     }
 
-    private void TryRemoveTile(Vector2I gridPos)
+    private void TryRemoveTile(Vector2I tilePos)
     {
-        var tilePos = GridToWorld(gridPos);
 
         if (!_ship.Floors.ContainsKey(tilePos))
         {
@@ -332,21 +337,50 @@ public partial class ShipBuilder : Node2D
                 break;
         }
     }
-
-    private Vector2I WorldToGrid(Vector2 worldPos)
+    private Vector2I GetStructureSnappedPosition(Vector2 worldPos)
     {
-        return new Vector2I(
-            Mathf.FloorToInt(worldPos.X / TILE_SIZE),
-            Mathf.FloorToInt(worldPos.Y / TILE_SIZE)
-        );
-    }
+        Vector2I structureSize;
+        switch (currentBuildMode)
+        {
+            case BuildMode.Floor:
+                structureSize = new Vector2I(32, 32);
+                break;
+            case BuildMode.Gun:
+                structureSize = gunSizes[currentGun];
+                break;
+            default:
+                structureSize = Vector2I.Zero;
+                break;
+        }
 
-    private Vector2I GridToWorld(Vector2I gridPos)
-    {
-        return new Vector2I(
-            gridPos.X * TILE_SIZE,
-            gridPos.Y * TILE_SIZE
-        );
+        int tilesWide = structureSize.X / TILE_SIZE;
+        int tilesHigh = structureSize.Y / TILE_SIZE;
+
+        int snappedX, snappedY;
+
+        if (tilesWide % 2 == 1) // Odd width (1x1, 3x3, 5x5)
+        {
+            // Center should be at grid cell center (16, 48, 80, etc.)
+            snappedX = Mathf.RoundToInt((worldPos.X - TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE + (TILE_SIZE / 2);
+        }
+        else // Even width (2x2, 4x4, 6x6)
+        {
+            // Center should be at grid intersection (32, 64, 96, etc.)
+            snappedX = Mathf.RoundToInt(worldPos.X / TILE_SIZE) * TILE_SIZE;
+        }
+
+        if (tilesHigh % 2 == 1) // Odd height
+        {
+            // Center should be at grid cell center (16, 48, 80, etc.)
+            snappedY = Mathf.RoundToInt((worldPos.Y - TILE_SIZE / 2) / TILE_SIZE) * TILE_SIZE + (TILE_SIZE / 2);
+        }
+        else // Even height
+        {
+            // Center should be at grid intersection (32, 64, 96, etc.)
+            snappedY = Mathf.RoundToInt(worldPos.Y / TILE_SIZE) * TILE_SIZE;
+        }
+
+        return new Vector2I(snappedX, snappedY);
     }
     // --- UI Callbacks ---
 

@@ -21,7 +21,7 @@ public partial class Cannon2x2 : Gun
         _fireTimer.Start();
     }
 
-    public override void Init(Vector2I origin)
+    public override void Init(Vector2I origin, float rotation)
     {
         Origin = origin;
 
@@ -34,6 +34,7 @@ public partial class Cannon2x2 : Gun
         };
 
         Position = origin;
+        RotationDegrees = rotation;
 
         GD.Print("Pos:", Position);
         GD.Print("GP:", GlobalPosition);
@@ -58,4 +59,5 @@ public partial class Cannon2x2 : Gun
 
         GetTree().Root.AddChild(projectile);
     }
+
 }
