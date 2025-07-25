@@ -9,21 +9,35 @@ public enum FloorTileType
     Steel
 }
 
+public enum BuildMode
+{
+    None,
+    Floor,
+    Gun
+}
+
+public enum GunType
+{
+    Cannon
+}
+
 public partial class ShipBuilder : Node2D
 {
     [Export] public Sprite2D GhostTile;
     private Texture2D ghostTileRedTexture;
     private Texture2D ghostTileGreenTexture;
 
-    [Export] public PackedScene FloorTileScene;
     private Ship _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
+    private GunType currentGun = GunType.Cannon;
+    private BuildMode currentBuildMode = BuildMode.None;
 
     private Button buildMenuButton;
     private PanelContainer buildMenuPanel;
     private Button woodTileButton;
     private Button ironTileButton;
     private Button steelTileButton;
+    private Button cannonGunButton;
 
 
     private readonly Dictionary<FloorTileType, PackedScene> tileScenes = new()
@@ -31,6 +45,24 @@ public partial class ShipBuilder : Node2D
         { FloorTileType.Wood, GD.Load<PackedScene>("res://Tiles/WoodFloorTile.tscn") },
         { FloorTileType.Iron, GD.Load<PackedScene>("res://Tiles/IronFloorTile.tscn") },
         { FloorTileType.Steel, GD.Load<PackedScene>("res://Tiles/SteelFloorTile.tscn") }
+    };
+
+    private readonly Dictionary<GunType, PackedScene> gunScenes = new()
+    {
+        { GunType.Cannon, GD.Load<PackedScene>("res://Guns/Cannon2x2.tscn") }
+    };
+
+    private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
+
+        { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
+        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron.png") },
+        { FloorTileType.Steel, GD.Load<Texture2D>("res://Assets/floor_steel.png") },
+    };
+
+
+    private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
+
+        { GunType.Cannon, GD.Load<Texture2D>("res://Assets/cannon_64x64.png") }
     };
 
 
@@ -69,10 +101,12 @@ public partial class ShipBuilder : Node2D
         woodTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Wood");
         ironTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Iron");
         steelTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Steel");
+        cannonGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Cannon");
         buildMenuButton.Pressed += OnBuildMenuButtonPressed;
-        woodTileButton.Pressed += () => SelectTile(FloorTileType.Wood);
-        ironTileButton.Pressed += () => SelectTile(FloorTileType.Iron);
-        steelTileButton.Pressed += () => SelectTile(FloorTileType.Steel);
+        woodTileButton.Pressed += () => SelectFloorTile(FloorTileType.Wood);
+        ironTileButton.Pressed += () => SelectFloorTile(FloorTileType.Iron);
+        steelTileButton.Pressed += () => SelectFloorTile(FloorTileType.Steel);
+        cannonGunButton.Pressed += () => SelectGun(GunType.Cannon);
 
         buildMenuPanel.Visible = false;
     }
@@ -86,8 +120,22 @@ public partial class ShipBuilder : Node2D
         bool canPlace = CanPlaceTile(snappedPos);
 
         GhostTile.Position = snappedPos;
-        GhostTile.Texture = canPlace ? ghostTileGreenTexture : ghostTileRedTexture;
+        GhostTile.Modulate = canPlace ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
 
+        switch (currentBuildMode)
+        {
+            case BuildMode.Floor:
+                GhostTile.Texture = tilePreviewTextures[currentTile];
+                break;
+
+            case BuildMode.Gun:
+                GhostTile.Texture = gunPreviewTextures[currentGun];
+                break;
+
+            default:
+                GhostTile.Texture = null;
+                break;
+        }
     }
 
     public override void _Input(InputEvent @event)
@@ -98,7 +146,16 @@ public partial class ShipBuilder : Node2D
             if (mouseEvent.ButtonIndex == MouseButton.Left && mouseEvent.Pressed)
             {
                 Vector2I gridPos = WorldToGrid(mouseEvent.Position);
-                TryPlaceTile(gridPos);
+
+                switch (currentBuildMode)
+                {
+                    case BuildMode.Floor:
+                        TryPlaceTile(gridPos);
+                        break;
+                    case BuildMode.Gun:
+                        TryPlaceGun(gridPos);
+                        break;
+                }
             }
             else if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
             {
@@ -137,8 +194,7 @@ public partial class ShipBuilder : Node2D
     {
 
         var tilePos = GridToWorld(gridPos);
-        if (_ship.Slots.ContainsKey(tilePos))
-            return;
+
         if (!tileScenes.ContainsKey(currentTile))
         {
             GD.PrintErr($"Tile type '{currentTile}' not found!");
@@ -151,7 +207,7 @@ public partial class ShipBuilder : Node2D
             return;
         }
 
-        if (!CanPlaceTile(tilePos))
+        if (!_ship.CanAddFloor(tilePos))
         {
             GD.PrintErr("Tile cannot be placed here");
             return;
@@ -160,61 +216,65 @@ public partial class ShipBuilder : Node2D
         DeductResources(cost);
 
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        _ship.SetFloor(tilePos, tile);
+        tile.Position = tilePos;
+        _ship.AddFloor(tilePos, tile);
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
+    }
+    private void TryPlaceGun(Vector2I gridPos)
+    {
+
+        var worldPos = GridToWorld(gridPos);
+        if (!_ship.CanPlaceStructure(currentGun, worldPos))
+        {
+            GD.Print("Cannot place gun here.");
+            return;
+        }
+
+        BuildableStructure structure = gunScenes[currentGun].Instantiate<BuildableStructure>();
+        structure.Init(worldPos);
+
+
+        _ship.PlaceStructure(structure);
+
+        GD.Print("Placed a gun.");
     }
 
     private void TryRemoveTile(Vector2I gridPos)
     {
         var tilePos = GridToWorld(gridPos);
 
-        if (!_ship.Slots.ContainsKey(tilePos))
+        if (!_ship.Floors.ContainsKey(tilePos))
         {
             GD.Print("Ship slot does not exist");
             return;
         }
 
 
-        ShipSlot slot = _ship.Slots[tilePos];
+        FloorTile floor = _ship.Floors[tilePos];
 
-        if (slot.floorTile != null)
+        if (floor != null)
         {
-            slot.floorTile.QueueFree();
-            slot.floorTile = null;
-        }
-        if (slot.gun != null)
-        {
-            slot.gun.QueueFree();
-            slot.gun = null;
+            floor.QueueFree();
         }
 
-        _ship.Slots.Remove(tilePos);
+        _ship.Floors.Remove(tilePos);
 
-        slot.QueueFree();
     }
 
     private bool CanPlaceTile(Vector2I position)
     {
-        if (_ship.Slots.Count == 0)
-            return true;
-
-        Vector2I[] neighbors = new Vector2I[]
+        switch (currentBuildMode)
         {
-            new Vector2I(0, -TILE_SIZE),
-            new Vector2I(0, TILE_SIZE),
-            new Vector2I(-TILE_SIZE, 0),
-            new Vector2I(TILE_SIZE, 0)
-        };
+            case BuildMode.Floor:
+                return _ship.CanAddFloor(position);
 
-        foreach (var offset in neighbors)
-        {
-            var neighborPos = position + offset;
-            if (_ship.Slots.ContainsKey(neighborPos))
-                return true;
+            case BuildMode.Gun:
+                return _ship.CanPlaceStructure(currentGun, position);
+
+            default:
+                return false;
         }
-
-        return false;
     }
 
 
@@ -296,17 +356,35 @@ public partial class ShipBuilder : Node2D
         buildMenuPanel.Visible = true;
     }
 
-    private void SelectTile(FloorTileType tileType)
+    private void SelectFloorTile(FloorTileType tileType)
     {
         if (tileScenes.ContainsKey(tileType))
         {
+            currentBuildMode = BuildMode.Floor;
             currentTile = tileType;
             buildMenuPanel.Visible = false;
             buildMenuButton.Visible = true;
         }
         else
         {
-            GD.PrintErr($"Unknown tile type selected: {tileType}");
+            GD.PrintErr($"Unknown floor tile type selected: {tileType}");
+        }
+    }
+
+
+
+    private void SelectGun(GunType gunType)
+    {
+        if (gunScenes.ContainsKey(gunType))
+        {
+            currentBuildMode = BuildMode.Gun;
+            currentGun = gunType;
+            buildMenuPanel.Visible = false;
+            buildMenuButton.Visible = true;
+        }
+        else
+        {
+            GD.PrintErr($"Unknown gun type selected: {gunType}");
         }
     }
 }

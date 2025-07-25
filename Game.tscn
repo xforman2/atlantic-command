@@ -2,19 +2,16 @@
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="3_u44n3"]
-[ext_resource type="TileSet" uid="uid://dajgth4q73mmf" path="res://Assets/tile_set.tres" id="4_sb48q"]
+[ext_resource type="TileSet" uid="uid://cinv4mpi6ioil" path="res://Assets/tile_set.tres" id="4_sb48q"]
 
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
-noise_type = 3
-seed = 21
-frequency = 0.1548
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_u44n3"]
 
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_t88pq"]
-noise = SubResource("FastNoiseLite_sb48q")
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sb48q"]
+noise = SubResource("FastNoiseLite_u44n3")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbfu4")
-NoiseTexture2D = SubResource("NoiseTexture2D_t88pq")
+NoiseTexture2D = SubResource("NoiseTexture2D_sb48q")
 
 [node name="UIOverlay" parent="." instance=ExtResource("3_u44n3")]
 
