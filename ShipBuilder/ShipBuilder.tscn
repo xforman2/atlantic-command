@@ -9,9 +9,11 @@ script = ExtResource("1_7vw3h")
 GhostTile = NodePath("GhostTile/Sprite2D")
 
 [node name="GhostTile" type="Node2D" parent="."]
+z_index = 2
+z_as_relative = false
 
 [node name="Sprite2D" type="Sprite2D" parent="GhostTile"]
-texture = ExtResource("3_cygug")
+texture = ExtResource("2_cx8ke")
 centered = false
 
 [node name="UI" type="CanvasLayer" parent="."]
