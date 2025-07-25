@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://c5q022ru6fc8l"]
+[gd_scene load_steps=18 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://dyx4ltwq40oap" path="res://Assets/background_final.png" id="2_bsanu"]
@@ -12,16 +12,25 @@
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g1826"]
+texture = ExtResource("3_lbqne")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3clmd"]
 texture = ExtResource("4_430ii")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bsanu"]
 texture = ExtResource("5_3p42x")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_npjie"]
+texture = ExtResource("5_3p42x")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kftou"]
 texture = ExtResource("6_3clmd")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
+texture = ExtResource("7_bsanu")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7t2hb"]
 texture = ExtResource("7_bsanu")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
@@ -68,6 +77,7 @@ z_index = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_lbqne")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
 theme_override_styles/normal = SubResource("StyleBoxTexture_3clmd")
 action_mode = 0
 
@@ -75,6 +85,7 @@ action_mode = 0
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_bsanu")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_npjie")
 theme_override_styles/normal = SubResource("StyleBoxTexture_kftou")
 text = "
 "
@@ -83,6 +94,7 @@ text = "
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_nxm3p")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_7t2hb")
 theme_override_styles/normal = SubResource("StyleBoxTexture_nre7b")
 text = "
 "
