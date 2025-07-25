@@ -1,13 +1,13 @@
 [gd_scene load_steps=15 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
-[ext_resource type="Texture2D" uid="uid://db04q61ukn68h" path="res://Assets/background_final.png" id="2_bsanu"]
-[ext_resource type="Texture2D" uid="uid://tpj5s2ie71s" path="res://Assets/play button pressed.png" id="3_lbqne"]
-[ext_resource type="Texture2D" uid="uid://dfh5af0jib0fq" path="res://Assets/play button.png" id="4_430ii"]
-[ext_resource type="Texture2D" uid="uid://6a1dabjtq5yn" path="res://Assets/options button pressed.png" id="5_3p42x"]
-[ext_resource type="Texture2D" uid="uid://b1yq6xd4r058v" path="res://Assets/options button.png" id="6_3clmd"]
-[ext_resource type="Texture2D" uid="uid://cnef0e7fnllt5" path="res://Assets/quit button.png" id="7_3clmd"]
-[ext_resource type="Texture2D" uid="uid://dmai35eexes7y" path="res://Assets/quit button pressed.png" id="7_bsanu"]
+[ext_resource type="Texture2D" uid="uid://dyx4ltwq40oap" path="res://Assets/background_final.png" id="2_bsanu"]
+[ext_resource type="Texture2D" uid="uid://bsdkuw2d6ysnk" path="res://Assets/play button pressed.png" id="3_lbqne"]
+[ext_resource type="Texture2D" uid="uid://digo6ehxi0v3u" path="res://Assets/play button.png" id="4_430ii"]
+[ext_resource type="Texture2D" uid="uid://bv2neaxqnbr6w" path="res://Assets/options button pressed.png" id="5_3p42x"]
+[ext_resource type="Texture2D" uid="uid://dqj7x6gymyxyu" path="res://Assets/options button.png" id="6_3clmd"]
+[ext_resource type="Texture2D" uid="uid://do2s3bga2xttp" path="res://Assets/quit button.png" id="7_3clmd"]
+[ext_resource type="Texture2D" uid="uid://cosnslcs5p13m" path="res://Assets/quit button pressed.png" id="7_bsanu"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
 texture = ExtResource("3_lbqne")
@@ -42,10 +42,6 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 2.0
-offset_top = -1.0
-offset_right = 2.0
-offset_bottom = -1.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("2_bsanu")
