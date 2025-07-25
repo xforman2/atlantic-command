@@ -176,7 +176,6 @@ public partial class Ship : RigidBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        GD.Print($"Ship ID {GetInstanceId()} position aa {GlobalPosition}");
         if (!_camera?.Enabled ?? false) return;
 
         Vector2 forward = -Transform.Y;

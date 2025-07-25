@@ -8,4 +8,3 @@ script = ExtResource("1_mpkea")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_mpkea")
-centered = false
