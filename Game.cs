@@ -12,7 +12,10 @@ public partial class Game : Node2D
     [Export] public int ChunkSize = 32;
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
-    [Export] public float SandThreshold = 0.1f;
+    public const float SandThreshold = 0.15f;
+    public const float GrassThreshold = 0.2f;
+    public const float TreeThreshold = 0.5f;
+    public const float RockThreshold = -0.5f;
     [Export] public NoiseTexture2D HeightNoise;
     [Export] public NoiseTexture2D EnvironmentNoise;
 
@@ -43,7 +46,6 @@ public partial class Game : Node2D
         }
 
         _ship.Position = GetViewportRect().GetCenter();
-        GD.Print($"Ship position {_ship.Position}");
     }
 
     public override void _Process(double delta)
@@ -97,29 +99,45 @@ public partial class Game : Node2D
         var environmentNoise = EnvironmentNoise.Noise;
         Vector2I start = chunkPos * ChunkSize;
 
+        float minHeight = float.MaxValue;
+        float maxHeight = float.MinValue;
+        float minEnv = float.MaxValue;
+        float maxEnv = float.MinValue;
+
         for (int x = 0; x < ChunkSize; x++)
         {
             for (int y = 0; y < ChunkSize; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
                 float heightValue = heightNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
+                float envValue = environmentNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
 
-                int groundId = heightValue > SandThreshold
-                    ? (int)GroundTextureEnum.Sand
-                    : (int)GroundTextureEnum.Water;
+                minHeight = MathF.Min(minHeight, heightValue);
+                maxHeight = MathF.Max(maxHeight, heightValue);
+                minEnv = MathF.Min(minEnv, envValue);
+                maxEnv = MathF.Max(maxEnv, envValue);
 
-                _groundLayer.SetCell(tilePos, groundId, Vector2I.Zero);
+                GroundTextureEnum groundId = GetGroundType(heightValue);
+                _groundLayer.SetCell(tilePos, (int)groundId, Vector2I.Zero);
 
-                GD.Print($"{groundId} == {(int)GroundTextureEnum.Sand}");
-                if (groundId == (int)GroundTextureEnum.Sand)
+                if (groundId == GroundTextureEnum.Sand)
                 {
-                    GD.Print("here");
-                    _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
+                    if (envValue > TreeThreshold)
+                    {
+                        GD.Print(tilePos);
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
+                    }
+                    else if (envValue < RockThreshold)
+                    {
+                        GD.Print(tilePos);
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
+                    }
                 }
             }
         }
 
-        GD.Print($"[LOAD] Chunk {chunkPos}");
+        GD.Print($"Chunk {chunkPos} Height Noise: min={minHeight:F3}, max={maxHeight:F3}");
+        GD.Print($"Chunk {chunkPos} Env Noise:    min={minEnv:F3}, max={maxEnv:F3}");
     }
 
     private void UnloadChunk(Vector2I chunkPos)
@@ -135,8 +153,6 @@ public partial class Game : Node2D
                 _environmentLayer.SetCell(tilePos, -1, Vector2I.Zero);
             }
         }
-
-        GD.Print($"[UNLOAD] Chunk {chunkPos}");
     }
 
     public override void _Input(InputEvent @event)
@@ -151,4 +167,11 @@ public partial class Game : Node2D
             }
         }
     }
+
+    private GroundTextureEnum GetGroundType(float heightValue) => heightValue switch
+    {
+        >= GrassThreshold => GroundTextureEnum.Grass,
+        >= SandThreshold => GroundTextureEnum.Sand,
+        _ => GroundTextureEnum.Water
+    };
 }
