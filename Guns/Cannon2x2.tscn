@@ -9,7 +9,6 @@ script = ExtResource("1_expwk")
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = 1
 texture = ExtResource("2_54oe1")
-centered = false
 
 [node name="Muzzle" type="Marker2D" parent="."]
 position = Vector2(32, 10)
