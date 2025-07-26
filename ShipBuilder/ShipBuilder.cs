@@ -223,7 +223,7 @@ public partial class ShipBuilder : Node2D
         DeductResources(cost);
 
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        tile.Position = tilePos;
+        tile.Init(tilePos);
         _ship.AddFloor(tilePos, tile);
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
