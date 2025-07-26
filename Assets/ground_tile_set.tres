@@ -1,20 +1,35 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://cinv4mpi6ioil"]
+[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://pve58f51xi86"]
 
 [ext_resource type="Texture2D" uid="uid://jf7bh4svdo5y" path="res://Assets/sand.png" id="1_utoss"]
 [ext_resource type="Texture2D" uid="uid://cqv82docg2eyp" path="res://Assets/water_light_v2.png" id="2_utoss"]
+[ext_resource type="Texture2D" uid="uid://bglfjitdbxr2i" path="res://Assets/grass.png" id="3_f5hey"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_utoss"]
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gbph7"]
+rough = true
+bounce = 1.0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f5hey"]
 texture = ExtResource("1_utoss")
-0:0/size_in_atlas = Vector2i(2, 2)
+texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0y1uu"]
 texture = ExtResource("2_utoss")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qbt07"]
+texture = ExtResource("3_f5hey")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+
 [resource]
 tile_size = Vector2i(32, 32)
+physics_layer_0/collision_layer = 1
+physics_layer_0/physics_material = SubResource("PhysicsMaterial_gbph7")
 terrain_set_0/mode = 0
-sources/1 = SubResource("TileSetAtlasSource_utoss")
 sources/2 = SubResource("TileSetAtlasSource_0y1uu")
+sources/1 = SubResource("TileSetAtlasSource_f5hey")
+sources/3 = SubResource("TileSetAtlasSource_qbt07")
