@@ -4,9 +4,9 @@ using System;
 public abstract partial class ResourceManager : GodotObject
 {
     public int Wood { get; protected set; } = 100;
-    public int Coal { get; protected set; } = 100;
+    public int Scrap { get; protected set; } = 100;
     public int Iron { get; protected set; } = 100;
-    public int Copper { get; protected set; } = 100;
+    public int Tridentis { get; protected set; } = 100;
 
     public virtual void IncreaseWood(int amount)
     {
@@ -20,16 +20,16 @@ public abstract partial class ResourceManager : GodotObject
         Wood = Math.Max(0, Wood - amount);
     }
 
-    public virtual void IncreaseCoal(int amount)
+    public virtual void IncreaseScrap(int amount)
     {
         if (amount <= 0) return;
-        Coal += amount;
+        Scrap += amount;
     }
 
-    public virtual void DecreaseCoal(int amount)
+    public virtual void DecreaseScrap(int amount)
     {
         if (amount <= 0) return;
-        Coal = Math.Max(0, Coal - amount);
+        Scrap = Math.Max(0, Scrap - amount);
     }
 
     public virtual void IncreaseIron(int amount)
@@ -44,15 +44,15 @@ public abstract partial class ResourceManager : GodotObject
         Iron = Math.Max(0, Iron - amount);
     }
 
-    public virtual void IncreaseCopper(int amount)
+    public virtual void IncreaseTridentis(int amount)
     {
         if (amount <= 0) return;
-        Copper += amount;
+        Tridentis += amount;
     }
 
-    public virtual void DecreaseCopper(int amount)
+    public virtual void DecreaseTridentis(int amount)
     {
         if (amount <= 0) return;
-        Copper = Math.Max(0, Copper - amount);
+        Tridentis = Math.Max(0, Tridentis - amount);
     }
 }

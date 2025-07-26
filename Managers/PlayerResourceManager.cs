@@ -12,9 +12,9 @@ public partial class PlayerResourceManager : ResourceManager
     private void HandleResourceRequest(object requester)
     {
         ResourceMediator.NotifyResourceChanged(this, nameof(Wood), Wood);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Coal), Coal);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
         ResourceMediator.NotifyResourceChanged(this, nameof(Iron), Iron);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Copper), Copper);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
     }
 
     public override void IncreaseWood(int amount)
@@ -29,16 +29,16 @@ public partial class PlayerResourceManager : ResourceManager
         ResourceMediator.NotifyResourceChanged(this, nameof(Wood), Wood);
     }
 
-    public override void IncreaseCoal(int amount)
+    public override void IncreaseScrap(int amount)
     {
-        base.IncreaseCoal(amount);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Coal), Coal);
+        base.IncreaseScrap(amount);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
     }
 
-    public override void DecreaseCoal(int amount)
+    public override void DecreaseScrap(int amount)
     {
-        base.DecreaseCoal(amount);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Coal), Coal);
+        base.DecreaseScrap(amount);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
     }
 
     public override void IncreaseIron(int amount)
@@ -53,15 +53,15 @@ public partial class PlayerResourceManager : ResourceManager
         ResourceMediator.NotifyResourceChanged(this, nameof(Iron), Iron);
     }
 
-    public override void IncreaseCopper(int amount)
+    public override void IncreaseTridentis(int amount)
     {
-        base.IncreaseCopper(amount);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Copper), Copper);
+        base.IncreaseTridentis(amount);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
     }
 
-    public override void DecreaseCopper(int amount)
+    public override void DecreaseTridentis(int amount)
     {
-        base.DecreaseCopper(amount);
-        ResourceMediator.NotifyResourceChanged(this, nameof(Copper), Copper);
+        base.DecreaseTridentis(amount);
+        ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
     }
 }

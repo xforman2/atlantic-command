@@ -312,9 +312,9 @@ public partial class ShipBuilder : Node2D
         return resourceName switch
         {
             "Wood" => _ship.playerResourceManager.Wood,
-            "Coal" => _ship.playerResourceManager.Coal,
+            "Coal" => _ship.playerResourceManager.Scrap,
             "Iron" => _ship.playerResourceManager.Iron,
-            "Copper" => _ship.playerResourceManager.Copper,
+            "Copper" => _ship.playerResourceManager.Tridentis,
             _ => 0
         };
     }
@@ -327,13 +327,13 @@ public partial class ShipBuilder : Node2D
                 _ship.playerResourceManager.DecreaseWood(amount);
                 break;
             case "Coal":
-                _ship.playerResourceManager.DecreaseCoal(amount);
+                _ship.playerResourceManager.DecreaseScrap(amount);
                 break;
             case "Iron":
                 _ship.playerResourceManager.DecreaseIron(amount);
                 break;
             case "Copper":
-                _ship.playerResourceManager.DecreaseCopper(amount);
+                _ship.playerResourceManager.DecreaseTridentis(amount);
                 break;
         }
     }

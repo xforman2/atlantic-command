@@ -30,9 +30,9 @@ public partial class Ship : RigidBody2D
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
         // _camera.Zoom = new Vector2(0.25f, 0.25f);
-        playerResourceManager.IncreaseCoal(100);
+        playerResourceManager.IncreaseScrap(100);
         playerResourceManager.IncreaseWood(100);
-        playerResourceManager.IncreaseCopper(100);
+        playerResourceManager.IncreaseTridentis(100);
         playerResourceManager.IncreaseIron(100);
         Inertia = 1;
         GravityScale = 0;
@@ -177,7 +177,8 @@ public partial class Ship : RigidBody2D
 
     public override void _PhysicsProcess(double delta)
     {
-        if (!_camera?.Enabled ?? false) return;
+        if ((!_camera?.Enabled ?? false) || Floors.Count == 0) return;
+
 
         Vector2 forward = -Transform.Y;
 
