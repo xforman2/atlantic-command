@@ -2,8 +2,8 @@
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="3_u44n3"]
-[ext_resource type="TileSet" uid="uid://pve58f51xi86" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
-[ext_resource type="TileSet" uid="uid://cn75uy1uev5ie" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
+[ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
+[ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
