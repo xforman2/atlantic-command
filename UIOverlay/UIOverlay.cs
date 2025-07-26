@@ -11,10 +11,10 @@ public partial class UIOverlay : Control
     public override void _Ready()
     {
 
-        woodLabel = GetNode<Label>("Wood");
-        coalLabel = GetNode<Label>("Coal");
-        ironLabel = GetNode<Label>("Iron");
-        copperLabel = GetNode<Label>("Copper");
+        woodLabel = GetNode<Label>("ResourceBar/WoodBox/WoodLabel");
+        coalLabel = GetNode<Label>("ResourceBar/CoalBox/CoalLabel");
+        ironLabel = GetNode<Label>("ResourceBar/IronBox/IronLabel");
+        copperLabel = GetNode<Label>("ResourceBar/CopperBox/CopperLabel");
 
 
         ResourceMediator.OnResourceChanged += OnResourceChanged;
