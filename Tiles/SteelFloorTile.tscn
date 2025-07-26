@@ -1,4 +1,4 @@
-[gd_scene load_steps=3 format=3 uid="uid://cdb7j0jenakts"]
+[gd_scene load_steps=3 format=3 uid="uid://do8xfloxrxaqm"]
 
 [ext_resource type="Script" uid="uid://cl45xw8g32w7b" path="res://Tiles/SteelFloorTile.cs" id="1_ouvvw"]
 [ext_resource type="Texture2D" uid="uid://4codpbj6b8nv" path="res://Assets/floor_steel.png" id="1_v8hsy"]
