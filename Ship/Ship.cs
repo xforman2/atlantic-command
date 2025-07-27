@@ -5,6 +5,7 @@ public partial class Ship : RigidBody2D
 {
     public Dictionary<Vector2I, FloorTile> Floors = new();
     public Dictionary<Vector2I, BuildableStructure> Structures = new();
+    public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new(); // for the docking
 
 
     [Export]
@@ -44,7 +45,7 @@ public partial class Ship : RigidBody2D
     {
         if (Floors.ContainsKey(position))
         {
-            GD.Print("Floor is already present on: ", position);
+            GD.PrintErr("Floor is already present on: ", position);
             return;
         }
         Floors[position] = floor;
@@ -66,23 +67,42 @@ public partial class Ship : RigidBody2D
             new Vector2I(Globals.TILE_SIZE, 0)
         };
 
+
+
+        bool buildable = false;
         foreach (var offset in neighbors)
         {
             var neighborPos = position + offset;
             if (Floors.ContainsKey(neighborPos))
-                return true;
+                buildable = true;
+            if (Structures.ContainsKey(neighborPos))
+            {
+                BuildableStructure structure = Structures[neighborPos];
+                if (structure is Cannon2x2 cannon)
+                {
+
+                    var direction = cannon.GetRotationDirection();
+                    var frontPositions = cannon.GetFrontPositions();
+                    if (frontPositions.Contains(neighborPos))
+                    {
+                        if (neighborPos + direction * Globals.TILE_SIZE == position)
+                        {
+                            return false;
+                        }
+                    }
+                }
+            }
+
         }
 
-        return false;
+        return buildable;
     }
 
-    public bool CanPlaceStructure(GunType gunType, Vector2I position)
+    public bool CanPlaceStructure(List<Vector2I> occupiedPositions)
     {
-        var offsets = GetOccupiedTileOffsets(gunType);
-        foreach (var offset in offsets)
+        foreach (var position in occupiedPositions)
         {
-            var occupiedPos = position + offset;
-            if (!Floors.ContainsKey(occupiedPos) || Structures.ContainsKey(occupiedPos))
+            if (!Floors.ContainsKey(position) || Structures.ContainsKey(position))
             {
                 return false;
             }
@@ -92,24 +112,13 @@ public partial class Ship : RigidBody2D
 
     public void PlaceStructure(BuildableStructure structure)
     {
-        Structures[structure.Origin] = structure;
+        foreach (var occupiedPos in structure.OccupiedPositions)
+        {
+            Structures[occupiedPos] = structure;
+        }
+        StructuresOrigin[structure.Origin] = structure;
         AddChild(structure);
 
-    }
-
-    private List<Vector2I> GetOccupiedTileOffsets(GunType gunType)
-    {
-        return gunType switch
-        {
-            GunType.Cannon => new List<Vector2I>
-            {
-                new Vector2I(0, 0),
-                new Vector2I(Globals.TILE_SIZE, 0),
-                new Vector2I(0, Globals.TILE_SIZE),
-                new Vector2I(Globals.TILE_SIZE, Globals.TILE_SIZE)
-            },
-            _ => new List<Vector2I> { new Vector2I(0, 0) }
-        };
     }
 
     private Vector2 GetCenterWorldPosition()
@@ -144,7 +153,7 @@ public partial class Ship : RigidBody2D
             floor.Position -= this.Position;
 
         }
-        foreach (var structure in Structures.Values)
+        foreach (var structure in StructuresOrigin.Values)
         {
             structure.Position -= this.Position;
         }
@@ -161,7 +170,7 @@ public partial class Ship : RigidBody2D
         {
             floor.Position = position;
         }
-        foreach (var (position, structure) in Structures)
+        foreach (var (position, structure) in StructuresOrigin)
         {
             structure.Position = position;
         }
