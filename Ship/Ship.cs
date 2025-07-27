@@ -7,7 +7,6 @@ public partial class Ship : RigidBody2D
     public Dictionary<Vector2I, BuildableStructure> Structures = new();
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new(); // for the docking
 
-
     [Export]
     public int Speed { get; set; } = 300;
 
@@ -23,7 +22,6 @@ public partial class Ship : RigidBody2D
 
     public override void _Ready()
     {
-
         if (playerResourceManager == null)
         {
             playerResourceManager = new PlayerResourceManager();
@@ -31,16 +29,23 @@ public partial class Ship : RigidBody2D
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
         // _camera.Zoom = new Vector2(0.25f, 0.25f);
-        playerResourceManager.IncreaseCoal(100);
+        playerResourceManager.IncreaseScrap(100);
         playerResourceManager.IncreaseWood(100);
-        playerResourceManager.IncreaseCopper(100);
+        playerResourceManager.IncreaseTridentis(100);
         playerResourceManager.IncreaseIron(100);
+        this.BodyEntered += OnBodyEntered;
         Inertia = 1;
         GravityScale = 0;
         LinearDamp = 2f;
         AngularDamp = 2f;
 
     }
+
+    private void OnBodyEntered(Node body)
+    {
+        GD.Print("Collided with: " + body.Name);
+    }
+
     public void AddFloor(Vector2I position, FloorTile floor)
     {
         if (Floors.ContainsKey(position))
@@ -50,6 +55,20 @@ public partial class Ship : RigidBody2D
         }
         Floors[position] = floor;
         AddChild(floor);
+
+        AddCollisionShapeForTile(position, floor);
+    }
+
+    private void AddCollisionShapeForTile(Vector2I position, FloorTile floor)
+    {
+        var collisionShape = new CollisionShape2D();
+        var rectShape = new RectangleShape2D();
+        rectShape.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
+        collisionShape.Shape = rectShape;
+        collisionShape.Position = position;
+
+
+        AddChild(collisionShape);
     }
 
     public bool CanAddFloor(Vector2I position)
@@ -118,7 +137,6 @@ public partial class Ship : RigidBody2D
         }
         StructuresOrigin[structure.Origin] = structure;
         AddChild(structure);
-
     }
 
     private Vector2 GetCenterWorldPosition()
@@ -133,6 +151,7 @@ public partial class Ship : RigidBody2D
         float centerY = (_minY + _maxY) / 2f;
         return new Vector2(centerX, centerY);
     }
+
     public void UpdateBounds(Vector2I worldPos, int tileSize)
     {
         if (worldPos.X < _minX) _minX = worldPos.X;
@@ -145,17 +164,15 @@ public partial class Ship : RigidBody2D
     {
         GlobalPosition = GetCenterWorldPosition();
         _camera.Enabled = true;
-        // since go out of dock means that the position of the ship will be the middle position of all the tiles
-        // we need to make sure that the tiles do not move with the ship (they are children of the ship), so we 
-        // decrease with the current position of the ship
-        foreach (var floor in Floors.Values)
-        {
-            floor.Position -= this.Position;
 
-        }
-        foreach (var structure in StructuresOrigin.Values)
+        foreach (Node child in GetChildren())
         {
-            structure.Position -= this.Position;
+            if (child == _camera) continue;
+
+            if (child is Node2D node2D)
+            {
+                node2D.Position -= Position;
+            }
         }
     }
 
@@ -164,8 +181,7 @@ public partial class Ship : RigidBody2D
         GlobalPosition = Vector2.Zero;
         _camera.Enabled = false;
         StopMovement();
-        // go to dock will make the position of the ship (0, 0), and we need to put positions of all tiles to previous
-        // positions, and these positions are inside of the Slot.Keys.
+
         foreach (var (position, floor) in Floors)
         {
             floor.Position = position;
@@ -183,10 +199,10 @@ public partial class Ship : RigidBody2D
         Rotation = 0f;
     }
 
-
     public override void _PhysicsProcess(double delta)
     {
-        if (!_camera?.Enabled ?? false) return;
+        if ((!_camera?.Enabled ?? false) || Floors.Count == 0) return;
+
 
         Vector2 forward = -Transform.Y;
 
@@ -205,4 +221,5 @@ public partial class Ship : RigidBody2D
             ApplyTorque(3f);
         }
     }
+
 }

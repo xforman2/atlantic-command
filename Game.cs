@@ -124,20 +124,16 @@ public partial class Game : Node2D
                 {
                     if (envValue > TreeThreshold)
                     {
-                        GD.Print(tilePos);
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
                     }
                     else if (envValue < RockThreshold)
                     {
-                        GD.Print(tilePos);
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
                     }
                 }
             }
         }
 
-        GD.Print($"Chunk {chunkPos} Height Noise: min={minHeight:F3}, max={maxHeight:F3}");
-        GD.Print($"Chunk {chunkPos} Env Noise:    min={minEnv:F3}, max={maxEnv:F3}");
     }
 
     private void UnloadChunk(Vector2I chunkPos)

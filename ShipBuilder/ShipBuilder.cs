@@ -224,7 +224,7 @@ public partial class ShipBuilder : Node2D
         DeductResources(cost);
 
         FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        tile.Position = tilePos;
+        tile.Init(tilePos);
         _ship.AddFloor(tilePos, tile);
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
@@ -390,9 +390,9 @@ public partial class ShipBuilder : Node2D
         return resourceName switch
         {
             "Wood" => _ship.playerResourceManager.Wood,
-            "Coal" => _ship.playerResourceManager.Coal,
+            "Scrap" => _ship.playerResourceManager.Scrap,
             "Iron" => _ship.playerResourceManager.Iron,
-            "Copper" => _ship.playerResourceManager.Copper,
+            "Tridentis" => _ship.playerResourceManager.Tridentis,
             _ => 0
         };
     }
@@ -404,14 +404,14 @@ public partial class ShipBuilder : Node2D
             case "Wood":
                 _ship.playerResourceManager.DecreaseWood(amount);
                 break;
-            case "Coal":
-                _ship.playerResourceManager.DecreaseCoal(amount);
+            case "Scrap":
+                _ship.playerResourceManager.DecreaseScrap(amount);
                 break;
             case "Iron":
                 _ship.playerResourceManager.DecreaseIron(amount);
                 break;
-            case "Copper":
-                _ship.playerResourceManager.DecreaseCopper(amount);
+            case "Tridentis":
+                _ship.playerResourceManager.DecreaseTridentis(amount);
                 break;
         }
     }

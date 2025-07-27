@@ -4,17 +4,17 @@ using Godot;
 public partial class UIOverlay : Control
 {
     private Label woodLabel;
-    private Label coalLabel;
+    private Label scrapLabel;
     private Label ironLabel;
-    private Label copperLabel;
+    private Label tridentisLabel;
 
     public override void _Ready()
     {
 
-        woodLabel = GetNode<Label>("Wood");
-        coalLabel = GetNode<Label>("Coal");
-        ironLabel = GetNode<Label>("Iron");
-        copperLabel = GetNode<Label>("Copper");
+        woodLabel = GetNode<Label>("ResourceBar/WoodBox/WoodLabel");
+        scrapLabel = GetNode<Label>("ResourceBar/CoalBox/CoalLabel");
+        ironLabel = GetNode<Label>("ResourceBar/IronBox/IronLabel");
+        tridentisLabel = GetNode<Label>("ResourceBar/CopperBox/CopperLabel");
 
 
         ResourceMediator.OnResourceChanged += OnResourceChanged;
@@ -33,14 +33,14 @@ public partial class UIOverlay : Control
             case nameof(PlayerResourceManager.Wood):
                 woodLabel.Text = $"{newAmount}";
                 break;
-            case nameof(PlayerResourceManager.Coal):
-                coalLabel.Text = $"{newAmount}";
+            case nameof(PlayerResourceManager.Scrap):
+                scrapLabel.Text = $"{newAmount}";
                 break;
             case nameof(PlayerResourceManager.Iron):
                 ironLabel.Text = $"{newAmount}";
                 break;
-            case nameof(PlayerResourceManager.Copper):
-                copperLabel.Text = $"{newAmount}";
+            case nameof(PlayerResourceManager.Tridentis):
+                tridentisLabel.Text = $"{newAmount}";
                 break;
         }
     }
