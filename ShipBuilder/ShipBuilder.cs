@@ -263,7 +263,7 @@ public partial class ShipBuilder : Node2D
         }
 
 
-        FloorTile floor = _ship.Floors[tilePos];
+        FloorTile floor = _ship.Floors[tilePos].Item1;
 
         if (floor != null)
         {

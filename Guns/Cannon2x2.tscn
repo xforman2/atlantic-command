@@ -11,4 +11,4 @@ z_index = 1
 texture = ExtResource("2_expwk")
 
 [node name="Muzzle" type="Marker2D" parent="."]
-position = Vector2(0, -32)
+position = Vector2(0, -40)

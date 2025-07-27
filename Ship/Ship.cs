@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public partial class Ship : RigidBody2D
 {
-    public Dictionary<Vector2I, FloorTile> Floors = new();
+    public Dictionary<Vector2I, (FloorTile, CollisionShape2D)> Floors = new();
     public Dictionary<Vector2I, BuildableStructure> Structures = new();
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new(); // for the docking
 
@@ -53,13 +53,12 @@ public partial class Ship : RigidBody2D
             GD.PrintErr("Floor is already present on: ", position);
             return;
         }
-        Floors[position] = floor;
         AddChild(floor);
-
-        AddCollisionShapeForTile(position, floor);
+        var collisionShape = AddCollisionShapeForTile(position, floor);
+        Floors[position] = (floor, collisionShape);
     }
 
-    private void AddCollisionShapeForTile(Vector2I position, FloorTile floor)
+    private CollisionShape2D AddCollisionShapeForTile(Vector2I position, FloorTile floor)
     {
         var collisionShape = new CollisionShape2D();
         var rectShape = new RectangleShape2D();
@@ -67,8 +66,8 @@ public partial class Ship : RigidBody2D
         collisionShape.Shape = rectShape;
         collisionShape.Position = position;
 
-
         AddChild(collisionShape);
+        return collisionShape;
     }
 
     public bool CanAddFloor(Vector2I position)
@@ -182,9 +181,10 @@ public partial class Ship : RigidBody2D
         _camera.Enabled = false;
         StopMovement();
 
-        foreach (var (position, floor) in Floors)
+        foreach (var (position, (floor, collisionShape)) in Floors)
         {
             floor.Position = position;
+            collisionShape.Position = position;
         }
         foreach (var (position, structure) in StructuresOrigin)
         {
