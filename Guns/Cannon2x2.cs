@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Godot;
 
 public partial class Cannon2x2 : Gun
@@ -21,23 +22,15 @@ public partial class Cannon2x2 : Gun
         _fireTimer.Start();
     }
 
-    public override void Init(Vector2I origin, float rotation)
+    public override void Init(Vector2I origin, List<Vector2I> occupiedPositions, float rotation)
     {
         Origin = origin;
 
-        OccupiedSlots = new Vector2I[]
-        {
-            origin,
-            origin + new Vector2I(Globals.TILE_SIZE, 0),
-            origin + new Vector2I(0, Globals.TILE_SIZE),
-            origin + new Vector2I(Globals.TILE_SIZE, Globals.TILE_SIZE)
-        };
+        OccupiedPositions = occupiedPositions;
 
         Position = origin;
         RotationDegrees = rotation;
-
-        GD.Print("Pos:", Position);
-        GD.Print("GP:", GlobalPosition);
+        GD.Print(OccupiedPositions);
     }
 
     public override void Shoot()
@@ -51,10 +44,11 @@ public partial class Cannon2x2 : Gun
         var projectile = _projectileScene.Instantiate<RigidBody2D>();
         projectile.GlobalPosition = _muzzle.GlobalPosition;
 
-        var direction = -GlobalTransform.Y.Normalized();
+        Vector2 direction = -_muzzle.GlobalTransform.Y.Normalized();
+
         if (projectile is RigidBody2D body)
         {
-            body.ApplyImpulse(Vector2.Zero, direction * 300);
+            body.LinearVelocity = direction * 300;
         }
 
         GetTree().Root.AddChild(projectile);

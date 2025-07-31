@@ -1,6 +1,7 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 public enum FloorTileType
 {
@@ -63,7 +64,7 @@ public partial class ShipBuilder : Node2D
 
     private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
 
-        { GunType.Cannon, GD.Load<Texture2D>("res://Assets/cannon_64x64.png") }
+        { GunType.Cannon, GD.Load<Texture2D>("res://Assets/Canon.png") }
     };
 
     private readonly Dictionary<GunType, Vector2I> gunSizes = new() {
@@ -221,15 +222,21 @@ public partial class ShipBuilder : Node2D
     }
     private void TryPlaceGun(Vector2I worldPos)
     {
-
-        if (!_ship.CanPlaceStructure(currentGun, worldPos))
+        var occupiedPositions = GetOccupiedPositions(worldPos, gunSizes[currentGun]);
+        if (!_ship.CanPlaceStructure(occupiedPositions))
         {
             GD.Print("Cannot place gun here.");
             return;
         }
 
+        if (!HasClearFiringLine(worldPos, currentGun, GhostTile.RotationDegrees))
+        {
+            GD.Print("Cannot place gun here - firing line blocked.");
+            return;
+        }
+
         BuildableStructure structure = gunScenes[currentGun].Instantiate<BuildableStructure>();
-        structure.Init(worldPos, GhostTile.RotationDegrees);
+        structure.Init(worldPos, occupiedPositions, GhostTile.RotationDegrees);
 
 
         _ship.PlaceStructure(structure);
@@ -247,7 +254,7 @@ public partial class ShipBuilder : Node2D
         }
 
 
-        FloorTile floor = _ship.Floors[tilePos];
+        FloorTile floor = _ship.Floors[tilePos].Item1;
 
         if (floor != null)
         {
@@ -266,11 +273,82 @@ public partial class ShipBuilder : Node2D
                 return _ship.CanAddFloor(position);
 
             case BuildMode.Gun:
-                return _ship.CanPlaceStructure(currentGun, position);
+                var occupiedPositions = GetOccupiedPositions(position, gunSizes[currentGun]);
+                return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
 
             default:
                 return false;
         }
+    }
+    private bool HasClearFiringLine(Vector2I gunPosition, GunType gunType, float rotationDegrees)
+    {
+
+        Vector2I actualFiringDirection = GetFiringDirection(rotationDegrees);
+
+        var frontPositions = GetGunFrontPositions(gunPosition, gunType, rotationDegrees);
+
+        foreach (var frontPos in frontPositions)
+        {
+            Vector2I checkPos = frontPos + (actualFiringDirection * Globals.TILE_SIZE);
+
+            if (_ship.Floors.ContainsKey(checkPos))
+            {
+                GD.Print($"Firing line blocked at position: {checkPos}");
+                return false;
+            }
+        }
+
+        return true;
+    }
+    private Vector2I GetFiringDirection(float degrees)
+    {
+        int normalizedDegrees = ((int)degrees % 360);
+
+        return normalizedDegrees switch
+        {
+            0 => new Vector2I(0, -1),
+            90 => new Vector2I(1, 0),
+            180 => new Vector2I(0, 1),
+            270 => new Vector2I(-1, 0),
+            _ => Vector2I.Zero
+        };
+    }
+    private List<Vector2I> GetGunFrontPositions(Vector2I gunCenter, GunType gunType, float rotationDegrees)
+    {
+        var occupiedPositions = GetOccupiedPositions(gunCenter, gunSizes[gunType]);
+
+        return ((int)rotationDegrees % 360) switch
+        {
+            0 => occupiedPositions.Where(pos => pos.Y == occupiedPositions.Min(p => p.Y)).ToList(),
+            90 => occupiedPositions.Where(pos => pos.X == occupiedPositions.Max(p => p.X)).ToList(),
+            180 => occupiedPositions.Where(pos => pos.Y == occupiedPositions.Max(p => p.Y)).ToList(),
+            270 => occupiedPositions.Where(pos => pos.X == occupiedPositions.Min(p => p.X)).ToList(),
+            _ => new List<Vector2I>()
+        };
+    }
+
+    private List<Vector2I> GetOccupiedPositions(Vector2I center, Vector2I size)
+    {
+        var result = new List<Vector2I>();
+
+        int tilesWide = size.X / Globals.TILE_SIZE;
+        int tilesHigh = size.Y / Globals.TILE_SIZE;
+
+        int halfWidth = size.X / 2;
+        int halfHeight = size.Y / 2;
+
+        for (int x = 0; x < tilesWide; x++)
+        {
+            for (int y = 0; y < tilesHigh; y++)
+            {
+                int offsetX = x * Globals.TILE_SIZE - halfWidth + (tilesWide % 2 == 0 ? Globals.TILE_SIZE / 2 : 0);
+                int offsetY = y * Globals.TILE_SIZE - halfHeight + (tilesHigh % 2 == 0 ? Globals.TILE_SIZE / 2 : 0);
+
+                result.Add(center + new Vector2I(offsetX, offsetY));
+            }
+        }
+
+        return result;
     }
 
 
@@ -373,6 +451,25 @@ public partial class ShipBuilder : Node2D
 
         return new Vector2I(snappedX, snappedY);
     }
+
+    private Vector2I WorldToGrid(Vector2 worldPos)
+    {
+        return new Vector2I(
+                Mathf.FloorToInt(worldPos.X / TILE_SIZE),
+                Mathf.FloorToInt(worldPos.Y / TILE_SIZE)
+                );
+    }
+
+    private Vector2 GridToWorld(Vector2I gridPos)
+    {
+        // Return the center of the grid cell for 1x1 structures
+        // For larger structures, this will be adjusted in the placement logic
+        return new Vector2(
+                gridPos.X * TILE_SIZE + TILE_SIZE / 2,
+                gridPos.Y * TILE_SIZE + TILE_SIZE / 2
+                );
+    }
+
     // --- UI Callbacks ---
 
     private void OnBuildMenuButtonPressed()
