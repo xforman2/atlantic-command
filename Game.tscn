@@ -31,3 +31,6 @@ tile_set = ExtResource("4_sb48q")
 [node name="EnvironmentLayer" type="TileMapLayer" parent="."]
 z_index = 1
 tile_set = ExtResource("4_t88pq")
+
+[node name="HoverHighlight" type="ColorRect" parent="."]
+color = Color(0.133904, 1, 0, 1)

@@ -8,51 +8,85 @@ public abstract partial class ResourceManager : GodotObject
     public int Iron { get; protected set; } = 100;
     public int Tridentis { get; protected set; } = 100;
 
-    public virtual void IncreaseWood(int amount)
+    public virtual void IncreaseResource(ResourceEnum resource, int amount)
     {
         if (amount <= 0) return;
+
+        switch (resource)
+        {
+            case ResourceEnum.Wood:
+                IncreaseWood(amount);
+                break;
+            case ResourceEnum.Scrap:
+                IncreaseScrap(amount);
+                break;
+            case ResourceEnum.Iron:
+                IncreaseIron(amount);
+                break;
+            case ResourceEnum.Tridentis:
+                IncreaseTridentis(amount);
+                break;
+        }
+    }
+
+    public virtual void DecreaseResource(ResourceEnum resource, int amount)
+    {
+        if (amount <= 0) return;
+
+        switch (resource)
+        {
+            case ResourceEnum.Wood:
+                DecreaseWood(amount);
+                break;
+            case ResourceEnum.Scrap:
+                DecreaseScrap(amount);
+                break;
+            case ResourceEnum.Iron:
+                DecreaseIron(amount);
+                break;
+            case ResourceEnum.Tridentis:
+                DecreaseTridentis(amount);
+                break;
+        }
+    }
+
+    protected virtual void IncreaseWood(int amount)
+    {
         Wood += amount;
     }
 
-    public virtual void DecreaseWood(int amount)
+    protected virtual void DecreaseWood(int amount)
     {
-        if (amount <= 0) return;
         Wood = Math.Max(0, Wood - amount);
     }
 
-    public virtual void IncreaseScrap(int amount)
+    protected virtual void IncreaseScrap(int amount)
     {
-        if (amount <= 0) return;
         Scrap += amount;
     }
 
-    public virtual void DecreaseScrap(int amount)
+    protected virtual void DecreaseScrap(int amount)
     {
-        if (amount <= 0) return;
         Scrap = Math.Max(0, Scrap - amount);
     }
 
-    public virtual void IncreaseIron(int amount)
+    protected virtual void IncreaseIron(int amount)
     {
-        if (amount <= 0) return;
         Iron += amount;
     }
 
-    public virtual void DecreaseIron(int amount)
+    protected virtual void DecreaseIron(int amount)
     {
-        if (amount <= 0) return;
         Iron = Math.Max(0, Iron - amount);
     }
 
-    public virtual void IncreaseTridentis(int amount)
+    protected virtual void IncreaseTridentis(int amount)
     {
-        if (amount <= 0) return;
         Tridentis += amount;
     }
 
-    public virtual void DecreaseTridentis(int amount)
+    protected virtual void DecreaseTridentis(int amount)
     {
-        if (amount <= 0) return;
         Tridentis = Math.Max(0, Tridentis - amount);
     }
 }
