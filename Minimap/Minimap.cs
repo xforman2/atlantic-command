@@ -1,5 +1,7 @@
 using Godot;
-using System;
+using System.Threading;
+using System.Threading.Tasks;
+
 public partial class Minimap : SubViewport
 {
     private RigidBody2D _ship;
@@ -7,16 +9,14 @@ public partial class Minimap : SubViewport
 
     public override void _Ready()
     {
-        _ship = GetTree().Root.GetNode<RigidBody2D>("Game/Ship");
+        _ship = ShipManager.Instance.CurrentShip;
         _camera = GetNode<Camera2D>("MinimapCamera");
-        World2D = (World2D)GetTree().Root.World2D;
-
+        World2D = GetTree().Root.World2D;
 
         if (_camera != null)
         {
             _camera.Zoom = new Vector2(0.1f, 0.1f);
         }
-
     }
 
     public override void _PhysicsProcess(double delta)
