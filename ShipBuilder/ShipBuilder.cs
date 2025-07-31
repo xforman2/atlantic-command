@@ -86,20 +86,11 @@ public partial class ShipBuilder : Node2D
         ghostTileRedTexture = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
         ghostTileGreenTexture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
 
-        if (ShipManager.Instance.CurrentShip == null)
-        {
-            var shipScene = GD.Load<PackedScene>("res://Ship.tscn");
-            _ship = shipScene.Instantiate<Ship>();
-            AddChild(_ship);
-        }
-        else
-        {
-            _ship = ShipManager.Instance.CurrentShip;
+        _ship = ShipManager.Instance.CurrentShip;
 
-            if (_ship.GetParent() != this)
-            {
-                _ship.Reparent(this);
-            }
+        if (_ship.GetParent() != this)
+        {
+            _ship.Reparent(this);
         }
 
         buildMenuButton = GetNode<Button>("UI/BuildMenuButton");

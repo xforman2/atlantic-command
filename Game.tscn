@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=10 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="3_u44n3"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
+[ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -31,3 +32,21 @@ tile_set = ExtResource("4_sb48q")
 [node name="EnvironmentLayer" type="TileMapLayer" parent="."]
 z_index = 1
 tile_set = ExtResource("4_t88pq")
+
+[node name="MinimapOverlay" type="CanvasLayer" parent="."]
+
+[node name="MinimapContainer" type="SubViewportContainer" parent="MinimapOverlay"]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -300.0
+offset_bottom = 300.0
+grow_horizontal = 0
+
+[node name="Minimap" type="SubViewport" parent="MinimapOverlay/MinimapContainer"]
+handle_input_locally = false
+size = Vector2i(300, 300)
+render_target_update_mode = 4
+script = ExtResource("5_t88pq")
+
+[node name="MinimapCamera" type="Camera2D" parent="MinimapOverlay/MinimapContainer/Minimap"]

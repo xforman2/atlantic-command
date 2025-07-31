@@ -18,7 +18,7 @@ public partial class UIOverlay : Control
 
 
         ResourceMediator.OnResourceChanged += OnResourceChanged;
-        ResourceMediator.NotifyResourceWanted(this); //
+        ResourceMediator.NotifyResourceWanted(this);
     }
 
     public override void _ExitTree()
