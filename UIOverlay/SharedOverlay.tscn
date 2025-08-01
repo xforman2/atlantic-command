@@ -1,0 +1,67 @@
+[gd_scene load_steps=6 format=3 uid="uid://bw2y1vyi1cohm"]
+
+[ext_resource type="Script" uid="uid://24dgpo444nqa" path="res://UIOverlay/SharedOverlay.cs" id="1_7fjb5"]
+[ext_resource type="Texture2D" uid="uid://dvnbmbsba0p5f" path="res://Assets/wood.png" id="2_hdy7a"]
+[ext_resource type="Texture2D" uid="uid://b8c4h3jcwjbr7" path="res://Assets/coin_Tridentis.png" id="3_mcd0k"]
+[ext_resource type="Texture2D" uid="uid://n5u5qb04x817" path="res://Assets/Iron.png" id="4_3m7wc"]
+[ext_resource type="Texture2D" uid="uid://0k6iu8aoqyum" path="res://Assets/scrap.png" id="5_keik7"]
+
+[node name="SharedOverlay" type="CanvasLayer"]
+
+[node name="SharedOverlay" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_7fjb5")
+
+[node name="ResourceBar" type="HBoxContainer" parent="SharedOverlay"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="WoodBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+layout_mode = 2
+
+[node name="WoodIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/WoodBox"]
+layout_mode = 2
+texture = ExtResource("2_hdy7a")
+stretch_mode = 3
+
+[node name="WoodLabel" type="Label" parent="SharedOverlay/ResourceBar/WoodBox"]
+layout_mode = 2
+text = "0"
+
+[node name="CoalBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+layout_mode = 2
+
+[node name="CoalIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/CoalBox"]
+layout_mode = 2
+texture = ExtResource("3_mcd0k")
+stretch_mode = 3
+
+[node name="CoalLabel" type="Label" parent="SharedOverlay/ResourceBar/CoalBox"]
+layout_mode = 2
+text = "0"
+
+[node name="IronBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+layout_mode = 2
+
+[node name="IronIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/IronBox"]
+layout_mode = 2
+texture = ExtResource("4_3m7wc")
+stretch_mode = 3
+
+[node name="IronLabel" type="Label" parent="SharedOverlay/ResourceBar/IronBox"]
+layout_mode = 2
+text = "0"
+
+[node name="CopperBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+layout_mode = 2
+
+[node name="CopperIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/CopperBox"]
+layout_mode = 2
+texture = ExtResource("5_keik7")
+stretch_mode = 3
+
+[node name="CopperLabel" type="Label" parent="SharedOverlay/ResourceBar/CopperBox"]
+layout_mode = 2
+text = "0"

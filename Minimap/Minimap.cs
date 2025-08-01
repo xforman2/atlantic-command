@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 public partial class Minimap : SubViewport
 {
-    private RigidBody2D _ship;
+    private Ship _ship;
     private Camera2D _camera;
 
     public override void _Ready()
