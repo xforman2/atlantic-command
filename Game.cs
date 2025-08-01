@@ -27,7 +27,7 @@ public partial class Game : Node2D
     private ColorRect _hoverHighlight;
     private Dictionary<int, (ResourceEnum Resource, int Amount)> _tileDrops = new()
     {
-        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 3) },
+        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1) },
         { (int)EnvironmentTextureEnum.Rock, (ResourceEnum.Iron, 1) },
     };
 

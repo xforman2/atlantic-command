@@ -33,4 +33,5 @@ z_index = 1
 tile_set = ExtResource("4_t88pq")
 
 [node name="HoverHighlight" type="ColorRect" parent="."]
+visible = false
 color = Color(0.133904, 1, 0, 1)

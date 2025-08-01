@@ -3,10 +3,10 @@ using System;
 
 public abstract partial class ResourceManager : GodotObject
 {
-    public int Wood { get; protected set; } = 100;
-    public int Scrap { get; protected set; } = 100;
-    public int Iron { get; protected set; } = 100;
-    public int Tridentis { get; protected set; } = 100;
+    public int Wood { get; protected set; } = 0;
+    public int Scrap { get; protected set; } = 0;
+    public int Iron { get; protected set; } = 0;
+    public int Tridentis { get; protected set; } = 0;
 
     public virtual void IncreaseResource(ResourceEnum resource, int amount)
     {
