@@ -22,8 +22,20 @@ public partial class Game : Node2D
     private Dictionary<Vector2I, bool> _loadedChunks = new();
     private Vector2I _lastChunkPos = new(-9999, -9999);
 
+    private bool _canMine;
+    private Vector2I _hoverCell;
+    private ColorRect _hoverHighlight;
+    private Dictionary<int, (ResourceEnum Resource, int Amount)> _tileDrops = new()
+    {
+        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1) },
+        { (int)EnvironmentTextureEnum.Rock, (ResourceEnum.Iron, 1) },
+    };
+
+
+
     public override void _Ready()
     {
+        GD.Print("HAHA", (int)EnvironmentTextureEnum.Rock);
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
 
@@ -45,19 +57,51 @@ public partial class Game : Node2D
             GD.Print("Existing ship loaded from ShipManager.");
         }
 
+        _hoverHighlight = GetNode<ColorRect>("HoverHighlight");
+        _hoverHighlight.Visible = false;
+        _hoverHighlight.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
+
         _ship.Position = GetViewportRect().GetCenter();
     }
 
     public override void _Process(double delta)
     {
+        //chunking
         if (_ship == null || _groundLayer == null || HeightNoise == null)
             return;
+        HandleChunking();
+        UpdateMiningHoverUI();
+    }
 
+    private void UpdateMiningHoverUI()
+    {
+        Vector2 mouseWorld = GetGlobalMousePosition();
+        _hoverCell = _environmentLayer.LocalToMap(mouseWorld);
+
+        int tileId = _environmentLayer.GetCellSourceId(_hoverCell);
+        bool isMineable = _tileDrops.ContainsKey(tileId);
+        float distanceToShip = _ship.Position.DistanceTo(mouseWorld);
+        _canMine = isMineable && distanceToShip <= Globals.MAX_MINING_DISTANCE;
+
+        if (isMineable)
+        {
+            _hoverHighlight.Position = _environmentLayer.MapToLocal(_hoverCell) - new Vector2(Globals.TILE_SIZE / 2, Globals.TILE_SIZE / 2);
+            _hoverHighlight.Color = _canMine ? Colors.Green : Colors.Red;
+            _hoverHighlight.Visible = true;
+        }
+        else
+        {
+            _hoverHighlight.Visible = false;
+        }
+    }
+
+    private void HandleChunking()
+    {
         Vector2I tileSize = _groundLayer.TileSet.TileSize;
         Vector2I currentChunk = new Vector2I(
-            Mathf.FloorToInt(_ship.Position.X / (ChunkSize * tileSize.X)),
-            Mathf.FloorToInt(_ship.Position.Y / (ChunkSize * tileSize.Y))
-        );
+                Mathf.FloorToInt(_ship.Position.X / (ChunkSize * tileSize.X)),
+                Mathf.FloorToInt(_ship.Position.Y / (ChunkSize * tileSize.Y))
+                );
 
         if (currentChunk != _lastChunkPos)
         {
@@ -153,6 +197,14 @@ public partial class Game : Node2D
 
     public override void _Input(InputEvent @event)
     {
+        if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
+        {
+            if (_canMine)
+            {
+                MineTile(_hoverCell);
+            }
+        }
+
         if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
         {
             switch (keyEvent.Keycode)
@@ -167,6 +219,23 @@ public partial class Game : Node2D
                     break;
             }
         }
+    }
+
+    private void MineTile(Vector2I cell)
+    {
+        int tileId = _environmentLayer.GetCellSourceId(cell);
+
+        if (!_tileDrops.TryGetValue(tileId, out var drop))
+            return;
+
+        _ship.playerResourceManager.IncreaseResource(drop.Resource, drop.Amount);
+
+        _environmentLayer.SetCell(cell, -1, Vector2I.Zero);
+
+        _hoverHighlight.Visible = false;
+        _canMine = false;
+
+        GD.Print($"Mined {drop.Amount} {drop.Resource} from tile {tileId}");
     }
 
     private GroundTextureEnum GetGroundType(float heightValue) => heightValue switch

@@ -21,6 +21,13 @@ public enum GunType
 {
     Cannon
 }
+public enum ResourceEnum
+{
+    Tridentis,
+    Wood,
+    Iron,
+    Scrap
+}
 
 public partial class ShipBuilder : Node2D
 {
@@ -72,11 +79,11 @@ public partial class ShipBuilder : Node2D
     };
 
 
-    private readonly Dictionary<FloorTileType, Dictionary<string, int>> tileCosts = new()
+    private readonly Dictionary<FloorTileType, Dictionary<ResourceEnum, int>> tileCosts = new()
     {
-        { FloorTileType.Wood, new Dictionary<string, int> { { "Wood", 4 } } },
-        { FloorTileType.Iron, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } },
-        { FloorTileType.Steel, new Dictionary<string, int> { { "Iron", 6 }, { "Wood", 2 } } }
+        { FloorTileType.Wood, new Dictionary<ResourceEnum, int> { { ResourceEnum.Wood, 4 } } },
+        { FloorTileType.Iron, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 6 }, { ResourceEnum.Wood, 2 } } },
+        { FloorTileType.Steel, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 6 }, { ResourceEnum.Wood, 2 } } }
     };
 
     const int TILE_SIZE = 32;
@@ -352,7 +359,7 @@ public partial class ShipBuilder : Node2D
     }
 
 
-    private bool HasEnoughResources(Dictionary<string, int> cost)
+    private bool HasEnoughResources(Dictionary<ResourceEnum, int> cost)
     {
         foreach (var resource in cost)
         {
@@ -366,7 +373,7 @@ public partial class ShipBuilder : Node2D
         return true;
     }
 
-    private void DeductResources(Dictionary<string, int> cost)
+    private void DeductResources(Dictionary<ResourceEnum, int> cost)
     {
         foreach (var resource in cost)
         {
@@ -376,33 +383,33 @@ public partial class ShipBuilder : Node2D
         }
     }
 
-    private int GetPlayerResourceAmount(string resourceName)
+    private int GetPlayerResourceAmount(ResourceEnum resourceName)
     {
         return resourceName switch
         {
-            "Wood" => _ship.playerResourceManager.Wood,
-            "Scrap" => _ship.playerResourceManager.Scrap,
-            "Iron" => _ship.playerResourceManager.Iron,
-            "Tridentis" => _ship.playerResourceManager.Tridentis,
+            ResourceEnum.Wood => _ship.playerResourceManager.Wood,
+            ResourceEnum.Scrap => _ship.playerResourceManager.Scrap,
+            ResourceEnum.Iron => _ship.playerResourceManager.Iron,
+            ResourceEnum.Tridentis => _ship.playerResourceManager.Tridentis,
             _ => 0
         };
     }
 
-    private void DecreasePlayerResource(string resourceName, int amount)
+    private void DecreasePlayerResource(ResourceEnum resource, int amount)
     {
-        switch (resourceName)
+        switch (resource)
         {
-            case "Wood":
-                _ship.playerResourceManager.DecreaseWood(amount);
+            case ResourceEnum.Wood:
+                _ship.playerResourceManager.DecreaseResource(resource, amount);
                 break;
-            case "Scrap":
-                _ship.playerResourceManager.DecreaseScrap(amount);
+            case ResourceEnum.Scrap:
+                _ship.playerResourceManager.DecreaseResource(resource, amount);
                 break;
-            case "Iron":
-                _ship.playerResourceManager.DecreaseIron(amount);
+            case ResourceEnum.Iron:
+                _ship.playerResourceManager.DecreaseResource(resource, amount);
                 break;
-            case "Tridentis":
-                _ship.playerResourceManager.DecreaseTridentis(amount);
+            case ResourceEnum.Tridentis:
+                _ship.playerResourceManager.DecreaseResource(resource, amount);
                 break;
         }
     }

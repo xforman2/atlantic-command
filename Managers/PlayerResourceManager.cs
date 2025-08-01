@@ -17,49 +17,49 @@ public partial class PlayerResourceManager : ResourceManager
         ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
     }
 
-    public override void IncreaseWood(int amount)
+    protected override void IncreaseWood(int amount)
     {
         base.IncreaseWood(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Wood), Wood);
     }
 
-    public override void DecreaseWood(int amount)
+    protected override void DecreaseWood(int amount)
     {
         base.DecreaseWood(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Wood), Wood);
     }
 
-    public override void IncreaseScrap(int amount)
+    protected override void IncreaseScrap(int amount)
     {
         base.IncreaseScrap(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
     }
 
-    public override void DecreaseScrap(int amount)
+    protected override void DecreaseScrap(int amount)
     {
         base.DecreaseScrap(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
     }
 
-    public override void IncreaseIron(int amount)
+    protected override void IncreaseIron(int amount)
     {
         base.IncreaseIron(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Iron), Iron);
     }
 
-    public override void DecreaseIron(int amount)
+    protected override void DecreaseIron(int amount)
     {
         base.DecreaseIron(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Iron), Iron);
     }
 
-    public override void IncreaseTridentis(int amount)
+    protected override void IncreaseTridentis(int amount)
     {
         base.IncreaseTridentis(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
     }
 
-    public override void DecreaseTridentis(int amount)
+    protected override void DecreaseTridentis(int amount)
     {
         base.DecreaseTridentis(amount);
         ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
