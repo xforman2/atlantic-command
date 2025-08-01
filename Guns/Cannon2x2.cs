@@ -5,21 +5,18 @@ public partial class Cannon2x2 : Gun
 {
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
-    private Timer _fireTimer;
 
     public override void _Ready()
     {
         _projectileScene = GD.Load<PackedScene>("res://Projectiles/CannonBall.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
-        _fireTimer = new Timer
-        {
-            WaitTime = 2.0,    // seconds between shots
-            OneShot = false,
-            Autostart = true
-        };
-        AddChild(_fireTimer);
-        _fireTimer.Timeout += Shoot;
-        _fireTimer.Start();
+
+    }
+
+    public override void _Input(InputEvent @event)
+    {
+
+
     }
 
     public override void Init(Vector2I origin, List<Vector2I> occupiedPositions, float rotation)

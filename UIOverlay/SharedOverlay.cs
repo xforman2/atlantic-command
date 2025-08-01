@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class UIOverlay : Control
+public partial class SharedOverlay : Control
 {
     private Label woodLabel;
     private Label scrapLabel;
@@ -18,7 +18,7 @@ public partial class UIOverlay : Control
 
 
         ResourceMediator.OnResourceChanged += OnResourceChanged;
-        ResourceMediator.NotifyResourceWanted(this); //
+        ResourceMediator.NotifyResourceWanted(this);
     }
 
     public override void _ExitTree()

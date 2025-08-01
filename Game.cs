@@ -204,13 +204,19 @@ public partial class Game : Node2D
                 MineTile(_hoverCell);
             }
         }
-        if (@event is InputEventKey keyEvent)
+
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
         {
-            if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
+            switch (keyEvent.Keycode)
             {
-                ShipManager.Instance.SetShip(_ship);
-                _ship.GoToDock();
-                GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+                case Key.B:
+                    ShipManager.Instance.SetShip(_ship);
+                    _ship.GoToDock();
+                    GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+                    break;
+
+                default:
+                    break;
             }
         }
     }

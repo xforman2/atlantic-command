@@ -1,14 +1,14 @@
 using Godot;
 using System.Collections.Generic;
 
-public partial class Ship : RigidBody2D
+public partial class Ship : CharacterBody2D
 {
     public Dictionary<Vector2I, (FloorTile, CollisionShape2D)> Floors = new();
     public Dictionary<Vector2I, BuildableStructure> Structures = new();
-    public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new(); // for the docking
+    public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new();
 
     [Export]
-    public int Speed { get; set; } = 300;
+    public int Speed { get; set; } = 1000;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -19,6 +19,10 @@ public partial class Ship : RigidBody2D
     private int _maxX = int.MinValue;
     private int _minY = int.MaxValue;
     private int _maxY = int.MinValue;
+
+    private Vector2 velocity = Vector2.Zero;
+    private float rotationSpeed = 0.5f;
+    private Timer _cannonShotCooldownTimer;
 
     public override void _Ready()
     {
@@ -33,17 +37,28 @@ public partial class Ship : RigidBody2D
         playerResourceManager.IncreaseResource(ResourceEnum.Iron, 100);
         playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 100);
         playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 100);
-        this.BodyEntered += OnBodyEntered;
-        Inertia = 1;
-        GravityScale = 0;
-        LinearDamp = 2f;
-        AngularDamp = 2f;
-
+        _cannonShotCooldownTimer = new Timer
+        {
+            OneShot = true,
+            WaitTime = 1.0f
+        };
+        AddChild(_cannonShotCooldownTimer);
     }
 
-    private void OnBodyEntered(Node body)
+    public override void _Input(InputEvent @event)
     {
-        GD.Print("Collided with: " + body.Name);
+        if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
+        {
+            switch (keyEvent.Keycode)
+            {
+                case Key.F:
+                    ShootCannons();
+                    break;
+
+                default:
+                    break;
+            }
+        }
     }
 
     public void AddFloor(Vector2I position, FloorTile floor)
@@ -85,8 +100,6 @@ public partial class Ship : RigidBody2D
             new Vector2I(Globals.TILE_SIZE, 0)
         };
 
-
-
         bool buildable = false;
         foreach (var offset in neighbors)
         {
@@ -98,7 +111,6 @@ public partial class Ship : RigidBody2D
                 BuildableStructure structure = Structures[neighborPos];
                 if (structure is Cannon2x2 cannon)
                 {
-
                     var direction = cannon.GetRotationDirection();
                     var frontPositions = cannon.GetFrontPositions();
                     if (frontPositions.Contains(neighborPos))
@@ -110,10 +122,25 @@ public partial class Ship : RigidBody2D
                     }
                 }
             }
-
         }
 
         return buildable;
+    }
+
+    private void ShootCannons()
+    {
+        if (_cannonShotCooldownTimer.IsStopped())
+        {
+            foreach (var structure in StructuresOrigin.Values)
+            {
+                if (structure is Cannon2x2 cannon)
+                {
+                    cannon.Shoot();
+                }
+            }
+
+            _cannonShotCooldownTimer.Start();
+        }
     }
 
     public bool CanPlaceStructure(List<Vector2I> occupiedPositions)
@@ -194,8 +221,7 @@ public partial class Ship : RigidBody2D
 
     private void StopMovement()
     {
-        LinearVelocity = Vector2.Zero;
-        AngularVelocity = 0f;
+        velocity = Vector2.Zero;
         Rotation = 0f;
     }
 
@@ -203,23 +229,28 @@ public partial class Ship : RigidBody2D
     {
         if ((!_camera?.Enabled ?? false) || Floors.Count == 0) return;
 
-
+        float deltaTime = (float)delta;
         Vector2 forward = -Transform.Y;
 
         if (Input.IsActionPressed("ui_up"))
         {
-            ApplyCentralForce(forward * Speed);
+            velocity += forward * Speed * deltaTime;
         }
 
         if (Input.IsActionPressed("ui_left"))
         {
-            ApplyTorque(-3f);
+            Rotation -= rotationSpeed * deltaTime;
         }
 
         if (Input.IsActionPressed("ui_right"))
         {
-            ApplyTorque(3f);
+            Rotation += rotationSpeed * deltaTime;
         }
-    }
 
+        velocity = velocity.Lerp(Vector2.Zero, 0.1f);
+        velocity = velocity.LimitLength(1000);
+
+        Velocity = velocity;
+        MoveAndSlide();
+    }
 }
