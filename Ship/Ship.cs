@@ -45,6 +45,7 @@ public partial class Ship : CharacterBody2D
         AddChild(_cannonShotCooldownTimer);
     }
 
+
     public override void _Input(InputEvent @event)
     {
         if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
@@ -186,10 +187,20 @@ public partial class Ship : CharacterBody2D
         if ((worldPos.Y + tileSize) > _maxY) _maxY = worldPos.Y + tileSize;
     }
 
+    public void DisableCamera()
+    {
+        _camera.Enabled = false;
+    }
+
+    public void EnableCamera()
+    {
+        _camera.Enabled = true;
+    }
+
     public void GoOutOfDock()
     {
         GlobalPosition = GetCenterWorldPosition();
-        _camera.Enabled = true;
+        EnableCamera();
 
         foreach (Node child in GetChildren())
         {
@@ -205,7 +216,7 @@ public partial class Ship : CharacterBody2D
     public void GoToDock()
     {
         GlobalPosition = Vector2.Zero;
-        _camera.Enabled = false;
+        DisableCamera();
         StopMovement();
 
         foreach (var (position, (floor, collisionShape)) in Floors)

@@ -35,7 +35,6 @@ public partial class Game : Node2D
 
     public override void _Ready()
     {
-        GD.Print("HAHA", (int)EnvironmentTextureEnum.Rock);
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
 
