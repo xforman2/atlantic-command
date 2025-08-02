@@ -64,7 +64,7 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
 
         { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
-        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron.png") },
+        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron_v 1.2.0.png") },
         { FloorTileType.Steel, GD.Load<Texture2D>("res://Assets/floor_steel.png") },
     };
 
