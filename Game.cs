@@ -61,8 +61,6 @@ public partial class Game : Node2D
         _hoverHighlight = GetNode<ColorRect>("HoverHighlight");
         _hoverHighlight.Visible = false;
         _hoverHighlight.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
-
-        _ship.Position = GetViewportRect().GetCenter();
     }
 
     public override void _Process(double delta)
