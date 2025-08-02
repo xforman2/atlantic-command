@@ -8,7 +8,7 @@ public partial class Ship : CharacterBody2D
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new();
 
     [Export]
-    public int Speed { get; set; } = 1000;
+    public int Speed { get; set; } = 500;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -199,7 +199,8 @@ public partial class Ship : CharacterBody2D
 
     public void GoOutOfDock()
     {
-        GlobalPosition = GetCenterWorldPosition();
+        Position = ShipManager.Instance.GetSavedShipWorldPosition();
+        var centerPos = GetCenterWorldPosition();
         EnableCamera();
 
         foreach (Node child in GetChildren())
@@ -208,14 +209,14 @@ public partial class Ship : CharacterBody2D
 
             if (child is Node2D node2D)
             {
-                node2D.Position -= Position;
+                node2D.Position -= centerPos;
             }
         }
     }
 
     public void GoToDock()
     {
-        GlobalPosition = Vector2.Zero;
+        Position = Vector2.Zero;
         DisableCamera();
         StopMovement();
 
