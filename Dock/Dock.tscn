@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://xrf6cwewcodv"]
+
+[ext_resource type="Script" uid="uid://bryvxypgbvtlu" path="res://Dock/Dock.cs" id="1_dr3w8"]
+[ext_resource type="Texture2D" uid="uid://kaslrsbxffhh" path="res://Assets/Harbor_v_1.0.1.png" id="2_dr3w8"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dr3w8"]
+size = Vector2(522, 444)
+
+[node name="Dock" type="StaticBody2D"]
+script = ExtResource("1_dr3w8")
+
+[node name="DockArea" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DockArea"]
+position = Vector2(7, -4)
+shape = SubResource("RectangleShape2D_dr3w8")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 2
+texture = ExtResource("2_dr3w8")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(20, -29)
+scale = Vector2(3.91602, 3.46191)
+polygon = PackedVector2Array(-17.8753, 41.8843, -16.8539, -24.264, -25.0254, -24.8418, -25.0254, 48.8169, -8.68229, 49.3946, -8.42693, 48.8169, -7.40549, 42.1732, -8.42693, 42.4621)

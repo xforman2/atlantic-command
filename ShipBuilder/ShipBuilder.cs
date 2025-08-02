@@ -51,7 +51,7 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
 
         { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
-        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron.png") },
+        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron_v 1.2.0.png") },
         { FloorTileType.Steel, GD.Load<Texture2D>("res://Assets/floor_steel.png") },
     };
 
@@ -68,12 +68,28 @@ public partial class ShipBuilder : Node2D
         ghostTileRedTexture = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
         ghostTileGreenTexture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
 
+        var quitButton = GetNode<Button>("UI/QuitButton");
+        quitButton.Pressed += EnterNormalMode;
+
         _ship = ShipManager.Instance.CurrentShip;
 
-        if (_ship.GetParent() != this)
+        if (_ship == null)
         {
-            _ship.Reparent(this);
+            var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
+            _ship = scene.Instantiate<PlayerShip>();
+            AddChild(_ship);
+            _ship.DisableCamera();
+            GD.Print("New ship instantiated and assigned to ShipManager.");
         }
+        else
+        {
+            if (_ship.GetParent() != this)
+            {
+                _ship.Reparent(this);
+            }
+        }
+
+
 
         buildMenuButton = GetNode<Button>("UI/BuildMenuButton");
         buildMenuPanel = GetNode<PanelContainer>("UI/BuildMenu");
@@ -145,9 +161,7 @@ public partial class ShipBuilder : Node2D
         {
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
-                ShipManager.Instance.SetShip(_ship);
-                _ship.GoOutOfDock();
-                GetTree().ChangeSceneToFile("res://Game.tscn");
+                EnterNormalMode();
             }
 
             else if (keyEvent.Keycode == Key.R && keyEvent.Pressed && !keyEvent.Echo)
@@ -423,6 +437,13 @@ public partial class ShipBuilder : Node2D
                 );
     }
 
+    private void EnterNormalMode()
+    {
+        ShipManager.Instance.SetShip(_ship);
+        _ship.GoOutOfDock();
+        GetTree().ChangeSceneToFile("res://Game.tscn");
+    }
+
     // --- UI Callbacks ---
 
     private void OnBuildMenuButtonPressed()
@@ -445,6 +466,7 @@ public partial class ShipBuilder : Node2D
             GD.PrintErr($"Unknown floor tile type selected: {tileType}");
         }
     }
+
 
 
 

@@ -6,6 +6,7 @@ public partial class ShipManager : Node
     public static ShipManager Instance { get; private set; }
 
     public PlayerShip CurrentShip { get; private set; }
+    public Vector2 LastWorldPosition = Globals.STARTING_POSITION;
 
     public override void _Ready()
     {
@@ -21,5 +22,13 @@ public partial class ShipManager : Node
         {
             CurrentShip.Reparent(this);
         }
+    }
+    public Vector2 GetSavedShipWorldPosition()
+    {
+        return LastWorldPosition;
+    }
+    public void SetShipWorldPosition(Vector2 position)
+    {
+        LastWorldPosition = position;
     }
 }

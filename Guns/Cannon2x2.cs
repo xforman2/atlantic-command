@@ -26,7 +26,6 @@ public partial class Cannon2x2 : Gun
 
         Position = origin;
         RotationDegrees = rotation;
-        GD.Print(OccupiedPositions);
     }
 
     public override void Shoot()

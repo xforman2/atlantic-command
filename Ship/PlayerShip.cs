@@ -78,10 +78,21 @@ public partial class PlayerShip : Ship
         if ((worldPos.Y + tileSize) > _maxY) _maxY = worldPos.Y + tileSize;
     }
 
+    public void DisableCamera()
+    {
+        _camera.Enabled = false;
+    }
+
+    public void EnableCamera()
+    {
+        _camera.Enabled = true;
+    }
+
     public void GoOutOfDock()
     {
-        GlobalPosition = GetCenterWorldPosition();
-        _camera.Enabled = true;
+        Position = ShipManager.Instance.GetSavedShipWorldPosition();
+        var centerPos = GetCenterWorldPosition();
+        EnableCamera();
 
         foreach (Node child in GetChildren())
         {
@@ -89,15 +100,15 @@ public partial class PlayerShip : Ship
 
             if (child is Node2D node2D)
             {
-                node2D.Position -= Position;
+                node2D.Position -= centerPos;
             }
         }
     }
 
     public void GoToDock()
     {
-        GlobalPosition = Vector2.Zero;
-        _camera.Enabled = false;
+        Position = Vector2.Zero;
+        DisableCamera();
         StopMovement();
 
         foreach (var (position, (floor, collisionShape)) in Floors)

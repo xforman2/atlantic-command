@@ -35,9 +35,10 @@ public partial class Game : Node2D
 
     public override void _Ready()
     {
-        GD.Print("HAHA", (int)EnvironmentTextureEnum.Rock);
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
+        var buildButton = GetNode<Button>("GameOverlay/BuildButton");
+        buildButton.Pressed += EnterBuildMode;
 
         _ship = ShipManager.Instance.CurrentShip;
         if (_ship == null)
@@ -60,8 +61,6 @@ public partial class Game : Node2D
         _hoverHighlight = GetNode<ColorRect>("HoverHighlight");
         _hoverHighlight.Visible = false;
         _hoverHighlight.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
-
-        _ship.Position = GetViewportRect().GetCenter();
     }
 
     public override void _Process(double delta)
@@ -194,6 +193,13 @@ public partial class Game : Node2D
             }
         }
     }
+    private void EnterBuildMode()
+    {
+        ShipManager.Instance.SetShip(_ship);
+        _ship.GoToDock();
+        GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+
+    }
 
     public override void _Input(InputEvent @event)
     {
@@ -210,9 +216,7 @@ public partial class Game : Node2D
             switch (keyEvent.Keycode)
             {
                 case Key.B:
-                    ShipManager.Instance.SetShip(_ship);
-                    _ship.GoToDock();
-                    GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+                    EnterBuildMode();
                     break;
 
                 default:

@@ -6,6 +6,9 @@ public partial class InputManager : Node
     {
         if (@event.IsActionPressed("ui_cancel"))
         {
+            var ship = ShipManager.Instance.CurrentShip;
+            ship.DisableCamera();
+            ShipManager.Instance.SetShip(ship);
             GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
         }
     }
