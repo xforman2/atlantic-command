@@ -64,7 +64,7 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
 
         { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
-        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron.png") },
+        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron_v 1.2.0.png") },
         { FloorTileType.Steel, GD.Load<Texture2D>("res://Assets/floor_steel.png") },
     };
 
@@ -98,10 +98,23 @@ public partial class ShipBuilder : Node2D
 
         _ship = ShipManager.Instance.CurrentShip;
 
-        if (_ship.GetParent() != this)
+        if (_ship == null)
         {
-            _ship.Reparent(this);
+            var scene = GD.Load<PackedScene>("Ship/Ship.tscn");
+            _ship = scene.Instantiate<Ship>();
+            AddChild(_ship);
+            _ship.DisableCamera();
+            GD.Print("New ship instantiated and assigned to ShipManager.");
         }
+        else
+        {
+            if (_ship.GetParent() != this)
+            {
+                _ship.Reparent(this);
+            }
+        }
+
+
 
         buildMenuButton = GetNode<Button>("UI/BuildMenuButton");
         buildMenuPanel = GetNode<PanelContainer>("UI/BuildMenu");

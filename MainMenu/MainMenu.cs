@@ -23,7 +23,7 @@ public partial class MainMenu : Control
             ship.EnableCamera();
         }
 
-        GetTree().ChangeSceneToFile("res://Game.tscn");
+        GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
 
 
     }
