@@ -86,6 +86,9 @@ public partial class ShipBuilder : Node2D
         ghostTileRedTexture = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
         ghostTileGreenTexture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
 
+        var quitButton = GetNode<Button>("UI/QuitButton");
+        quitButton.Pressed += EnterNormalMode;
+
         _ship = ShipManager.Instance.CurrentShip;
 
         if (_ship.GetParent() != this)
@@ -163,9 +166,7 @@ public partial class ShipBuilder : Node2D
         {
             if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
             {
-                ShipManager.Instance.SetShip(_ship);
-                _ship.GoOutOfDock();
-                GetTree().ChangeSceneToFile("res://Game.tscn");
+                EnterNormalMode();
             }
 
             else if (keyEvent.Keycode == Key.R && keyEvent.Pressed && !keyEvent.Echo)
@@ -470,6 +471,13 @@ public partial class ShipBuilder : Node2D
                 );
     }
 
+    private void EnterNormalMode()
+    {
+        ShipManager.Instance.SetShip(_ship);
+        _ship.GoOutOfDock();
+        GetTree().ChangeSceneToFile("res://Game.tscn");
+    }
+
     // --- UI Callbacks ---
 
     private void OnBuildMenuButtonPressed()
@@ -492,6 +500,7 @@ public partial class ShipBuilder : Node2D
             GD.PrintErr($"Unknown floor tile type selected: {tileType}");
         }
     }
+
 
 
 

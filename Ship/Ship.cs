@@ -8,7 +8,7 @@ public partial class Ship : RigidBody2D
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new(); // for the docking
 
     [Export]
-    public int Speed { get; set; } = 300;
+    public int Speed { get; set; } = 500;
 
     public PlayerResourceManager playerResourceManager;
 
@@ -161,8 +161,9 @@ public partial class Ship : RigidBody2D
 
     public void GoOutOfDock()
     {
-        GlobalPosition = GetCenterWorldPosition();
         _camera.Enabled = true;
+        Position = ShipManager.Instance.GetSavedShipWorldPosition();
+        var centerPos = GetCenterWorldPosition();
 
         foreach (Node child in GetChildren())
         {
@@ -170,14 +171,14 @@ public partial class Ship : RigidBody2D
 
             if (child is Node2D node2D)
             {
-                node2D.Position -= Position;
+                node2D.Position -= centerPos;
             }
         }
     }
 
     public void GoToDock()
     {
-        GlobalPosition = Vector2.Zero;
+        Position = Vector2.Zero;
         _camera.Enabled = false;
         StopMovement();
 
