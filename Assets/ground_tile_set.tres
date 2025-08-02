@@ -5,12 +5,14 @@
 [ext_resource type="Texture2D" uid="uid://by8r777grj5gi" path="res://Assets/grass.png" id="3_f5hey"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gbph7"]
+friction = 5.0
+bounce = 1.0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f5hey"]
 texture = ExtResource("1_utoss")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
-0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4.94525, -5.06026, 6.11448, -5.03698, 5.80642, 6.44032, -5.62981, 6.09805)
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0y1uu"]
 texture = ExtResource("2_utoss")

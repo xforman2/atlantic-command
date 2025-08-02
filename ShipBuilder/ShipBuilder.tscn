@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
-[ext_resource type="PackedScene" uid="uid://bvx5or7onxqop" path="res://UIOverlay/UIOverlay.tscn" id="4_cygug"]
+[ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
 
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
 script = ExtResource("1_7vw3h")
@@ -72,4 +72,4 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Quit"
 
-[node name="UIOverlayCanvas" parent="." instance=ExtResource("4_cygug")]
+[node name="SharedOverlay" parent="." instance=ExtResource("2_kyq75")]

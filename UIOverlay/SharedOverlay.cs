@@ -1,7 +1,7 @@
 
 using Godot;
 
-public partial class UIOverlay : Control
+public partial class SharedOverlay : Control
 {
     private Label woodLabel;
     private Label scrapLabel;
