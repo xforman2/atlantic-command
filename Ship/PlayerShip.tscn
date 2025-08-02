@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://dl1qladbn0web"]
 
-[ext_resource type="Script" uid="uid://byabil3wd31f7" path="res://Ship/Ship.cs" id="1_mqihx"]
+[ext_resource type="Script" uid="uid://ck8lisjjr8rbk" path="res://Ship/PlayerShip.cs" id="1_wbwtt"]
 
-[node name="Ship" type="CharacterBody2D"]
-script = ExtResource("1_mqihx")
+[node name="PlayerShip" type="CharacterBody2D"]
+script = ExtResource("1_wbwtt")
 
 [node name="Camera" type="Camera2D" parent="."]
 position_smoothing_enabled = true

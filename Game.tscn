@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=12 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
 [ext_resource type="Texture2D" uid="uid://c312kb8g7a1x8" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
+[ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -35,6 +36,7 @@ tile_set = ExtResource("4_t88pq")
 [node name="HoverHighlight" type="ColorRect" parent="."]
 visible = false
 color = Color(0.133904, 1, 0, 1)
+
 [node name="MinimapOverlay" type="CanvasLayer" parent="."]
 
 [node name="MinimapContainer" type="SubViewportContainer" parent="MinimapOverlay"]
@@ -58,3 +60,5 @@ layout_mode = 2
 texture = ExtResource("6_r0x5m")
 
 [node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
+
+[node name="EnemyShip" parent="." instance=ExtResource("7_3mrqo")]
