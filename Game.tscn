@@ -1,12 +1,13 @@
-[gd_scene load_steps=12 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=13 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
-[ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
+[ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
-[ext_resource type="Texture2D" uid="uid://b5p2qjx2ihyv7" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
-[ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="7_3mrqo"]
+[ext_resource type="Texture2D" uid="uid://c312kb8g7a1x8" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
+[ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
+[ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -77,18 +78,20 @@ text = "Build"
 
 [node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
 
-[node name="Dock" parent="." instance=ExtResource("7_3mrqo")]
+[node name="Dock" parent="." instance=ExtResource("8_joorw")]
 position = Vector2(1080, 750)
 SpawnPosition = Vector2i(1080, 190)
 
-[node name="Dock2" parent="." instance=ExtResource("7_3mrqo")]
+[node name="Dock2" parent="." instance=ExtResource("8_joorw")]
 position = Vector2(5040, -4720)
 SpawnPosition = Vector2i(5040, -5260)
 
-[node name="Dock3" parent="." instance=ExtResource("7_3mrqo")]
+[node name="Dock3" parent="." instance=ExtResource("8_joorw")]
 position = Vector2(-4675, 1150)
 SpawnPosition = Vector2i(-4675, 600)
 
-[node name="Dock4" parent="." instance=ExtResource("7_3mrqo")]
+[node name="Dock4" parent="." instance=ExtResource("8_joorw")]
 position = Vector2(8140, 5060)
 SpawnPosition = Vector2i(8140, 4530)
+
+[node name="EnemyShip" parent="." instance=ExtResource("7_3mrqo")]

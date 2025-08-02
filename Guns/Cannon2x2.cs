@@ -10,7 +10,6 @@ public partial class Cannon2x2 : Gun
     {
         _projectileScene = GD.Load<PackedScene>("res://Projectiles/CannonBall.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
-
     }
 
     public override void _Input(InputEvent @event)

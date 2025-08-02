@@ -1,8 +1,8 @@
-[gd_resource type="TileSet" load_steps=8 format=3 uid="uid://c37xxsfmjhjom"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://c37xxsfmjhjom"]
 
-[ext_resource type="Texture2D" uid="uid://6dvxa0rel35" path="res://Assets/sand.png" id="1_utoss"]
-[ext_resource type="Texture2D" uid="uid://ceg3wbg73v122" path="res://Assets/water_light_v2.png" id="2_utoss"]
-[ext_resource type="Texture2D" uid="uid://by8r777grj5gi" path="res://Assets/grass.png" id="3_f5hey"]
+[ext_resource type="Texture2D" uid="uid://jf7bh4svdo5y" path="res://Assets/sand.png" id="1_utoss"]
+[ext_resource type="Texture2D" uid="uid://cqv82docg2eyp" path="res://Assets/water_light_v2.png" id="2_utoss"]
+[ext_resource type="Texture2D" uid="uid://bglfjitdbxr2i" path="res://Assets/grass.png" id="3_f5hey"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_gbph7"]
 friction = 5.0
@@ -14,10 +14,17 @@ texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-4.94525, -5.06026, 6.11448, -5.03698, 5.80642, 6.44032, -5.62981, 6.09805)
 
+[sub_resource type="NavigationPolygon" id="NavigationPolygon_f5hey"]
+vertices = PackedVector2Array(16, 16, -16, 16, -16, -16, 16, -16)
+polygons = Array[PackedInt32Array]([PackedInt32Array(0, 1, 2, 3)])
+outlines = Array[PackedVector2Array]([PackedVector2Array(-16, -16, 16, -16, 16, 16, -16, 16)])
+agent_radius = 0.0
+
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_0y1uu"]
 texture = ExtResource("2_utoss")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
+0:0/0/navigation_layer_0/polygon = SubResource("NavigationPolygon_f5hey")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_qbt07"]
 texture = ExtResource("3_f5hey")
@@ -30,6 +37,7 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 physics_layer_0/physics_material = SubResource("PhysicsMaterial_gbph7")
 terrain_set_0/mode = 0
+navigation_layer_0/layers = 1
 sources/2 = SubResource("TileSetAtlasSource_0y1uu")
 sources/1 = SubResource("TileSetAtlasSource_f5hey")
 sources/3 = SubResource("TileSetAtlasSource_qbt07")

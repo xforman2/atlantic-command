@@ -35,7 +35,7 @@ public partial class ShipBuilder : Node2D
     private Texture2D ghostTileRedTexture;
     private Texture2D ghostTileGreenTexture;
 
-    private Ship _ship;
+    private PlayerShip _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
     private GunType currentGun = GunType.Cannon;
     private BuildMode currentBuildMode = BuildMode.None;
@@ -48,19 +48,6 @@ public partial class ShipBuilder : Node2D
     private Button cannonGunButton;
 
 
-    private readonly Dictionary<FloorTileType, PackedScene> tileScenes = new()
-    {
-        { FloorTileType.Wood, GD.Load<PackedScene>("res://Tiles/WoodFloorTile.tscn") },
-        { FloorTileType.Iron, GD.Load<PackedScene>("res://Tiles/IronFloorTile.tscn") },
-        { FloorTileType.Steel, GD.Load<PackedScene>("res://Tiles/SteelFloorTile.tscn") }
-    };
-
-
-    private readonly Dictionary<GunType, PackedScene> gunScenes = new()
-    {
-        { GunType.Cannon, GD.Load<PackedScene>("res://Guns/Cannon2x2.tscn") }
-    };
-
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
 
         { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
@@ -72,18 +59,6 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
 
         { GunType.Cannon, GD.Load<Texture2D>("res://Assets/Canon.png") }
-    };
-
-    private readonly Dictionary<GunType, Vector2I> gunSizes = new() {
-        { GunType.Cannon, new Vector2I(64, 64)}
-    };
-
-
-    private readonly Dictionary<FloorTileType, Dictionary<ResourceEnum, int>> tileCosts = new()
-    {
-        { FloorTileType.Wood, new Dictionary<ResourceEnum, int> { { ResourceEnum.Wood, 4 } } },
-        { FloorTileType.Iron, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 6 }, { ResourceEnum.Wood, 2 } } },
-        { FloorTileType.Steel, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 6 }, { ResourceEnum.Wood, 2 } } }
     };
 
     const int TILE_SIZE = 32;
@@ -100,8 +75,8 @@ public partial class ShipBuilder : Node2D
 
         if (_ship == null)
         {
-            var scene = GD.Load<PackedScene>("Ship/Ship.tscn");
-            _ship = scene.Instantiate<Ship>();
+            var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
+            _ship = scene.Instantiate<PlayerShip>();
             AddChild(_ship);
             _ship.DisableCamera();
             GD.Print("New ship instantiated and assigned to ShipManager.");
@@ -215,12 +190,12 @@ public partial class ShipBuilder : Node2D
     private void TryPlaceTile(Vector2I tilePos)
     {
 
-        if (!tileScenes.ContainsKey(currentTile))
+        if (!Globals.tileScenes.ContainsKey(currentTile))
         {
             GD.PrintErr($"Tile type '{currentTile}' not found!");
             return;
         }
-        var cost = tileCosts[currentTile];
+        var cost = Globals.tileCosts[currentTile];
         if (!HasEnoughResources(cost))
         {
             GD.PrintErr("Not enough resources to build this tile.");
@@ -235,15 +210,13 @@ public partial class ShipBuilder : Node2D
 
         DeductResources(cost);
 
-        FloorTile tile = tileScenes[currentTile].Instantiate<FloorTile>();
-        tile.Init(tilePos);
-        _ship.AddFloor(tilePos, tile);
+        _ship.AddFloor(tilePos, currentTile);
         _ship.UpdateBounds(tilePos, TILE_SIZE);
 
     }
     private void TryPlaceGun(Vector2I worldPos)
     {
-        var occupiedPositions = GetOccupiedPositions(worldPos, gunSizes[currentGun]);
+        var occupiedPositions = Globals.GetOccupiedPositions(worldPos, Globals.gunSizes[currentGun]);
         if (!_ship.CanPlaceStructure(occupiedPositions))
         {
             GD.Print("Cannot place gun here.");
@@ -256,11 +229,7 @@ public partial class ShipBuilder : Node2D
             return;
         }
 
-        BuildableStructure structure = gunScenes[currentGun].Instantiate<BuildableStructure>();
-        structure.Init(worldPos, occupiedPositions, GhostTile.RotationDegrees);
-
-
-        _ship.PlaceStructure(structure);
+        _ship.PlaceStructure(worldPos, currentGun, GhostTile.RotationDegrees);
 
         GD.Print("Placed a gun.");
     }
@@ -294,7 +263,7 @@ public partial class ShipBuilder : Node2D
                 return _ship.CanAddFloor(position);
 
             case BuildMode.Gun:
-                var occupiedPositions = GetOccupiedPositions(position, gunSizes[currentGun]);
+                var occupiedPositions = Globals.GetOccupiedPositions(position, Globals.gunSizes[currentGun]);
                 return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
 
             default:
@@ -336,7 +305,7 @@ public partial class ShipBuilder : Node2D
     }
     private List<Vector2I> GetGunFrontPositions(Vector2I gunCenter, GunType gunType, float rotationDegrees)
     {
-        var occupiedPositions = GetOccupiedPositions(gunCenter, gunSizes[gunType]);
+        var occupiedPositions = Globals.GetOccupiedPositions(gunCenter, Globals.gunSizes[gunType]);
 
         return ((int)rotationDegrees % 360) switch
         {
@@ -348,29 +317,6 @@ public partial class ShipBuilder : Node2D
         };
     }
 
-    private List<Vector2I> GetOccupiedPositions(Vector2I center, Vector2I size)
-    {
-        var result = new List<Vector2I>();
-
-        int tilesWide = size.X / Globals.TILE_SIZE;
-        int tilesHigh = size.Y / Globals.TILE_SIZE;
-
-        int halfWidth = size.X / 2;
-        int halfHeight = size.Y / 2;
-
-        for (int x = 0; x < tilesWide; x++)
-        {
-            for (int y = 0; y < tilesHigh; y++)
-            {
-                int offsetX = x * Globals.TILE_SIZE - halfWidth + (tilesWide % 2 == 0 ? Globals.TILE_SIZE / 2 : 0);
-                int offsetY = y * Globals.TILE_SIZE - halfHeight + (tilesHigh % 2 == 0 ? Globals.TILE_SIZE / 2 : 0);
-
-                result.Add(center + new Vector2I(offsetX, offsetY));
-            }
-        }
-
-        return result;
-    }
 
 
     private bool HasEnoughResources(Dictionary<ResourceEnum, int> cost)
@@ -436,7 +382,7 @@ public partial class ShipBuilder : Node2D
                 structureSize = new Vector2I(32, 32);
                 break;
             case BuildMode.Gun:
-                structureSize = gunSizes[currentGun];
+                structureSize = Globals.gunSizes[currentGun];
                 break;
             default:
                 structureSize = Vector2I.Zero;
@@ -508,7 +454,7 @@ public partial class ShipBuilder : Node2D
 
     private void SelectFloorTile(FloorTileType tileType)
     {
-        if (tileScenes.ContainsKey(tileType))
+        if (Globals.tileScenes.ContainsKey(tileType))
         {
             currentBuildMode = BuildMode.Floor;
             currentTile = tileType;
@@ -526,7 +472,7 @@ public partial class ShipBuilder : Node2D
 
     private void SelectGun(GunType gunType)
     {
-        if (gunScenes.ContainsKey(gunType))
+        if (Globals.gunScenes.ContainsKey(gunType))
         {
             currentBuildMode = BuildMode.Gun;
             currentGun = gunType;

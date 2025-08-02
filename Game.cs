@@ -5,7 +5,7 @@ using System.Linq;
 
 public partial class Game : Node2D
 {
-    private Ship _ship;
+    private PlayerShip _ship;
     private TileMapLayer _groundLayer;
     private TileMapLayer _environmentLayer;
 
@@ -43,8 +43,8 @@ public partial class Game : Node2D
         _ship = ShipManager.Instance.CurrentShip;
         if (_ship == null)
         {
-            var scene = GD.Load<PackedScene>("Ship/Ship.tscn");
-            _ship = scene.Instantiate<Ship>();
+            var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
+            _ship = scene.Instantiate<PlayerShip>();
             AddChild(_ship);
             ShipManager.Instance.SetShip(_ship);
             GD.Print("New ship instantiated and assigned to ShipManager.");
