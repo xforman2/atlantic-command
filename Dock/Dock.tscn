@@ -16,7 +16,7 @@ position = Vector2(7, -4)
 shape = SubResource("RectangleShape2D_dr3w8")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-z_index = 1
+z_index = 2
 texture = ExtResource("2_dr3w8")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
