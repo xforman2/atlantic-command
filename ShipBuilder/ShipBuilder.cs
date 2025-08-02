@@ -98,10 +98,23 @@ public partial class ShipBuilder : Node2D
 
         _ship = ShipManager.Instance.CurrentShip;
 
-        if (_ship.GetParent() != this)
+        if (_ship == null)
         {
-            _ship.Reparent(this);
+            var scene = GD.Load<PackedScene>("Ship/Ship.tscn");
+            _ship = scene.Instantiate<Ship>();
+            AddChild(_ship);
+            _ship.DisableCamera();
+            GD.Print("New ship instantiated and assigned to ShipManager.");
         }
+        else
+        {
+            if (_ship.GetParent() != this)
+            {
+                _ship.Reparent(this);
+            }
+        }
+
+
 
         buildMenuButton = GetNode<Button>("UI/BuildMenuButton");
         buildMenuPanel = GetNode<PanelContainer>("UI/BuildMenu");
