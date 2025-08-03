@@ -70,12 +70,13 @@ public partial class PlayerShip : Ship
         return new Vector2(centerX, centerY);
     }
 
-    public void UpdateBounds(Vector2I worldPos, int tileSize)
+    public void UpdateBounds(Vector2I worldPos)
     {
-        if (worldPos.X < _minX) _minX = worldPos.X;
-        if ((worldPos.X + tileSize) > _maxX) _maxX = worldPos.X + tileSize;
-        if (worldPos.Y < _minY) _minY = worldPos.Y;
-        if ((worldPos.Y + tileSize) > _maxY) _maxY = worldPos.Y + tileSize;
+        var offset = Globals.TILE_SIZE / 2;
+        if (worldPos.X - offset < _minX) _minX = worldPos.X - offset;
+        if (worldPos.X + offset > _maxX) _maxX = worldPos.X + offset;
+        if (worldPos.Y - offset < _minY) _minY = worldPos.Y - offset;
+        if (worldPos.Y + offset > _maxY) _maxY = worldPos.Y + offset;
     }
 
     public void DisableCamera()
@@ -154,6 +155,7 @@ public partial class PlayerShip : Ship
         velocity = velocity.LimitLength(1000);
 
         Velocity = velocity;
+        GD.Print($"Player {Velocity}");
         MoveAndSlide();
     }
 

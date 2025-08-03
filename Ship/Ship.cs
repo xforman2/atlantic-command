@@ -13,7 +13,6 @@ public abstract partial class Ship : CharacterBody2D
 
     private PackedScene _shipSlotScene;
 
-    private Vector2 velocity = Vector2.Zero;
     private float rotationSpeed = 0.5f;
 
     public void AddFloor(Vector2I position, FloorTileType type)

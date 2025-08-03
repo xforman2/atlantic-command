@@ -211,7 +211,7 @@ public partial class ShipBuilder : Node2D
         DeductResources(cost);
 
         _ship.AddFloor(tilePos, currentTile);
-        _ship.UpdateBounds(tilePos, TILE_SIZE);
+        _ship.UpdateBounds(tilePos);
 
     }
     private void TryPlaceGun(Vector2I worldPos)
