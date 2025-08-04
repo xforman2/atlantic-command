@@ -6,3 +6,5 @@
 script = ExtResource("1_fhc1d")
 
 [node name="EnemyNavigationAgent" type="NavigationAgent2D" parent="."]
+target_desired_distance = 100.0
+avoidance_enabled = true

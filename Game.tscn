@@ -1,13 +1,15 @@
-[gd_scene load_steps=13 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=26 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
 [ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
-[ext_resource type="Texture2D" uid="uid://b5p2qjx2ihyv7" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
+[ext_resource type="Texture2D" uid="uid://c5h16q0aad8fq" path="res://Assets/build_mode_button.png" id="6_2vekm"]
+[ext_resource type="Texture2D" uid="uid://c312kb8g7a1x8" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
+[ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -21,6 +23,28 @@ frequency = 1.0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_3mrqo"]
 noise = SubResource("FastNoiseLite_r0x5m")
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_2vekm"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yx171"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yhmtn"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_gwjdr"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_lvtmh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_yyih5"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_qjyg3"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_elkpi"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0yprl"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_wuoie"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bvhbk"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbfu4")
@@ -69,12 +93,24 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = -31.0
-offset_right = 24.0
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -20.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Build"
+theme_override_icons/icon = ExtResource("6_2vekm")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_2vekm")
+theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_yx171")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_yhmtn")
+theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_gwjdr")
+theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_lvtmh")
+theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_yyih5")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_qjyg3")
+theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_elkpi")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_0yprl")
+theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_wuoie")
+theme_override_styles/normal = SubResource("StyleBoxEmpty_bvhbk")
 
 [node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
 
@@ -94,5 +130,6 @@ SpawnPosition = Vector2i(-4675, 600)
 position = Vector2(8140, 5060)
 SpawnPosition = Vector2i(8140, 4530)
 
-[node name="EnemyShip" parent="." instance=ExtResource("7_3mrqo")]
-Speed = 500
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("10_yx171")
+EnemyScene = ExtResource("7_3mrqo")
