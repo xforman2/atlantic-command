@@ -12,6 +12,7 @@ z_index = 2
 z_as_relative = false
 
 [node name="Sprite2D" type="Sprite2D" parent="GhostTile"]
+z_index = 5
 
 [node name="UI" type="CanvasLayer" parent="."]
 

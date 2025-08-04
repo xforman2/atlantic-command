@@ -26,6 +26,7 @@ public partial class Cannon2x2 : Gun
 
         Position = origin;
         RotationDegrees = rotation;
+        Size = new Vector2I(64, 64);
     }
 
     public override void Shoot()

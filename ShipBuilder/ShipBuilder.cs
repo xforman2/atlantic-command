@@ -14,7 +14,8 @@ public enum BuildMode
 {
     None,
     Floor,
-    Gun
+    Gun,
+    Remove
 }
 
 public enum GunType
@@ -32,8 +33,8 @@ public enum ResourceEnum
 public partial class ShipBuilder : Node2D
 {
     [Export] public Sprite2D GhostTile;
-    private Texture2D ghostTileRedTexture;
-    private Texture2D ghostTileGreenTexture;
+    private Texture2D ghostTileRemoveTextureValid;
+    private Texture2D ghostTileRemoveTextureInvalid;
 
     private PlayerShip _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
@@ -65,8 +66,8 @@ public partial class ShipBuilder : Node2D
 
     public override void _Ready()
     {
-        ghostTileRedTexture = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
-        ghostTileGreenTexture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
+        ghostTileRemoveTextureValid = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
+        ghostTileRemoveTextureInvalid = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
 
         var quitButton = GetNode<Button>("UI/QuitButton");
         quitButton.Pressed += EnterNormalMode;
@@ -111,23 +112,44 @@ public partial class ShipBuilder : Node2D
         Vector2 mouseWorld = GetGlobalMousePosition();
         Vector2I snappedPos = GetStructureSnappedPosition(mouseWorld);
 
-        bool canPlace = CanPlaceTile(snappedPos);
+        bool canModify = CanModifyTile(snappedPos);
 
         GhostTile.Position = snappedPos;
-        GhostTile.Modulate = canPlace ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
 
         switch (currentBuildMode)
         {
             case BuildMode.Floor:
+                GhostTile.Modulate = canModify ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
                 GhostTile.Texture = tilePreviewTextures[currentTile];
                 break;
 
             case BuildMode.Gun:
+                GhostTile.Modulate = canModify ? new Color(0, 1, 0, 0.5f) : new Color(1, 0, 0, 0.5f);
                 GhostTile.Texture = gunPreviewTextures[currentGun];
                 break;
+            case BuildMode.Remove:
 
+                GhostTile.Modulate = new Color(1, 1, 1, 0.8f);
+                if (_ship.Structures.TryGetValue(snappedPos, out var structure))
+                {
+                    GhostTile.Texture = ghostTileRemoveTextureValid;
+                    GhostTile.Position = structure.Origin;
+                    GhostTile.Scale = new Vector2(structure.Size.X / (float)Globals.TILE_SIZE, structure.Size.Y / (float)Globals.TILE_SIZE);
+                }
+                else if (_ship.Floors.ContainsKey(snappedPos))
+                {
+
+                    GhostTile.Texture = ghostTileRemoveTextureValid;
+                    GhostTile.Scale = Vector2.One;
+                }
+                else
+                {
+
+                    GhostTile.Texture = ghostTileRemoveTextureInvalid;
+                    GhostTile.Scale = Vector2.One;
+                }
+                break;
             default:
-                GhostTile.Texture = null;
                 break;
         }
     }
@@ -149,6 +171,11 @@ public partial class ShipBuilder : Node2D
                     case BuildMode.Gun:
                         TryPlaceGun(position);
                         break;
+                    case BuildMode.Remove:
+                        TryRemoveTile(position);
+                        break;
+                    default:
+                        break;
                 }
             }
             else if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
@@ -157,16 +184,21 @@ public partial class ShipBuilder : Node2D
                 TryRemoveTile(position);
             }
         }
-        else if (@event is InputEventKey keyEvent)
+        else if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
         {
-            if (keyEvent.Keycode == Key.B && keyEvent.Pressed && !keyEvent.Echo)
+            switch (keyEvent.Keycode)
             {
-                EnterNormalMode();
-            }
+                case Key.B:
+                    EnterNormalMode();
+                    break;
 
-            else if (keyEvent.Keycode == Key.R && keyEvent.Pressed && !keyEvent.Echo)
-            {
-                GhostTile.RotationDegrees = (GhostTile.RotationDegrees + 90) % 360;
+                case Key.R:
+                    GhostTile.RotationDegrees = (GhostTile.RotationDegrees + 90) % 360;
+                    break;
+
+                case Key.X:
+                    currentBuildMode = BuildMode.Remove;
+                    break;
             }
         }
     }
@@ -234,28 +266,43 @@ public partial class ShipBuilder : Node2D
         GD.Print("Placed a gun.");
     }
 
-    private void TryRemoveTile(Vector2I tilePos)
+    private void TryRemoveTile(Vector2I position)
     {
-
-        if (!_ship.Floors.ContainsKey(tilePos))
+        if (!_ship.Floors.ContainsKey(position))
         {
-            GD.Print("Ship slot does not exist");
+            GD.PrintErr($"Nothing to remove at {position}");
             return;
         }
 
+        if (_ship.Structures.ContainsKey(position))
+        {
+            var structure = _ship.Structures[position];
 
-        FloorTile floor = _ship.Floors[tilePos].Item1;
+            foreach (var tile in structure.OccupiedPositions)
+            {
+                _ship.Structures.Remove(tile);
+            }
+
+            _ship.StructuresOrigin.Remove(structure.Origin);
+            structure.QueueFree();
+            return;
+        }
+
+        FloorTile floor = _ship.Floors[position].Item1;
+        CollisionShape2D collision = _ship.Floors[position].Item2;
+
 
         if (floor != null)
         {
             floor.QueueFree();
+            collision.QueueFree();
         }
 
-        _ship.Floors.Remove(tilePos);
+        _ship.Floors.Remove(position);
 
     }
 
-    private bool CanPlaceTile(Vector2I position)
+    private bool CanModifyTile(Vector2I position)
     {
         switch (currentBuildMode)
         {
@@ -265,7 +312,8 @@ public partial class ShipBuilder : Node2D
             case BuildMode.Gun:
                 var occupiedPositions = Globals.GetOccupiedPositions(position, Globals.gunSizes[currentGun]);
                 return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
-
+            case BuildMode.Remove:
+                return _ship.Structures.ContainsKey(position) || _ship.Floors.ContainsKey(position);
             default:
                 return false;
         }
@@ -379,6 +427,7 @@ public partial class ShipBuilder : Node2D
         switch (currentBuildMode)
         {
             case BuildMode.Floor:
+            case BuildMode.Remove:
                 structureSize = new Vector2I(32, 32);
                 break;
             case BuildMode.Gun:

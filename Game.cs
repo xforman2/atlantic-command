@@ -65,7 +65,6 @@ public partial class Game : Node2D
 
     public override void _Process(double delta)
     {
-        //chunking
         if (_ship == null || _groundLayer == null || HeightNoise == null)
             return;
         HandleChunking();

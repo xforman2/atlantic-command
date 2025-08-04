@@ -5,6 +5,7 @@ using System.Linq;
 
 public abstract partial class BuildableStructure : Node2D
 {
+    public Vector2I Size;
     public Vector2I Origin;
     public List<Vector2I> OccupiedPositions;
 
