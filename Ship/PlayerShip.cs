@@ -155,7 +155,6 @@ public partial class PlayerShip : Ship
         velocity = velocity.LimitLength(1000);
 
         Velocity = velocity;
-        GD.Print($"Player {Velocity}");
         MoveAndSlide();
     }
 
