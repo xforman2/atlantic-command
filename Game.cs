@@ -8,8 +8,8 @@ public partial class Game : Node2D
     private PlayerShip _ship;
     private TileMapLayer _groundLayer;
     private TileMapLayer _environmentLayer;
+    private EnemySpawner _enemySpawner;
 
-    [Export] public int ChunkSize = 32;
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
     public const float SandThreshold = 0.15f;
@@ -37,6 +37,8 @@ public partial class Game : Node2D
     {
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
+        _enemySpawner = GetNode<EnemySpawner>("EnemySpawner");
+
         var buildButton = GetNode<Button>("GameOverlay/BuildButton");
         buildButton.Pressed += EnterBuildMode;
 
@@ -98,8 +100,8 @@ public partial class Game : Node2D
     {
         Vector2I tileSize = _groundLayer.TileSet.TileSize;
         Vector2I currentChunk = new Vector2I(
-                Mathf.FloorToInt(_ship.Position.X / (ChunkSize * tileSize.X)),
-                Mathf.FloorToInt(_ship.Position.Y / (ChunkSize * tileSize.Y))
+                Mathf.FloorToInt(_ship.Position.X / (Globals.CHUNK_SIZE * tileSize.X)),
+                Mathf.FloorToInt(_ship.Position.Y / (Globals.CHUNK_SIZE * tileSize.Y))
                 );
 
         if (currentChunk != _lastChunkPos)
@@ -140,16 +142,16 @@ public partial class Game : Node2D
     {
         var heightNoise = HeightNoise.Noise;
         var environmentNoise = EnvironmentNoise.Noise;
-        Vector2I start = chunkPos * ChunkSize;
+        Vector2I start = chunkPos * Globals.CHUNK_SIZE;
 
         float minHeight = float.MaxValue;
         float maxHeight = float.MinValue;
         float minEnv = float.MaxValue;
         float maxEnv = float.MinValue;
 
-        for (int x = 0; x < ChunkSize; x++)
+        for (int x = 0; x < Globals.CHUNK_SIZE; x++)
         {
-            for (int y = 0; y < ChunkSize; y++)
+            for (int y = 0; y < Globals.CHUNK_SIZE; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
                 float heightValue = heightNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
@@ -177,21 +179,24 @@ public partial class Game : Node2D
             }
         }
 
+        _enemySpawner.SpawnEnemiesInChunk(chunkPos, _groundLayer);
     }
 
     private void UnloadChunk(Vector2I chunkPos)
     {
-        Vector2I start = chunkPos * ChunkSize;
+        Vector2I start = chunkPos * Globals.CHUNK_SIZE;
 
-        for (int x = 0; x < ChunkSize; x++)
+        for (int x = 0; x < Globals.CHUNK_SIZE; x++)
         {
-            for (int y = 0; y < ChunkSize; y++)
+            for (int y = 0; y < Globals.CHUNK_SIZE; y++)
             {
                 Vector2I tilePos = start + new Vector2I(x, y);
                 _groundLayer.SetCell(tilePos, -1, Vector2I.Zero);
                 _environmentLayer.SetCell(tilePos, -1, Vector2I.Zero);
             }
         }
+
+        _enemySpawner.DespawnEnemiesInChunk(chunkPos, _groundLayer);
     }
     private void EnterBuildMode()
     {
