@@ -1,7 +1,17 @@
-[gd_scene load_steps=3 format=3 uid="uid://t2tnu0qdh1uu"]
+[gd_scene load_steps=7 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
-[ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
+[ext_resource type="Texture2D" uid="uid://dt1fluif8vm8" path="res://Assets/build_mode_button_exit.png" id="2_cx8ke"]
+[ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cygug"]
+texture = ExtResource("2_cx8ke")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_4wo41"]
+texture = ExtResource("2_cx8ke")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g5y3i"]
+texture = ExtResource("2_cx8ke")
 
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
 script = ExtResource("1_7vw3h")
@@ -28,7 +38,8 @@ anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
 offset_left = -555.0
-offset_bottom = 367.0
+offset_right = -25.0
+offset_bottom = 132.0
 grow_horizontal = 0
 
 [node name="TabContainer" type="TabContainer" parent="UI/BuildMenu"]
@@ -66,11 +77,14 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -4.0
-offset_top = -8.0
-offset_right = 4.0
+offset_left = -46.0
+offset_top = -98.0
+offset_right = 154.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 0
-text = "Quit"
+theme_override_styles/hover = SubResource("StyleBoxTexture_cygug")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_4wo41")
+theme_override_styles/normal = SubResource("StyleBoxTexture_g5y3i")
 
 [node name="SharedOverlay" parent="." instance=ExtResource("2_kyq75")]
