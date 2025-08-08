@@ -38,7 +38,7 @@ public partial class Game : Node2D
     public override void _Ready()
     {
         _rocketGhostTile = GetNode<Sprite2D>("GhostTile");
-        _rocketGhostTile.Texture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
+        _rocketGhostTile.Texture = GD.Load<Texture2D>("res://Assets/ghost_tile_rocket_launcher.png");
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
         _enemySpawner = GetNode<EnemySpawner>("EnemySpawner");
