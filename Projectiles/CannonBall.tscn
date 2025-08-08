@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://mu07ke4ckrk4"]
 
 [ext_resource type="Script" uid="uid://5a6gq2srmmpl" path="res://Projectiles/CannonBall.cs" id="1_xhssp"]
-[ext_resource type="Texture2D" uid="uid://bjgcipwwtvect" path="res://Assets/cannon_ball_16x16.png" id="2_xhssp"]
+[ext_resource type="Texture2D" uid="uid://bvsa7mg5w7y7d" path="res://Assets/cannon_ball_16x16.png" id="2_xhssp"]
 
 [node name="CannonBall" type="Area2D"]
 script = ExtResource("1_xhssp")

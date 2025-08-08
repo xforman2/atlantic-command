@@ -2,6 +2,7 @@ public enum InputMode
 {
     None,
     Mining,
-    RocketFiring
+    RocketFiring,
+    HpStatus
 }
 

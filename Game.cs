@@ -248,6 +248,10 @@ public partial class Game : Node2D
                     ToggleMode(InputMode.RocketFiring);
                     break;
 
+                case Key.H:
+                    ToggleMode(InputMode.HpStatus);
+                    break;
+
                 case Key.B:
                     EnterBuildMode();
                     break;
@@ -265,6 +269,9 @@ public partial class Game : Node2D
         {
             _hoverHighlight.Visible = false;
             _rocketGhostTile.Visible = false;
+
+            ToggleStructuresVisibility(true);
+            ToggleHpLabelsVisibility(false);
         }
         else
         {
@@ -273,20 +280,52 @@ public partial class Game : Node2D
                 case InputMode.Mining:
                     _hoverHighlight.Visible = true;
                     _rocketGhostTile.Visible = false;
+                    ToggleStructuresVisibility(true);
+                    ToggleHpLabelsVisibility(false);
                     break;
 
                 case InputMode.RocketFiring:
-                    _rocketGhostTile.Visible = true;
                     _hoverHighlight.Visible = false;
+                    _rocketGhostTile.Visible = true;
+                    ToggleStructuresVisibility(true);
+                    ToggleHpLabelsVisibility(false);
+                    break;
+
+                case InputMode.HpStatus:
+                    _hoverHighlight.Visible = false;
+                    _rocketGhostTile.Visible = false;
+                    ToggleStructuresVisibility(false);
+                    ToggleHpLabelsVisibility(true);
                     break;
 
                 case InputMode.None:
                     _hoverHighlight.Visible = false;
                     _rocketGhostTile.Visible = false;
+                    ToggleStructuresVisibility(true);
+                    ToggleHpLabelsVisibility(false);
                     break;
             }
         }
+    }
 
+    private void ToggleStructuresVisibility(bool visible)
+    {
+        if (_ship == null) return;
+
+        foreach (var structure in _ship.StructuresOrigin.Values)
+        {
+            structure.Visible = visible;
+        }
+    }
+
+    private void ToggleHpLabelsVisibility(bool visible)
+    {
+        if (_ship == null) return;
+
+        foreach (var floorData in _ship.Floors.Values)
+        {
+            floorData.Item1.ShowHpLabel(visible);
+        }
     }
 
     private void MineTile(Vector2I cell)
