@@ -29,7 +29,7 @@ public partial class Cannon2x2 : Gun
         Size = new Vector2I(64, 64);
     }
 
-    public override void Shoot(Vector2I? target = null)
+    public override void Shoot(Vector2? target = null)
     {
         if (_projectileScene == null || _muzzle == null)
         {
