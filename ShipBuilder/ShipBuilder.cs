@@ -324,7 +324,15 @@ public partial class ShipBuilder : Node2D
 
             case BuildMode.Gun:
                 var occupiedPositions = Globals.GetOccupiedPositions(position, Globals.gunSizes[currentGun]);
-                return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
+                switch (currentGun)
+                {
+                    case GunType.Cannon:
+                        return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
+                    case GunType.RocketLauncher:
+                        return _ship.CanPlaceStructure(occupiedPositions);
+                    default:
+                        return false;
+                }
             case BuildMode.Remove:
                 return _ship.Structures.ContainsKey(position) || _ship.Floors.ContainsKey(position);
             default:
