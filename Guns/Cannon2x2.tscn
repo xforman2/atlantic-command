@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://5j4xntm6fcm5"]
 
 [ext_resource type="Script" uid="uid://c2lb70h4b6wxp" path="res://Guns/Cannon2x2.cs" id="1_expwk"]
-[ext_resource type="Texture2D" uid="uid://cp7ax71xloeca" path="res://Assets/Canon.png" id="2_expwk"]
+[ext_resource type="Texture2D" uid="uid://bxyfxms71wom5" path="res://Assets/Canon.png" id="2_expwk"]
 
 [node name="Cannon2x2" type="Node2D"]
 script = ExtResource("1_expwk")

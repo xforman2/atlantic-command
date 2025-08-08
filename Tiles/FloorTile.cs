@@ -8,6 +8,34 @@ public abstract partial class FloorTile : Node2D
     public int HP { get; private set; }
     public Vector2I Origin { get; set; }
     public BuildableStructure StructureOnTop { get; set; }
+    private Label _hpLabel;
+
+
+    public override void _Ready()
+    {
+        _hpLabel = GetNode<Label>("HpLabel");
+        ShowHpLabel(false);
+    }
+
+    public void ShowHpLabel(bool show)
+    {
+        if (_hpLabel == null)
+            return;
+
+        if (show)
+        {
+            UpdateHpLabel();
+        }
+        _hpLabel.Visible = show;
+    }
+
+    private void UpdateHpLabel()
+    {
+        if (_hpLabel != null)
+        {
+            _hpLabel.Text = HP.ToString();
+        }
+    }
 
     public void Init(Vector2I position)
     {
@@ -23,6 +51,7 @@ public abstract partial class FloorTile : Node2D
         {
             OnDestroyed();
         }
+        UpdateHpLabel();
     }
 
     protected virtual void OnDestroyed()
