@@ -5,11 +5,13 @@ using System.Linq;
 
 public partial class Game : Node2D
 {
+    private InputMode _currentMode = InputMode.None;
     private PlayerShip _ship;
     private TileMapLayer _groundLayer;
     private TileMapLayer _environmentLayer;
     private EnemySpawner _enemySpawner;
 
+    private Sprite2D _rocketGhostTile;
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
     public const float SandThreshold = 0.15f;
@@ -35,6 +37,8 @@ public partial class Game : Node2D
 
     public override void _Ready()
     {
+        _rocketGhostTile = GetNode<Sprite2D>("GhostTile");
+        _rocketGhostTile.Texture = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
         _enemySpawner = GetNode<EnemySpawner>("EnemySpawner");
@@ -70,7 +74,14 @@ public partial class Game : Node2D
         if (_ship == null || _groundLayer == null || HeightNoise == null)
             return;
         HandleChunking();
-        UpdateMiningHoverUI();
+        if (_currentMode == InputMode.Mining)
+        {
+            UpdateMiningHoverUI();
+        }
+        if (_currentMode == InputMode.RocketFiring)
+        {
+            _rocketGhostTile.Position = GetGlobalMousePosition();
+        }
     }
 
     private void UpdateMiningHoverUI()
@@ -209,9 +220,19 @@ public partial class Game : Node2D
     {
         if (@event is InputEventMouseButton mouseEvent && mouseEvent.Pressed && mouseEvent.ButtonIndex == MouseButton.Left)
         {
-            if (_canMine)
+            switch (_currentMode)
             {
-                MineTile(_hoverCell);
+                case InputMode.Mining:
+                    if (_canMine)
+                    {
+                        MineTile(_hoverCell);
+                    }
+                    break;
+
+                case InputMode.RocketFiring:
+                    Vector2I targetCell = _environmentLayer.LocalToMap(GetGlobalMousePosition());
+                    _ship.ShootRockets(targetCell);
+                    break;
             }
         }
 
@@ -219,14 +240,53 @@ public partial class Game : Node2D
         {
             switch (keyEvent.Keycode)
             {
+                case Key.M:
+                    ToggleMode(InputMode.Mining);
+                    break;
+
+                case Key.R:
+                    ToggleMode(InputMode.RocketFiring);
+                    break;
+
                 case Key.B:
                     EnterBuildMode();
                     break;
+            }
+        }
+    }
 
-                default:
+
+    private void ToggleMode(InputMode mode)
+    {
+        bool wasSame = (_currentMode == mode);
+        _currentMode = wasSame ? InputMode.None : mode;
+
+        if (wasSame)
+        {
+            _hoverHighlight.Visible = false;
+            _rocketGhostTile.Visible = false;
+        }
+        else
+        {
+            switch (_currentMode)
+            {
+                case InputMode.Mining:
+                    _hoverHighlight.Visible = true;
+                    _rocketGhostTile.Visible = false;
+                    break;
+
+                case InputMode.RocketFiring:
+                    _rocketGhostTile.Visible = true;
+                    _hoverHighlight.Visible = false;
+                    break;
+
+                case InputMode.None:
+                    _hoverHighlight.Visible = false;
+                    _rocketGhostTile.Visible = false;
                     break;
             }
         }
+
     }
 
     private void MineTile(Vector2I cell)
@@ -242,8 +302,6 @@ public partial class Game : Node2D
 
         _hoverHighlight.Visible = false;
         _canMine = false;
-
-        GD.Print($"Mined {drop.Amount} {drop.Resource} from tile {tileId}");
     }
 
     private GroundTextureEnum GetGroundType(float heightValue) => heightValue switch

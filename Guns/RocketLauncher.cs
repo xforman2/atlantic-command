@@ -1,29 +1,23 @@
-using System.Collections.Generic;
 using Godot;
+using System;
+using System.Collections.Generic;
 
-public partial class Cannon2x2 : Gun
+public partial class RocketLauncher : Gun
 {
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
 
     public override void _Ready()
     {
-        _projectileScene = GD.Load<PackedScene>("res://Projectiles/CannonBall.tscn");
+        _projectileScene = GD.Load<PackedScene>("res://Projectiles/Rocket.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
     }
 
-    public override void _Input(InputEvent @event)
-    {
-
-
-    }
 
     public override void Init(Vector2I origin, List<Vector2I> occupiedPositions, float rotation)
     {
         Origin = origin;
-
         OccupiedPositions = occupiedPositions;
-
         Position = origin;
         RotationDegrees = rotation;
         Size = new Vector2I(64, 64);
@@ -31,23 +25,23 @@ public partial class Cannon2x2 : Gun
 
     public override void Shoot(Vector2I? target = null)
     {
-        if (_projectileScene == null || _muzzle == null)
+        if (_projectileScene == null || _muzzle == null || target == null)
         {
-            GD.PrintErr("Missing projectile or muzzle.");
+            GD.PrintErr("Missing projectile, muzzle, or target.");
             return;
         }
 
-        var projectile = _projectileScene.Instantiate<RigidBody2D>();
+        var projectile = _projectileScene.Instantiate<Area2D>();
         projectile.GlobalPosition = _muzzle.GlobalPosition;
 
-        Vector2 direction = -_muzzle.GlobalTransform.Y.Normalized();
+        Vector2 targetPos = target.Value;
+        Vector2 direction = (targetPos - projectile.GlobalPosition).Normalized();
 
-        if (projectile is RigidBody2D body)
+        if (projectile is Area2D body)
         {
-            body.LinearVelocity = direction * 300;
+            body.Position += direction * 300;
         }
 
         GetTree().Root.AddChild(projectile);
     }
-
 }
