@@ -91,6 +91,11 @@ metadata/_tab_index = 1
 layout_mode = 2
 text = "Canon"
 
+[node name="RocketLauncher" type="Button" parent="UI/BuildMenu/TabContainer/Guns"]
+layout_mode = 2
+text = "Rocket Launcher
+"
+
 [node name="QuitButton" type="Button" parent="UI"]
 anchors_preset = 7
 anchor_left = 0.5

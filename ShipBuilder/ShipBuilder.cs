@@ -20,7 +20,8 @@ public enum BuildMode
 
 public enum GunType
 {
-    Cannon
+    Cannon,
+    RocketLauncher
 }
 public enum ResourceEnum
 {
@@ -38,7 +39,7 @@ public partial class ShipBuilder : Node2D
 
     private PlayerShip _ship;
     private FloorTileType currentTile = FloorTileType.Wood;
-    private GunType currentGun = GunType.Cannon;
+    private GunType currentGun;
     private BuildMode currentBuildMode = BuildMode.None;
 
     private Button buildMenuButton;
@@ -47,6 +48,7 @@ public partial class ShipBuilder : Node2D
     private Button ironTileButton;
     private Button steelTileButton;
     private Button cannonGunButton;
+    private Button rocketGunButton;
 
 
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
@@ -59,7 +61,8 @@ public partial class ShipBuilder : Node2D
 
     private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
 
-        { GunType.Cannon, GD.Load<Texture2D>("res://Assets/Canon.png") }
+        { GunType.Cannon, GD.Load<Texture2D>("res://Assets/Canon.png") },
+        { GunType.RocketLauncher, GD.Load<Texture2D>("res://Assets/rocket_launcher.png")}
     };
 
     const int TILE_SIZE = 32;
@@ -98,11 +101,13 @@ public partial class ShipBuilder : Node2D
         ironTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Iron");
         steelTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Steel");
         cannonGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Cannon");
+        rocketGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/RocketLauncher");
         buildMenuButton.Pressed += OnBuildMenuButtonPressed;
         woodTileButton.Pressed += () => SelectFloorTile(FloorTileType.Wood);
         ironTileButton.Pressed += () => SelectFloorTile(FloorTileType.Iron);
         steelTileButton.Pressed += () => SelectFloorTile(FloorTileType.Steel);
         cannonGunButton.Pressed += () => SelectGun(GunType.Cannon);
+        rocketGunButton.Pressed += () => SelectGun(GunType.RocketLauncher);
 
         buildMenuPanel.Visible = false;
     }
@@ -246,6 +251,7 @@ public partial class ShipBuilder : Node2D
         _ship.UpdateBounds(tilePos);
 
     }
+
     private void TryPlaceGun(Vector2I worldPos)
     {
         var occupiedPositions = Globals.GetOccupiedPositions(worldPos, Globals.gunSizes[currentGun]);
@@ -255,10 +261,17 @@ public partial class ShipBuilder : Node2D
             return;
         }
 
-        if (!HasClearFiringLine(worldPos, currentGun, GhostTile.RotationDegrees))
+        switch (currentGun)
         {
-            GD.Print("Cannot place gun here - firing line blocked.");
-            return;
+            case GunType.Cannon:
+                if (!HasClearFiringLine(worldPos, currentGun, GhostTile.RotationDegrees))
+                {
+                    GD.Print("Cannot place gun here - firing line blocked.");
+                    return;
+                }
+                break;
+            case GunType.RocketLauncher:
+                break;
         }
 
         _ship.PlaceStructure(worldPos, currentGun, GhostTile.RotationDegrees);

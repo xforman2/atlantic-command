@@ -14,11 +14,13 @@ public partial class Globals : Node
 
     public static readonly Dictionary<GunType, PackedScene> gunScenes = new()
     {
-        { GunType.Cannon, GD.Load<PackedScene>("res://Guns/Cannon2x2.tscn") }
+        { GunType.Cannon, GD.Load<PackedScene>("res://Guns/Cannon2x2.tscn") },
+        { GunType.RocketLauncher, GD.Load<PackedScene>("res://Guns/RocketLauncher.tscn") }
     };
 
     public static readonly Dictionary<GunType, Vector2I> gunSizes = new() {
-        { GunType.Cannon, new Vector2I(64, 64)}
+        { GunType.Cannon, new Vector2I(64, 64) },
+        { GunType.RocketLauncher, new Vector2I(64, 64) }
     };
 
 

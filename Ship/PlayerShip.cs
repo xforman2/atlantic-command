@@ -18,7 +18,7 @@ public partial class PlayerShip : Ship
 
     private Vector2 velocity = Vector2.Zero;
     private float rotationSpeed = 0.5f;
-    private Timer _cannonShotCooldownTimer;
+    private Timer _shotCooldownTimer;
 
     public override void _Ready()
     {
@@ -33,12 +33,12 @@ public partial class PlayerShip : Ship
         playerResourceManager.IncreaseResource(ResourceEnum.Iron, 100);
         playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 100);
         playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 100);
-        _cannonShotCooldownTimer = new Timer
+        _shotCooldownTimer = new Timer
         {
             OneShot = true,
             WaitTime = 1.0f
         };
-        AddChild(_cannonShotCooldownTimer);
+        AddChild(_shotCooldownTimer);
     }
 
     public override void _Input(InputEvent @event)
@@ -50,6 +50,7 @@ public partial class PlayerShip : Ship
                 case Key.F:
                     ShootCannons();
                     break;
+
 
                 default:
                     break;
@@ -161,7 +162,7 @@ public partial class PlayerShip : Ship
     protected override void ShootCannons()
     {
 
-        if (_cannonShotCooldownTimer.IsStopped())
+        if (_shotCooldownTimer.IsStopped())
         {
             foreach (var structure in StructuresOrigin.Values)
             {
@@ -171,7 +172,24 @@ public partial class PlayerShip : Ship
                 }
             }
 
-            _cannonShotCooldownTimer.Start();
+            _shotCooldownTimer.Start();
+        }
+    }
+
+    public void ShootRockets(Vector2I target)
+    {
+        if (_shotCooldownTimer.IsStopped())
+        {
+
+            foreach (var structure in StructuresOrigin.Values)
+            {
+                if (structure is RocketLauncher rocketLauncher)
+                {
+                    rocketLauncher.Shoot(target);
+                }
+            }
+
+            _shotCooldownTimer.Start();
         }
     }
 }
