@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://xrf6cwewcodv"]
 
 [ext_resource type="Script" uid="uid://bryvxypgbvtlu" path="res://Dock/Dock.cs" id="1_dr3w8"]
-[ext_resource type="Texture2D" uid="uid://3h6bvlbo87lo" path="res://Assets/Harbor_v_1.0.1.png" id="2_dr3w8"]
+[ext_resource type="Texture2D" uid="uid://kaslrsbxffhh" path="res://Assets/Harbor_v_1.0.1.png" id="2_dr3w8"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dr3w8"]
 size = Vector2(522, 444)

@@ -5,11 +5,15 @@ public partial class Cannon2x2 : Gun
 {
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
+    private AudioStreamPlayer2D _shootSound;
 
     public override void _Ready()
     {
         _projectileScene = GD.Load<PackedScene>("res://Projectiles/CannonBall.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
+        _shootSound = new AudioStreamPlayer2D();
+        _shootSound.Stream = GD.Load<AudioStream>("res://Audio/cannon.mp3");
+        AddChild(_shootSound);
     }
 
     public override void _Input(InputEvent @event)
@@ -48,6 +52,7 @@ public partial class Cannon2x2 : Gun
         }
 
         GetTree().Root.AddChild(projectile);
+        _shootSound?.Play();
     }
 
 }
