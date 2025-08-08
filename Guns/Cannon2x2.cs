@@ -37,14 +37,14 @@ public partial class Cannon2x2 : Gun
             return;
         }
 
-        var projectile = _projectileScene.Instantiate<RigidBody2D>();
+        var projectile = _projectileScene.Instantiate<Area2D>();
         projectile.GlobalPosition = _muzzle.GlobalPosition;
 
         Vector2 direction = -_muzzle.GlobalTransform.Y.Normalized();
 
-        if (projectile is RigidBody2D body)
+        if (projectile is CannonBall body)
         {
-            body.LinearVelocity = direction * 300;
+            body.Direction = direction;
         }
 
         GetTree().Root.AddChild(projectile);
