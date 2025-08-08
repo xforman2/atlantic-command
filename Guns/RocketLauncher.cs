@@ -35,7 +35,6 @@ public partial class RocketLauncher : Gun
         projectile.GlobalPosition = _muzzle.GlobalPosition;
 
         Vector2 targetPos = target.Value;
-        GD.Print(targetPos);
         Vector2 direction = (targetPos - projectile.GlobalPosition).Normalized();
 
         if (projectile is Rocket body)

@@ -27,7 +27,6 @@ public partial class Rocket : Projectile
     {
         if (body is EnemyShip)
         {
-            GD.Print("here");
             base.OnBodyShapeEntered(bodyRid, body, bodyShapeIndex, localShapeIndex);
 
         }

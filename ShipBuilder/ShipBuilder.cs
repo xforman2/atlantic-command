@@ -282,8 +282,6 @@ public partial class ShipBuilder : Node2D
         }
 
         _ship.PlaceStructure(worldPos, currentGun, GhostTile.RotationDegrees);
-
-        GD.Print("Placed a gun.");
     }
 
     private void TryRemoveTile(Vector2I position)
