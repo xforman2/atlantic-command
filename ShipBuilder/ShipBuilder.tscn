@@ -1,8 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://t2tnu0qdh1uu"]
+[gd_scene load_steps=13 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
 [ext_resource type="Texture2D" uid="uid://dt1fluif8vm8" path="res://Assets/build_mode_button_exit.png" id="2_cx8ke"]
+[ext_resource type="Texture2D" uid="uid://dmpn7npplxlfe" path="res://Assets/build_menu_button.png" id="2_cygug"]
 [ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
+[ext_resource type="Texture2D" uid="uid://u62r63c0yqq7" path="res://Assets/green_tab.png" id="3_4wo41"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7017h"]
+texture = ExtResource("2_cygug")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_jaduu"]
+texture = ExtResource("2_cygug")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsudw"]
+texture = ExtResource("2_cygug")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6dbqu"]
+texture = ExtResource("3_4wo41")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cygug"]
 texture = ExtResource("2_cx8ke")
@@ -27,11 +41,15 @@ z_index = 5
 [node name="UI" type="CanvasLayer" parent="."]
 
 [node name="BuildMenuButton" type="Button" parent="UI"]
-offset_left = 926.0
-offset_top = 16.0
-offset_right = 1133.0
-offset_bottom = 102.0
-text = "Build Menu"
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -207.0
+offset_bottom = 86.0
+grow_horizontal = 0
+theme_override_styles/hover = SubResource("StyleBoxTexture_7017h")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_jaduu")
+theme_override_styles/normal = SubResource("StyleBoxTexture_xsudw")
 
 [node name="BuildMenu" type="PanelContainer" parent="UI"]
 anchors_preset = 1
@@ -41,6 +59,7 @@ offset_left = -555.0
 offset_right = -25.0
 offset_bottom = 132.0
 grow_horizontal = 0
+theme_override_styles/panel = SubResource("StyleBoxTexture_6dbqu")
 
 [node name="TabContainer" type="TabContainer" parent="UI/BuildMenu"]
 layout_mode = 2
