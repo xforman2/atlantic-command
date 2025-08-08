@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c6dtgd8p70eaj"]
+
+[ext_resource type="Script" uid="uid://ct365pxqr40p1" path="res://Projectiles/Torpedo.cs" id="1_40ssd"]
+[ext_resource type="Texture2D" uid="uid://byb1rhhsck7y7" path="res://Assets/torpedo.png" id="2_5ecna"]
+
+[node name="Torpedo" type="Area2D"]
+script = ExtResource("1_40ssd")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_5ecna")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(-4, -31.2, -4, -27.8, -5.8, -26, -8, -26, -9, 22, -9, 27.1, -6, 29.1, -6, 31, 5.1, 31, 7.1, 28, 9.6, 28, 8, 22, 8, -25.2)

@@ -50,8 +50,9 @@ public partial class PlayerShip : Ship
                 case Key.F:
                     ShootCannons();
                     break;
-
-
+                case Key.T:
+                    ShootTorpedos();
+                    break;
                 default:
                     break;
             }
@@ -176,11 +177,26 @@ public partial class PlayerShip : Ship
         }
     }
 
-    public void ShootRockets(Vector2I target)
+    protected void ShootTorpedos()
     {
         if (_shotCooldownTimer.IsStopped())
         {
+            foreach (var structure in StructuresOrigin.Values)
+            {
+                if (structure is TorpedoLauncher torpedo)
+                {
+                    torpedo.Shoot();
+                }
+            }
 
+            _shotCooldownTimer.Start();
+        }
+    }
+
+    public void ShootRockets(Vector2 target)
+    {
+        if (_shotCooldownTimer.IsStopped())
+        {
             foreach (var structure in StructuresOrigin.Values)
             {
                 if (structure is RocketLauncher rocketLauncher)

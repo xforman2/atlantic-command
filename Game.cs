@@ -230,7 +230,7 @@ public partial class Game : Node2D
                     break;
 
                 case InputMode.RocketFiring:
-                    Vector2I targetCell = _environmentLayer.LocalToMap(GetGlobalMousePosition());
+                    Vector2 targetCell = GetGlobalMousePosition();
                     _ship.ShootRockets(targetCell);
                     break;
             }

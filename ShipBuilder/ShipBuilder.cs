@@ -21,8 +21,10 @@ public enum BuildMode
 public enum GunType
 {
     Cannon,
-    RocketLauncher
+    RocketLauncher,
+    Torpedo,
 }
+
 public enum ResourceEnum
 {
     Tridentis,
@@ -49,6 +51,7 @@ public partial class ShipBuilder : Node2D
     private Button steelTileButton;
     private Button cannonGunButton;
     private Button rocketGunButton;
+    private Button torpedoGunButton;
 
 
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
@@ -62,7 +65,8 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<GunType, Texture2D> gunPreviewTextures = new(){
 
         { GunType.Cannon, GD.Load<Texture2D>("res://Assets/Canon.png") },
-        { GunType.RocketLauncher, GD.Load<Texture2D>("res://Assets/rocket_launcher.png")}
+        { GunType.RocketLauncher, GD.Load<Texture2D>("res://Assets/rocket_launcher.png") },
+        { GunType.Torpedo, GD.Load<Texture2D>("res://Assets/torpedo_launcher.png") }
     };
 
     const int TILE_SIZE = 32;
@@ -102,12 +106,14 @@ public partial class ShipBuilder : Node2D
         steelTileButton = GetNode<Button>("UI/BuildMenu/TabContainer/Floors/Steel");
         cannonGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Cannon");
         rocketGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/RocketLauncher");
+        torpedoGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Torpedo");
         buildMenuButton.Pressed += OnBuildMenuButtonPressed;
         woodTileButton.Pressed += () => SelectFloorTile(FloorTileType.Wood);
         ironTileButton.Pressed += () => SelectFloorTile(FloorTileType.Iron);
         steelTileButton.Pressed += () => SelectFloorTile(FloorTileType.Steel);
         cannonGunButton.Pressed += () => SelectGun(GunType.Cannon);
         rocketGunButton.Pressed += () => SelectGun(GunType.RocketLauncher);
+        torpedoGunButton.Pressed += () => SelectGun(GunType.Torpedo);
 
         buildMenuPanel.Visible = false;
     }
@@ -264,6 +270,7 @@ public partial class ShipBuilder : Node2D
         switch (currentGun)
         {
             case GunType.Cannon:
+            case GunType.Torpedo:
                 if (!HasClearFiringLine(worldPos, currentGun, GhostTile.RotationDegrees))
                 {
                     GD.Print("Cannot place gun here - firing line blocked.");
@@ -327,7 +334,9 @@ public partial class ShipBuilder : Node2D
                 switch (currentGun)
                 {
                     case GunType.Cannon:
-                        return _ship.CanPlaceStructure(occupiedPositions) && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
+                    case GunType.Torpedo:
+                        return _ship.CanPlaceStructure(occupiedPositions)
+                            && HasClearFiringLine(position, currentGun, GhostTile.RotationDegrees);
                     case GunType.RocketLauncher:
                         return _ship.CanPlaceStructure(occupiedPositions);
                     default:

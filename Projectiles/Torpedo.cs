@@ -1,11 +1,11 @@
 using Godot;
 using System;
-using System.Linq;
 
-public partial class CannonBall : Projectile
+public partial class Torpedo : Projectile
 {
-    [Export] public float Speed { get; set; } = 300f;
-    protected override int DefaultDamage => 25;
+
+    [Export] public float Speed { get; set; } = 400;
+    protected override int DefaultDamage => 75;
 
     public Vector2 Direction { get; set; }
 
