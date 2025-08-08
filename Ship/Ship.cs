@@ -32,11 +32,13 @@ public abstract partial class Ship : CharacterBody2D
     private CollisionShape2D AddCollisionShapeForTile(Vector2I position, FloorTile floor)
     {
         var collisionShape = new CollisionShape2D();
-        var rectShape = new RectangleShape2D();
-        rectShape.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
+        var rectShape = new RectangleShape2D
+        {
+            Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE)
+        };
         collisionShape.Shape = rectShape;
         collisionShape.Position = position;
-
+        collisionShape.SetMeta("floor_tile", floor);
         AddChild(collisionShape);
         return collisionShape;
     }
@@ -106,6 +108,11 @@ public abstract partial class Ship : CharacterBody2D
         foreach (var occupiedPos in structure.OccupiedPositions)
         {
             Structures[occupiedPos] = structure;
+            if (Floors.TryGetValue(occupiedPos, out var floorData))
+            {
+                FloorTile floor = floorData.Item1;
+                floor.StructureOnTop = structure;
+            }
         }
         StructuresOrigin[structure.Origin] = structure;
         AddChild(structure);
