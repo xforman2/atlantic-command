@@ -10,8 +10,10 @@ public partial class Game : Node2D
     private TileMapLayer _groundLayer;
     private TileMapLayer _environmentLayer;
     private EnemySpawner _enemySpawner;
-
     private Sprite2D _rocketGhostTile;
+    private Label _modeLabel;
+    private Timer _modeLabelTimer;
+
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
     public const float SandThreshold = 0.15f;
@@ -25,7 +27,6 @@ public partial class Game : Node2D
 
     private Dictionary<Vector2I, bool> _loadedChunks = new();
     private Vector2I _lastChunkPos = new(-9999, -9999);
-
     private bool _canMine;
     private Vector2I _hoverCell;
     private ColorRect _hoverHighlight;
@@ -36,8 +37,6 @@ public partial class Game : Node2D
         { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 1) },
     };
 
-
-
     public override void _Ready()
     {
         _rocketGhostTile = GetNode<Sprite2D>("GhostTile");
@@ -45,6 +44,8 @@ public partial class Game : Node2D
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
         _enemySpawner = GetNode<EnemySpawner>("EnemySpawner");
+
+        _modeLabel = GetNode<Label>("GameOverlay/ModeLabel");
 
         var buildButton = GetNode<Button>("GameOverlay/BuildButton");
         buildButton.Pressed += EnterBuildMode;
@@ -70,6 +71,13 @@ public partial class Game : Node2D
         _hoverHighlight = GetNode<ColorRect>("HoverHighlight");
         _hoverHighlight.Visible = false;
         _hoverHighlight.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
+
+        _modeLabelTimer = new Timer();
+        _modeLabelTimer.WaitTime = 3.0f;
+        _modeLabelTimer.OneShot = true;
+        AddChild(_modeLabelTimer);
+        _modeLabelTimer.Timeout += OnTimerTimeout;
+        UpdateModeLabel();
     }
 
     public override void _Process(double delta)
@@ -157,11 +165,6 @@ public partial class Game : Node2D
         var environmentNoise = EnvironmentNoise.Noise;
         Vector2I start = chunkPos * Globals.CHUNK_SIZE;
 
-        float minHeight = float.MaxValue;
-        float maxHeight = float.MinValue;
-        float minEnv = float.MaxValue;
-        float maxEnv = float.MinValue;
-
         for (int x = 0; x < Globals.CHUNK_SIZE; x++)
         {
             for (int y = 0; y < Globals.CHUNK_SIZE; y++)
@@ -170,34 +173,19 @@ public partial class Game : Node2D
                 float heightValue = heightNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
                 float envValue = environmentNoise.GetNoise2D(tilePos.X * NoiseScale, tilePos.Y * NoiseScale);
 
-                minHeight = MathF.Min(minHeight, heightValue);
-                maxHeight = MathF.Max(maxHeight, heightValue);
-                minEnv = MathF.Min(minEnv, envValue);
-                maxEnv = MathF.Max(maxEnv, envValue);
-
                 GroundTextureEnum groundId = GetGroundType(heightValue);
                 _groundLayer.SetCell(tilePos, (int)groundId, Vector2I.Zero);
 
                 if (groundId == GroundTextureEnum.Sand)
                 {
                     if (envValue > TreeThreshold)
-                    {
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
-                    }
                     else if (envValue > ScrapThreshold)
-                    {
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Scrap, Vector2I.Zero);
-
-                    }
                     else if (envValue < IronThreshold)
-                    {
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
-
-                    }
                     else if (envValue < RockThreshold)
-                    {
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
-                    }
                 }
             }
         }
@@ -221,12 +209,12 @@ public partial class Game : Node2D
 
         _enemySpawner.DespawnEnemiesInChunk(chunkPos, _groundLayer);
     }
+
     private void EnterBuildMode()
     {
         ShipManager.Instance.SetShip(_ship);
         _ship.GoToDock();
         GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
-
     }
 
     public override void _Input(InputEvent @event)
@@ -236,15 +224,10 @@ public partial class Game : Node2D
             switch (_currentMode)
             {
                 case InputMode.Mining:
-                    if (_canMine)
-                    {
-                        MineTile(_hoverCell);
-                    }
+                    if (_canMine) MineTile(_hoverCell);
                     break;
-
                 case InputMode.RocketFiring:
-                    Vector2 targetCell = GetGlobalMousePosition();
-                    _ship.ShootRockets(targetCell);
+                    _ship.ShootRockets(GetGlobalMousePosition());
                     break;
             }
         }
@@ -256,22 +239,18 @@ public partial class Game : Node2D
                 case Key.M:
                     ToggleMode(InputMode.Mining);
                     break;
-
                 case Key.R:
                     ToggleMode(InputMode.RocketFiring);
                     break;
-
                 case Key.H:
                     ToggleMode(InputMode.HpStatus);
                     break;
-
                 case Key.B:
                     EnterBuildMode();
                     break;
             }
         }
     }
-
 
     private void ToggleMode(InputMode mode)
     {
@@ -282,7 +261,6 @@ public partial class Game : Node2D
         {
             _hoverHighlight.Visible = false;
             _rocketGhostTile.Visible = false;
-
             ToggleStructuresVisibility(true);
             ToggleHpLabelsVisibility(false);
         }
@@ -296,21 +274,18 @@ public partial class Game : Node2D
                     ToggleStructuresVisibility(true);
                     ToggleHpLabelsVisibility(false);
                     break;
-
                 case InputMode.RocketFiring:
                     _hoverHighlight.Visible = false;
                     _rocketGhostTile.Visible = true;
                     ToggleStructuresVisibility(true);
                     ToggleHpLabelsVisibility(false);
                     break;
-
                 case InputMode.HpStatus:
                     _hoverHighlight.Visible = false;
                     _rocketGhostTile.Visible = false;
                     ToggleStructuresVisibility(false);
                     ToggleHpLabelsVisibility(true);
                     break;
-
                 case InputMode.None:
                     _hoverHighlight.Visible = false;
                     _rocketGhostTile.Visible = false;
@@ -319,39 +294,32 @@ public partial class Game : Node2D
                     break;
             }
         }
+
+        UpdateModeLabel();
     }
 
     private void ToggleStructuresVisibility(bool visible)
     {
         if (_ship == null) return;
-
         foreach (var structure in _ship.StructuresOrigin.Values)
-        {
             structure.Visible = visible;
-        }
     }
 
     private void ToggleHpLabelsVisibility(bool visible)
     {
         if (_ship == null) return;
-
         foreach (var floorData in _ship.Floors.Values)
-        {
             floorData.Item1.ShowHpLabel(visible);
-        }
     }
 
     private void MineTile(Vector2I cell)
     {
         int tileId = _environmentLayer.GetCellSourceId(cell);
-
         if (!_tileDrops.TryGetValue(tileId, out var drop))
             return;
 
         _ship.playerResourceManager.IncreaseResource(drop.Resource, drop.Amount);
-
         _environmentLayer.SetCell(cell, -1, Vector2I.Zero);
-
         _hoverHighlight.Visible = false;
         _canMine = false;
     }
@@ -362,4 +330,34 @@ public partial class Game : Node2D
         >= SandThreshold => GroundTextureEnum.Sand,
         _ => GroundTextureEnum.Water
     };
+
+    private void UpdateModeLabel()
+    {
+        string modeText;
+        switch (_currentMode)
+        {
+            case InputMode.Mining:
+                modeText = "Mining";
+                break;
+            case InputMode.RocketFiring:
+                modeText = "Rocket Firing";
+                break;
+            case InputMode.HpStatus:
+                modeText = "HP Status";
+                break;
+            case InputMode.None:
+            default:
+                modeText = "No Mode";
+                break;
+        }
+
+        _modeLabel.Visible = true;
+        _modeLabelTimer.Start();
+        _modeLabel.Text = $"Mode: {modeText}";
+    }
+
+    private void OnTimerTimeout()
+    {
+        _modeLabel.Visible = false;
+    }
 }
