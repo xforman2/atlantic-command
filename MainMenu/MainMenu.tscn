@@ -38,6 +38,7 @@ texture = ExtResource("7_bsanu")
 texture = ExtResource("7_3clmd")
 
 [node name="MainMenu" type="Control"]
+z_index = 10
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0

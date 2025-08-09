@@ -18,12 +18,27 @@ public partial class MainMenu : Control
     private void OnStartPressed()
     {
         var ship = ShipManager.Instance.CurrentShip;
-        if (ship is not null)
+        GD.Print("LAST ORIGIN:", GameState.Instance.LastOrigin);
+
+        if (GameState.Instance.LastOrigin == SceneOrigin.Game)
         {
-            ship.EnableCamera();
+            if (ship is not null)
+            {
+                ship.EnableCamera();
+            }
+            GetTree().ChangeSceneToFile("res://Game.tscn");
+            return;
+        }
+        if (GameState.Instance.LastOrigin == SceneOrigin.ShipBuilder)
+        {
+            if (ship is not null)
+            {
+                ship.DisableCamera();
+            }
+            GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+            return;
         }
 
-        GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
 
 
     }
