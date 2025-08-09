@@ -110,13 +110,7 @@ public partial class ShipBuilder : Node2D
         cannonGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Cannon");
         rocketGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/RocketLauncher");
         torpedoGunButton = GetNode<Button>("UI/BuildMenu/TabContainer/Guns/Torpedo");
-        buildMenuButton.Pressed += OnBuildMenuButtonPressed;
-        woodTileButton.Pressed += () => SelectFloorTile(FloorTileType.Wood);
-        ironTileButton.Pressed += () => SelectFloorTile(FloorTileType.Iron);
-        steelTileButton.Pressed += () => SelectFloorTile(FloorTileType.Steel);
-        cannonGunButton.Pressed += () => SelectGun(GunType.Cannon);
-        rocketGunButton.Pressed += () => SelectGun(GunType.RocketLauncher);
-        torpedoGunButton.Pressed += () => SelectGun(GunType.Torpedo);
+        InitializeBuildMenuButtons();
 
         buildMenuPanel.Visible = false;
     }
@@ -261,6 +255,7 @@ public partial class ShipBuilder : Node2D
             return;
         }
 
+        var cost = Globals.gunCosts[currentGun];
         switch (currentGun)
         {
             case GunType.Cannon:
@@ -275,6 +270,7 @@ public partial class ShipBuilder : Node2D
                 break;
         }
 
+        DeductResources(cost);
         _ship.PlaceStructure(worldPos, currentGun, GhostTile.RotationDegrees);
     }
 
@@ -538,9 +534,6 @@ public partial class ShipBuilder : Node2D
         }
     }
 
-
-
-
     private void SelectGun(GunType gunType)
     {
         if (Globals.gunScenes.ContainsKey(gunType))
@@ -554,5 +547,38 @@ public partial class ShipBuilder : Node2D
         {
             GD.PrintErr($"Unknown gun type selected: {gunType}");
         }
+    }
+
+    private void SetupFloorButton(Button button, FloorTileType type)
+    {
+        var costs = Globals.tileCosts[type];
+        button.Text = FormatPriceInline(costs);
+        button.Pressed += () => SelectFloorTile(type);
+    }
+
+    private void SetupGunButton(Button button, GunType type)
+    {
+        var costs = Globals.gunCosts[type];
+        button.Text = FormatPriceInline(costs);
+        button.Pressed += () => SelectGun(type);
+    }
+
+    private string FormatPriceInline(Dictionary<ResourceEnum, int> costs)
+    {
+        var prefix = "Cost: ";
+        return prefix + string.Join(" ", costs.Select(kvp => $"{kvp.Value} {kvp.Key}"));
+    }
+
+    private void InitializeBuildMenuButtons()
+    {
+        SetupFloorButton(woodTileButton, FloorTileType.Wood);
+        SetupFloorButton(ironTileButton, FloorTileType.Iron);
+        SetupFloorButton(steelTileButton, FloorTileType.Steel);
+
+        SetupGunButton(cannonGunButton, GunType.Cannon);
+        SetupGunButton(rocketGunButton, GunType.RocketLauncher);
+        SetupGunButton(torpedoGunButton, GunType.Torpedo);
+
+        buildMenuButton.Pressed += OnBuildMenuButtonPressed;
     }
 }
