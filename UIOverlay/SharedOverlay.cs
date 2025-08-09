@@ -12,9 +12,9 @@ public partial class SharedOverlay : Control
     {
 
         woodLabel = GetNode<Label>("ResourceBar/WoodBox/WoodLabel");
-        scrapLabel = GetNode<Label>("ResourceBar/CoalBox/CoalLabel");
+        scrapLabel = GetNode<Label>("ResourceBar/ScrapBox/ScrapLabel");
         ironLabel = GetNode<Label>("ResourceBar/IronBox/IronLabel");
-        tridentisLabel = GetNode<Label>("ResourceBar/CopperBox/CopperLabel");
+        tridentisLabel = GetNode<Label>("ResourceBar/TridentisBox/TridentisLabel");
 
 
         ResourceMediator.OnResourceChanged += OnResourceChanged;
