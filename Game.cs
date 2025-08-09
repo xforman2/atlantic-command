@@ -39,6 +39,8 @@ public partial class Game : Node2D
 
     public override void _Ready()
     {
+        GameState.Instance.LastOrigin = SceneOrigin.Game;
+
         _rocketGhostTile = GetNode<Sprite2D>("GhostTile");
         _rocketGhostTile.Texture = GD.Load<Texture2D>("res://Assets/ghost_tile_rocket_launcher.png");
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
@@ -56,7 +58,7 @@ public partial class Game : Node2D
             var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
             _ship = scene.Instantiate<PlayerShip>();
             AddChild(_ship);
-            ShipManager.Instance.SetShip(_ship);
+            ShipManager.Instance.ReparentShip(_ship);
             GD.Print("New ship instantiated and assigned to ShipManager.");
         }
         else
@@ -212,7 +214,7 @@ public partial class Game : Node2D
 
     private void EnterBuildMode()
     {
-        ShipManager.Instance.SetShip(_ship);
+        ShipManager.Instance.ReparentShip(_ship);
         _ship.GoToDock();
         GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
     }

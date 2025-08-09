@@ -21,6 +21,7 @@ BoatManager="*res://Autoload/ShipManager.cs"
 ResourceMediator="*res://Mediator/ResourceMediator.cs"
 InputManager="*res://Autoload/InputManager.cs"
 Globals="*res://Autoload/Globals.cs"
+GameState="*res://Autoload/GameState.cs"
 
 [display]
 

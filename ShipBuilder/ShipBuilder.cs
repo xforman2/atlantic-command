@@ -57,7 +57,7 @@ public partial class ShipBuilder : Node2D
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
 
         { FloorTileType.Wood, GD.Load<Texture2D>("res://Assets/floor_wood.png") },
-        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron_v 1.2.0.png") },
+        { FloorTileType.Iron, GD.Load<Texture2D>("res://Assets/floor_iron_v1.2.0.png") },
         { FloorTileType.Steel, GD.Load<Texture2D>("res://Assets/floor_steel.png") },
     };
 
@@ -73,6 +73,8 @@ public partial class ShipBuilder : Node2D
 
     public override void _Ready()
     {
+        GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
+
         ghostTileRemoveTextureValid = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
         ghostTileRemoveTextureInvalid = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
 
@@ -86,6 +88,7 @@ public partial class ShipBuilder : Node2D
             var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
             _ship = scene.Instantiate<PlayerShip>();
             AddChild(_ship);
+            ShipManager.Instance.CurrentShip = _ship;
             _ship.DisableCamera();
             GD.Print("New ship instantiated and assigned to ShipManager.");
         }
@@ -189,20 +192,11 @@ public partial class ShipBuilder : Node2D
                         break;
                 }
             }
-            else if (mouseEvent.ButtonIndex == MouseButton.Right && mouseEvent.Pressed)
-            {
-                Vector2I position = GetStructureSnappedPosition(mouseEvent.Position);
-                TryRemoveTile(position);
-            }
         }
         else if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
         {
             switch (keyEvent.Keycode)
             {
-                case Key.B:
-                    EnterNormalMode();
-                    break;
-
                 case Key.R:
                     GhostTile.RotationDegrees = (GhostTile.RotationDegrees + 90) % 360;
                     break;
@@ -516,7 +510,7 @@ public partial class ShipBuilder : Node2D
 
     private void EnterNormalMode()
     {
-        ShipManager.Instance.SetShip(_ship);
+        ShipManager.Instance.ReparentShip(_ship);
         _ship.GoOutOfDock();
         GetTree().ChangeSceneToFile("res://Game.tscn");
     }
