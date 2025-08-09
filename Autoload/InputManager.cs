@@ -8,7 +8,7 @@ public partial class InputManager : Node
         {
             var ship = ShipManager.Instance.CurrentShip;
             ship.DisableCamera();
-            ShipManager.Instance.SetShip(ship);
+            ShipManager.Instance.ReparentShip(ship);
             GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
         }
     }

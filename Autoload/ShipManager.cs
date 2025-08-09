@@ -5,7 +5,7 @@ public partial class ShipManager : Node
 {
     public static ShipManager Instance { get; private set; }
 
-    public PlayerShip CurrentShip { get; private set; }
+    public PlayerShip CurrentShip { get; set; }
     public Vector2 LastWorldPosition = Globals.STARTING_POSITION;
 
     public override void _Ready()
@@ -14,7 +14,7 @@ public partial class ShipManager : Node
         CurrentShip = null;
     }
 
-    public void SetShip(PlayerShip ship)
+    public void ReparentShip(PlayerShip ship)
     {
 
         CurrentShip = ship;
