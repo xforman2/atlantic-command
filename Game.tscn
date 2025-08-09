@@ -5,8 +5,8 @@
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
 [ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
+[ext_resource type="Texture2D" uid="uid://m67s14lsnggr" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
 [ext_resource type="Texture2D" uid="uid://b1xum11njs3fy" path="res://Assets/build_mode_button.png" id="6_2vekm"]
-[ext_resource type="Texture2D" uid="uid://b5p2qjx2ihyv7" path="res://Assets/minimap_frame.png" id="6_r0x5m"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
@@ -82,7 +82,7 @@ script = ExtResource("5_t88pq")
 
 [node name="TextureRect" type="TextureRect" parent="MinimapOverlay/MinimapContainer"]
 layout_mode = 2
-texture = ExtResource("6_r0x5m")
+texture = ExtResource("5_yx171")
 
 [node name="GameOverlay" type="CanvasLayer" parent="."]
 

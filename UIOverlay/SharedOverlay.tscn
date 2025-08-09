@@ -30,15 +30,15 @@ stretch_mode = 3
 layout_mode = 2
 text = "0"
 
-[node name="CoalBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+[node name="TridentisBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
 layout_mode = 2
 
-[node name="CoalIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/CoalBox"]
+[node name="TridentisIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/TridentisBox"]
 layout_mode = 2
 texture = ExtResource("3_mcd0k")
 stretch_mode = 3
 
-[node name="CoalLabel" type="Label" parent="SharedOverlay/ResourceBar/CoalBox"]
+[node name="TridentisLabel" type="Label" parent="SharedOverlay/ResourceBar/TridentisBox"]
 layout_mode = 2
 text = "0"
 
@@ -54,14 +54,14 @@ stretch_mode = 3
 layout_mode = 2
 text = "0"
 
-[node name="CopperBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
+[node name="ScrapBox" type="HBoxContainer" parent="SharedOverlay/ResourceBar"]
 layout_mode = 2
 
-[node name="CopperIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/CopperBox"]
+[node name="ScrapIcon" type="TextureRect" parent="SharedOverlay/ResourceBar/ScrapBox"]
 layout_mode = 2
 texture = ExtResource("5_keik7")
 stretch_mode = 3
 
-[node name="CopperLabel" type="Label" parent="SharedOverlay/ResourceBar/CopperBox"]
+[node name="ScrapLabel" type="Label" parent="SharedOverlay/ResourceBar/ScrapBox"]
 layout_mode = 2
 text = "0"

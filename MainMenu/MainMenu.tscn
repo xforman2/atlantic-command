@@ -2,40 +2,40 @@
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://cuvhhvckghhxt" path="res://Assets/background_final.png" id="2_bsanu"]
-[ext_resource type="Texture2D" uid="uid://bk8k5cp1sc20j" path="res://Assets/play button pressed.png" id="3_lbqne"]
-[ext_resource type="Texture2D" uid="uid://cybra3qvw0rnd" path="res://Assets/play button.png" id="4_430ii"]
-[ext_resource type="Texture2D" uid="uid://vviay3kx47nx" path="res://Assets/options button pressed.png" id="5_3p42x"]
-[ext_resource type="Texture2D" uid="uid://bve6dm3jhg7qa" path="res://Assets/options button.png" id="6_3clmd"]
-[ext_resource type="Texture2D" uid="uid://nnlqwqvx2cra" path="res://Assets/quit button.png" id="7_3clmd"]
-[ext_resource type="Texture2D" uid="uid://c33ilp6x307eo" path="res://Assets/quit button pressed.png" id="7_bsanu"]
+[ext_resource type="Texture2D" uid="uid://bnko6wl36tf3n" path="res://Assets/play_button_pressed_v1.0.1.png" id="3_kftou"]
+[ext_resource type="Texture2D" uid="uid://xdiusfgg6n6d" path="res://Assets/play_button_v1.0.1.png" id="4_kftou"]
+[ext_resource type="Texture2D" uid="uid://c24ywyy24qohj" path="res://Assets/options_button_pressed_v1.0.1.png" id="5_nre7b"]
+[ext_resource type="Texture2D" uid="uid://beh53v64chyjh" path="res://Assets/options_button_v1.0.1.png" id="6_nxm3p"]
+[ext_resource type="Texture2D" uid="uid://b8lhtyncmbjqm" path="res://Assets/quit_button_pressed_v1.0.1.png" id="7_g1826"]
+[ext_resource type="Texture2D" uid="uid://dwo3rlnljgggf" path="res://Assets/quit_button_v1.0.1.png" id="8_npjie"]
 [ext_resource type="AudioStream" uid="uid://d2k7mx6jl7tfj" path="res://Audio/main_menu.mp3" id="9_kftou"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_lbqne"]
-texture = ExtResource("3_lbqne")
+texture = ExtResource("3_kftou")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g1826"]
-texture = ExtResource("3_lbqne")
+texture = ExtResource("3_kftou")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3clmd"]
-texture = ExtResource("4_430ii")
+texture = ExtResource("4_kftou")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bsanu"]
-texture = ExtResource("5_3p42x")
+texture = ExtResource("5_nre7b")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_npjie"]
-texture = ExtResource("5_3p42x")
+texture = ExtResource("5_nre7b")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_kftou"]
-texture = ExtResource("6_3clmd")
+texture = ExtResource("6_nxm3p")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nxm3p"]
-texture = ExtResource("7_bsanu")
+texture = ExtResource("7_g1826")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7t2hb"]
-texture = ExtResource("7_bsanu")
+texture = ExtResource("7_g1826")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
-texture = ExtResource("7_3clmd")
+texture = ExtResource("8_npjie")
 
 [node name="MainMenu" type="Control"]
 z_index = 10

@@ -39,8 +39,6 @@ public partial class MainMenu : Control
             return;
         }
 
-
-
     }
 
     private void OnQuitPressed()

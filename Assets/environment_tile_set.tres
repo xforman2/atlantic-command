@@ -1,7 +1,9 @@
-[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://dcba7dtxq7a6k"]
+[gd_resource type="TileSet" load_steps=9 format=3 uid="uid://dcba7dtxq7a6k"]
 
 [ext_resource type="Texture2D" uid="uid://reddt45uori2" path="res://Assets/rock.png" id="1_cjaix"]
+[ext_resource type="Texture2D" uid="uid://bvyfe81gto0ha" path="res://Assets/gear_wheel_scrap1.png" id="1_eo6tn"]
 [ext_resource type="Texture2D" uid="uid://fpjtphakih2f" path="res://Assets/palm_small.png" id="2_q3kub"]
+[ext_resource type="Texture2D" uid="uid://bd3usc0y2jcmi" path="res://Assets/Irone_ore.png" id="4_hitke"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cjaix"]
 texture = ExtResource("2_q3kub")
@@ -13,7 +15,19 @@ texture = ExtResource("1_cjaix")
 texture_region_size = Vector2i(32, 32)
 0:0/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_v3o4n"]
+texture = ExtResource("1_eo6tn")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_r5g4s"]
+texture = ExtResource("4_hitke")
+texture_region_size = Vector2i(32, 32)
+0:0/0 = 0
+
 [resource]
 tile_size = Vector2i(32, 32)
 sources/2 = SubResource("TileSetAtlasSource_eo6tn")
 sources/1 = SubResource("TileSetAtlasSource_cjaix")
+sources/4 = SubResource("TileSetAtlasSource_r5g4s")
+sources/3 = SubResource("TileSetAtlasSource_v3o4n")

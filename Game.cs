@@ -18,6 +18,8 @@ public partial class Game : Node2D
     public const float GrassThreshold = 0.2f;
     public const float TreeThreshold = 0.5f;
     public const float RockThreshold = -0.5f;
+    public const float ScrapThreshold = 0.4f;
+    public const float IronThreshold = -0.4f;
     [Export] public NoiseTexture2D HeightNoise;
     [Export] public NoiseTexture2D EnvironmentNoise;
 
@@ -30,7 +32,8 @@ public partial class Game : Node2D
     private Dictionary<int, (ResourceEnum Resource, int Amount)> _tileDrops = new()
     {
         { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1) },
-        { (int)EnvironmentTextureEnum.Rock, (ResourceEnum.Iron, 1) },
+        { (int)EnvironmentTextureEnum.Iron, (ResourceEnum.Iron, 1) },
+        { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 1) },
     };
 
 
@@ -182,6 +185,16 @@ public partial class Game : Node2D
                     if (envValue > TreeThreshold)
                     {
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
+                    }
+                    else if (envValue > ScrapThreshold)
+                    {
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Scrap, Vector2I.Zero);
+
+                    }
+                    else if (envValue < IronThreshold)
+                    {
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
+
                     }
                     else if (envValue < RockThreshold)
                     {
