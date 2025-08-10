@@ -1,12 +1,17 @@
-[gd_scene load_steps=15 format=3 uid="uid://t2tnu0qdh1uu"]
+[gd_scene load_steps=21 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
-[ext_resource type="Texture2D" uid="uid://dvsvu4uy6o2f5" path="res://Assets/build_mode_button_exit.png" id="2_cx8ke"]
-[ext_resource type="Texture2D" uid="uid://3h4cd0tqn6aq" path="res://Assets/build_menu_button.png" id="2_cygug"]
-[ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
-[ext_resource type="Texture2D" uid="uid://d3x3aait2nvcu" path="res://Assets/green_tab.png" id="3_4wo41"]
-[ext_resource type="Texture2D" uid="uid://61qxqmtwsl5g" path="res://Assets/build_mode_bg.png" id="6_g5y3i"]
+[ext_resource type="Texture2D" uid="uid://brp43268ourfu" path="res://Assets/build_mode_button_exit.png" id="2_cx8ke"]
+[ext_resource type="Texture2D" uid="uid://83qmkhfa13mj" path="res://Assets/build_menu_button.png" id="2_cygug"]
+[ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="2_kyq75"]
+[ext_resource type="Texture2D" uid="uid://svogw4dnrxn6" path="res://Assets/floor_wood.png" id="3_7017h"]
+[ext_resource type="Texture2D" uid="uid://d05udysa3w3oh" path="res://Assets/floor_iron_v1.2.0.png" id="4_xsudw"]
+[ext_resource type="Texture2D" uid="uid://4codpbj6b8nv" path="res://Assets/floor_steel.png" id="5_6dbqu"]
+[ext_resource type="Texture2D" uid="uid://cp7ax71xloeca" path="res://Assets/Canon.png" id="6_6dbqu"]
+[ext_resource type="Texture2D" uid="uid://rkrgekbd6wf0" path="res://Assets/build_mode_bg.png" id="6_g5y3i"]
+[ext_resource type="Texture2D" uid="uid://dhswqfkkn2vbt" path="res://Assets/rocket_launcher.png" id="7_8gudx"]
 [ext_resource type="AudioStream" uid="uid://my2adjp4qtn7" path="res://Audio/harbor.mp3" id="7_7017h"]
+[ext_resource type="Texture2D" uid="uid://b2bta6dqyhm8s" path="res://Assets/torpedo_launcher.png" id="8_ua7a5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7017h"]
 texture = ExtResource("2_cygug")
@@ -17,8 +22,10 @@ texture = ExtResource("2_cygug")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_xsudw"]
 texture = ExtResource("2_cygug")
 
-[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_6dbqu"]
-texture = ExtResource("3_4wo41")
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_6dbqu"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6dbqu"]
+bg_color = Color(0, 0, 0, 1)
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cygug"]
 texture = ExtResource("2_cx8ke")
@@ -57,49 +64,63 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_xsudw")
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -555.0
-offset_right = -25.0
-offset_bottom = 132.0
+offset_left = -300.0
+offset_bottom = 200.0
 grow_horizontal = 0
-theme_override_styles/panel = SubResource("StyleBoxTexture_6dbqu")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_6dbqu")
 
 [node name="TabContainer" type="TabContainer" parent="UI/BuildMenu"]
 layout_mode = 2
+theme_override_font_sizes/font_size = 24
+theme_override_styles/panel = SubResource("StyleBoxFlat_6dbqu")
 current_tab = 0
 
 [node name="Floors" type="VBoxContainer" parent="UI/BuildMenu/TabContainer"]
 layout_mode = 2
+alignment = 1
 metadata/_tab_index = 0
 
 [node name="Wood" type="Button" parent="UI/BuildMenu/TabContainer/Floors"]
 layout_mode = 2
-text = "Wood"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("3_7017h")
+expand_icon = true
 
 [node name="Iron" type="Button" parent="UI/BuildMenu/TabContainer/Floors"]
 layout_mode = 2
-text = "Iron"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("4_xsudw")
+expand_icon = true
 
 [node name="Steel" type="Button" parent="UI/BuildMenu/TabContainer/Floors"]
 layout_mode = 2
-text = "Steel"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("5_6dbqu")
+expand_icon = true
 
 [node name="Guns" type="VBoxContainer" parent="UI/BuildMenu/TabContainer"]
 visible = false
 layout_mode = 2
+alignment = 1
 metadata/_tab_index = 1
 
 [node name="Cannon" type="Button" parent="UI/BuildMenu/TabContainer/Guns"]
 layout_mode = 2
-text = "Canon"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("6_6dbqu")
+expand_icon = true
 
 [node name="RocketLauncher" type="Button" parent="UI/BuildMenu/TabContainer/Guns"]
 layout_mode = 2
-text = "Rocket Launcher
-"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("7_8gudx")
+expand_icon = true
 
 [node name="Torpedo" type="Button" parent="UI/BuildMenu/TabContainer/Guns"]
 layout_mode = 2
-text = "Torpedo"
+theme_override_font_sizes/font_size = 22
+icon = ExtResource("8_ua7a5")
+expand_icon = true
 
 [node name="QuitButton" type="Button" parent="UI"]
 anchors_preset = 7
