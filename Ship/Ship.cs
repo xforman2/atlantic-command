@@ -7,6 +7,7 @@ public abstract partial class Ship : CharacterBody2D
     public Dictionary<Vector2I, (FloorTile, CollisionShape2D)> Floors = new();
     public Dictionary<Vector2I, BuildableStructure> Structures = new();
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new();
+    public event Action ShipDestroyed;
 
     [Export]
     public int Speed { get; set; } = 1000;
@@ -134,7 +135,14 @@ public abstract partial class Ship : CharacterBody2D
     {
         return Floors.Count == 0;
     }
+
     public virtual void DropResources()
     {
     }
+
+    public void OnShipDestroyed()
+    {
+        ShipDestroyed?.Invoke();
+    }
+
 }

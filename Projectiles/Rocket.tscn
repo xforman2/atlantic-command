@@ -1,7 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://l7cmort1mmw0"]
+[gd_scene load_steps=3 format=3 uid="uid://cjlrdp7rw2bm0"]
 
 [ext_resource type="Script" uid="uid://106xuirwb7ln" path="res://Projectiles/Rocket.cs" id="1_022kb"]
-[ext_resource type="Texture2D" uid="uid://c7ewnt4ouv1m0" path="res://Assets/rocket.png" id="1_uik1f"]
+[ext_resource type="Texture2D" uid="uid://bkgsdqskb20cg" path="res://Assets/rocket.png" id="1_uik1f"]
 
 [node name="Rocket" type="Area2D"]
 script = ExtResource("1_022kb")
