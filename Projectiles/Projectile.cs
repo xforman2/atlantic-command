@@ -7,6 +7,7 @@ public abstract partial class Projectile : Area2D
 
     protected virtual int DefaultDamage => 100;
     private int Damage;
+    private bool _hasHit = false;
 
     public override void _Ready()
     {
@@ -15,6 +16,7 @@ public abstract partial class Projectile : Area2D
 
     protected void OnBodyShapeEntered(Rid bodyRid, Node2D body, long bodyShapeIndex, long localShapeIndex)
     {
+        if (_hasHit) return;
         if (body is Ship ship)
         {
             var shapes = ship.GetChildren().OfType<CollisionShape2D>().ToArray();
@@ -36,6 +38,7 @@ public abstract partial class Projectile : Area2D
             }
         }
         QueueFree();
+        _hasHit = true;
     }
 
     private void DestroyTile(Ship ship, FloorTile tile, CollisionShape2D hitShape)
@@ -59,5 +62,15 @@ public abstract partial class Projectile : Area2D
         }
 
         hitShape.QueueFree();
+
+        foreach (var floor in ship.Floors)
+        {
+            GD.Print("KEY:", floor);
+        }
+        GD.Print("---------------");
+        if (ship.IsDestroyed())
+        {
+            ship.DropResources();
+        }
     }
 }

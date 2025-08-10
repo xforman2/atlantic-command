@@ -29,6 +29,19 @@ public abstract partial class Ship : CharacterBody2D
         Floors[position] = (floor, collisionShape);
     }
 
+    public void ToggleStructuresVisibility(bool visible)
+    {
+        foreach (var structure in StructuresOrigin.Values)
+            structure.Visible = visible;
+    }
+
+
+    public void ToggleHpLabelsVisibility(bool visible)
+    {
+        foreach (var floorData in Floors.Values)
+            floorData.Item1.ShowHpLabel(visible);
+    }
+
     private CollisionShape2D AddCollisionShapeForTile(Vector2I position, FloorTile floor)
     {
         var collisionShape = new CollisionShape2D();
@@ -116,5 +129,12 @@ public abstract partial class Ship : CharacterBody2D
         }
         StructuresOrigin[structure.Origin] = structure;
         AddChild(structure);
+    }
+    public bool IsDestroyed()
+    {
+        return Floors.Count == 0;
+    }
+    public virtual void DropResources()
+    {
     }
 }

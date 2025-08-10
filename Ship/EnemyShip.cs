@@ -7,6 +7,7 @@ public partial class EnemyShip : Ship
     private const float DetectionRadius = 1000f;
     private PlayerShip _target;
     private Timer _cannonShotCooldownTimer;
+    private const int DROP_TRIDENTS = 10;
 
     public override void _Ready()
     {
@@ -56,6 +57,11 @@ public partial class EnemyShip : Ship
         Velocity = Velocity.LimitLength(1000);
 
         MoveAndSlide();
+    }
+
+    public override void DropResources()
+    {
+        ShipManager.Instance.CurrentShip.playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, DROP_TRIDENTS);
     }
 
     protected override void ShootCannons()

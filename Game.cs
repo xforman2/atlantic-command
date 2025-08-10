@@ -296,22 +296,25 @@ public partial class Game : Node2D
                     break;
             }
         }
-
         UpdateModeLabel();
     }
 
     private void ToggleStructuresVisibility(bool visible)
     {
-        if (_ship == null) return;
-        foreach (var structure in _ship.StructuresOrigin.Values)
-            structure.Visible = visible;
+        foreach (var enemyShip in _enemySpawner.ActiveEnemies)
+        {
+            enemyShip.ToggleStructuresVisibility(visible);
+        }
+        _ship.ToggleStructuresVisibility(visible);
     }
 
     private void ToggleHpLabelsVisibility(bool visible)
     {
-        if (_ship == null) return;
-        foreach (var floorData in _ship.Floors.Values)
-            floorData.Item1.ShowHpLabel(visible);
+        foreach (var enemyShip in _enemySpawner.ActiveEnemies)
+        {
+            enemyShip.ToggleHpLabelsVisibility(visible);
+        }
+        _ship.ToggleHpLabelsVisibility(visible);
     }
 
     private void MineTile(Vector2I cell)
