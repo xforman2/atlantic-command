@@ -105,7 +105,8 @@ public partial class Game : Node2D
         int tileId = _environmentLayer.GetCellSourceId(_hoverCell);
         bool isMineable = _tileDrops.ContainsKey(tileId);
         float distanceToShip = _ship.Position.DistanceTo(mouseWorld);
-        _canMine = isMineable && distanceToShip <= Globals.MAX_MINING_DISTANCE;
+
+        _canMine = isMineable && _ship.IsPointWithinMiningRange(mouseWorld);
 
         if (isMineable)
         {
