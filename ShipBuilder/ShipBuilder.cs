@@ -256,6 +256,11 @@ public partial class ShipBuilder : Node2D
         }
 
         var cost = Globals.gunCosts[currentGun];
+        if (!HasEnoughResources(cost))
+        {
+            GD.PrintErr("Not enough resources to build this tile.");
+            return;
+        }
         switch (currentGun)
         {
             case GunType.Cannon:
