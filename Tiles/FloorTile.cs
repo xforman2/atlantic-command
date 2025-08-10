@@ -45,7 +45,6 @@ public abstract partial class FloorTile : Node2D
     }
     public void TakeDamage(int damage)
     {
-        GD.Print($"{damage}");
         HP -= damage;
 
         if (HP <= 0)

@@ -249,9 +249,6 @@ public partial class Game : Node2D
                 case Key.H:
                     ToggleMode(InputMode.HpStatus);
                     break;
-                case Key.B:
-                    EnterBuildMode();
-                    break;
             }
         }
     }

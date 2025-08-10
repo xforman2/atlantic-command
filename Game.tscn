@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=27 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://c57gdrgvkpsor" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
 [ext_resource type="Texture2D" uid="uid://c5h16q0aad8fq" path="res://Assets/build_mode_button.png" id="6_2vekm"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
+[ext_resource type="Texture2D" uid="uid://j0gerj62nx2g" path="res://Assets/you_died.png" id="7_yhmtn"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
 
@@ -129,6 +130,21 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.334569, 0.334569, 0.334569, 0.890196)
+
+[node name="YouDiedText" type="TextureRect" parent="GameOverlay/YouDied"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -200.0
+offset_right = 400.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("7_yhmtn")
 
 [node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
 
