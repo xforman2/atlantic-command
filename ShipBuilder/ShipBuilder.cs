@@ -78,8 +78,8 @@ public partial class ShipBuilder : Node2D
         ghostTileRemoveTextureValid = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
         ghostTileRemoveTextureInvalid = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
 
-        var quitButton = GetNode<Button>("UI/QuitButton");
-        quitButton.Pressed += EnterNormalMode;
+        var exitButton = GetNode<Button>("UI/QuitButton");
+        exitButton.Pressed += EnterNormalMode;
 
         _ship = ShipManager.Instance.CurrentShip;
 
@@ -511,6 +511,11 @@ public partial class ShipBuilder : Node2D
 
     private void EnterNormalMode()
     {
+        if (_ship.IsDestroyed())
+        {
+            GD.PrintErr("No ship was build");
+            return;
+        }
         ShipManager.Instance.ReparentShip(_ship);
         _ship.GoOutOfDock();
         GetTree().ChangeSceneToFile("res://Game.tscn");

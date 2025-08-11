@@ -36,6 +36,7 @@ public partial class Game : Node2D
     private bool _canMine;
     private Vector2I _hoverCell;
     private ColorRect _hoverHighlight;
+    private ColorRect _diedScreen;
     private Dictionary<int, (ResourceEnum Resource, int Amount)> _tileDrops = new()
     {
         { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1) },
@@ -57,6 +58,7 @@ public partial class Game : Node2D
         _miningProgressBar.Visible = false;
 
         _modeLabel = GetNode<Label>("GameOverlay/ModeLabel");
+        _diedScreen = GetNode<ColorRect>("GameOverlay/YouDied");
 
         var buildButton = GetNode<Button>("GameOverlay/BuildButton");
         buildButton.Pressed += EnterBuildMode;
@@ -78,7 +80,7 @@ public partial class Game : Node2D
             }
             GD.Print("Existing ship loaded from ShipManager.");
         }
-
+        _ship.ShipDestroyed += OnShipDestroyedHandler;
         _hoverHighlight = GetNode<ColorRect>("HoverHighlight");
         _hoverHighlight.Visible = false;
         _hoverHighlight.Size = new Vector2(Globals.TILE_SIZE, Globals.TILE_SIZE);
@@ -299,9 +301,6 @@ public partial class Game : Node2D
                 case Key.H:
                     ToggleMode(InputMode.HpStatus);
                     break;
-                case Key.B:
-                    EnterBuildMode();
-                    break;
             }
         }
     }
@@ -405,5 +404,10 @@ public partial class Game : Node2D
     private void OnTimerTimeout()
     {
         _modeLabel.Visible = false;
+    }
+
+    private void OnShipDestroyedHandler()
+    {
+        _diedScreen.Visible = true;
     }
 }

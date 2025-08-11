@@ -63,13 +63,9 @@ public abstract partial class Projectile : Area2D
 
         hitShape.QueueFree();
 
-        foreach (var floor in ship.Floors)
-        {
-            GD.Print("KEY:", floor);
-        }
-        GD.Print("---------------");
         if (ship.IsDestroyed())
         {
+            ship.OnShipDestroyed();
             ship.DropResources();
         }
     }

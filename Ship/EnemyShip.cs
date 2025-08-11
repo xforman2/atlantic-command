@@ -31,7 +31,8 @@ public partial class EnemyShip : Ship
 
     public override void _PhysicsProcess(double delta)
     {
-        if (_target == null || navAgent == null)
+
+        if (_target == null || navAgent == null || _target.IsDestroyed())
             return;
 
         float distanceToPlayer = GlobalPosition.DistanceTo(_target.GlobalPosition);
