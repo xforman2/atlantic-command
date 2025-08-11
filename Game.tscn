@@ -1,16 +1,17 @@
-[gd_scene load_steps=28 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=30 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
-[ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
+[ext_resource type="PackedScene" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
-[ext_resource type="Texture2D" uid="uid://dvfy7quuaj7rd" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
-[ext_resource type="Texture2D" uid="uid://cshbjyevpe5po" path="res://Assets/build_mode_button.png" id="6_2vekm"]
+[ext_resource type="Texture2D" uid="uid://m67s14lsnggr" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
+[ext_resource type="Texture2D" uid="uid://b1xum11njs3fy" path="res://Assets/build_mode_button.png" id="6_2vekm"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
-[ext_resource type="Texture2D" uid="uid://d18rdxo1d8v8x" path="res://Assets/you_died_v2.0.0.png" id="7_yhmtn"]
+[ext_resource type="Texture2D" uid="uid://dqqbnswoav2ct" path="res://Assets/you_died_v2.0.0.png" id="7_yhmtn"]
+[ext_resource type="Texture2D" uid="uid://drn3xoivkqs46" path="res://Assets/mining_bg.png" id="7_yyih5"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
-[ext_resource type="Texture2D" uid="uid://cvap2gysqrsub" path="res://Assets/ghost_tile.png" id="8_lvtmh"]
+[ext_resource type="Texture2D" uid="uid://d2723qa175ikd" path="res://Assets/mining_time_frame.png" id="8_qjyg3"]
 [ext_resource type="Texture2D" uid="uid://d3x3aait2nvcu" path="res://Assets/green_tab.png" id="8_yyih5"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
 
@@ -126,6 +127,17 @@ vertical_alignment = 1
 
 [node name="MiningProgressBar" type="TextureProgressBar" parent="GameOverlay"]
 z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+texture_under = ExtResource("7_yyih5")
+texture_over = ExtResource("8_qjyg3")
+texture_progress = ExtResource("8_yyih5")
+
 [node name="YouDied" type="ColorRect" parent="GameOverlay"]
 visible = false
 anchors_preset = 15
