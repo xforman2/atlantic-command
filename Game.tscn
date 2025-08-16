@@ -1,4 +1,4 @@
-[gd_scene load_steps=29 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=32 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -8,8 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://c57gdrgvkpsor" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
 [ext_resource type="Texture2D" uid="uid://c5h16q0aad8fq" path="res://Assets/build_mode_button.png" id="6_2vekm"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/WoodEnemyShip.tscn" id="7_3mrqo"]
-[ext_resource type="Texture2D" uid="uid://j0gerj62nx2g" path="res://Assets/you_died.png" id="7_yhmtn"]
+[ext_resource type="Texture2D" uid="uid://dyo70xqfqdmq6" path="res://Assets/you_died_v2.0.0.png" id="7_yhmtn"]
+[ext_resource type="Texture2D" uid="uid://v7v0txyl7p2o" path="res://Assets/mining_bg.png" id="7_yyih5"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
+[ext_resource type="Texture2D" uid="uid://b78f2anb53ken" path="res://Assets/mining_time_frame.png" id="8_qjyg3"]
+[ext_resource type="Texture2D" uid="uid://btp1dkj1ccyb8" path="res://Assets/mining_apple_flavor.png" id="9_yyih5"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
@@ -123,6 +126,23 @@ grow_horizontal = 2
 theme_override_font_sizes/font_size = 24
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="MiningProgressBar" type="TextureProgressBar" parent="GameOverlay"]
+z_index = 10
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = 190.0
+offset_right = 100.0
+offset_bottom = 210.0
+grow_horizontal = 2
+grow_vertical = 2
+texture_under = ExtResource("7_yyih5")
+texture_over = ExtResource("8_qjyg3")
+texture_progress = ExtResource("9_yyih5")
 
 [node name="YouDied" type="ColorRect" parent="GameOverlay"]
 visible = false

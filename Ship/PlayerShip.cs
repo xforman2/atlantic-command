@@ -29,10 +29,10 @@ public partial class PlayerShip : Ship
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
         // _camera.Zoom = new Vector2(0.25f, 0.25f);
-        playerResourceManager.IncreaseResource(ResourceEnum.Wood, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Iron, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 1000);
+        playerResourceManager.IncreaseResource(ResourceEnum.Wood, 100);
+        playerResourceManager.IncreaseResource(ResourceEnum.Iron, 100);
+        playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 100);
+        playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 100);
         _shotCooldownTimer = new Timer
         {
             OneShot = true,
@@ -207,5 +207,21 @@ public partial class PlayerShip : Ship
 
             _shotCooldownTimer.Start();
         }
+    }
+    public bool IsPointWithinMiningRange(Vector2 point)
+    {
+        float width = _maxX - _minX;
+        float height = _maxY - _minY;
+
+        Vector2 center = Position;
+
+        float radius = Mathf.Sqrt(width * width + height * height) / 2f;
+
+        float totalRadius = radius + Globals.MAX_MINING_DISTANCE;
+
+        float distance = center.DistanceTo(point);
+
+        return distance <= totalRadius;
+
     }
 }
