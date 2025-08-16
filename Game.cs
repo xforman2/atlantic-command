@@ -101,6 +101,9 @@ public partial class Game : Node2D
         if (_currentMode == InputMode.Mining)
         {
             UpdateMiningHoverUI();
+        }
+        if (_isMining)
+        {
             HandleMining();
         }
         if (_currentMode == InputMode.RocketFiring)
