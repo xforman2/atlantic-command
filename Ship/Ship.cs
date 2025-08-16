@@ -9,7 +9,6 @@ public abstract partial class Ship : CharacterBody2D
     public Dictionary<Vector2I, BuildableStructure> StructuresOrigin = new();
     public event Action ShipDestroyed;
 
-    [Export]
     public int Speed { get; set; } = 1000;
 
     private PackedScene _shipSlotScene;

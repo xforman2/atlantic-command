@@ -4,14 +4,20 @@ using System.Collections.Generic;
 
 public partial class EnemySpawner : Node
 {
-    [Export] public PackedScene EnemyScene;
+    [Export] public PackedScene WoodEnemyScene;
+    [Export] public PackedScene IronEnemyScene;
+    [Export] public PackedScene SteelEnemyScene;
+    const float WOOD_THRESHOLD = 0.5f;
+    const float IRON_THRESHOLD = 0.9f;
     [Export] public float SpawnChancePerTile = 0.0002f;
+    private const float ENEMY_SPAWN_EXCLUSION_RADIUS = 1500f;
 
     public List<EnemyShip> ActiveEnemies = new();
 
-    public void SpawnEnemiesInChunk(Vector2I chunkPos, TileMapLayer groundLayer)
+
+    public void SpawnEnemiesInChunk(Vector2 shipPosition, Vector2I chunkPos, TileMapLayer groundLayer)
     {
-        if (EnemyScene == null || groundLayer == null)
+        if (WoodEnemyScene == null || IronEnemyScene == null || SteelEnemyScene == null || groundLayer == null)
             return;
 
         var rng = new Random(chunkPos.GetHashCode());
@@ -23,13 +29,31 @@ public partial class EnemySpawner : Node
             {
                 if (rng.NextDouble() < SpawnChancePerTile)
                 {
-
                     Vector2I topLeft = start + new Vector2I(x, y);
 
                     if (IsWaterAreaAvailable(topLeft, groundLayer))
                     {
-                        Vector2 spawnPos = groundLayer.MapToLocal(topLeft) + new Vector2(Globals.TILE_SIZE * 3, Globals.TILE_SIZE);
-                        var enemy = EnemyScene.Instantiate<EnemyShip>();
+                        Vector2 spawnPos = groundLayer.MapToLocal(topLeft)
+                            + new Vector2(Globals.TILE_SIZE * 3, Globals.TILE_SIZE);
+
+                        if (spawnPos.DistanceTo(shipPosition) < ENEMY_SPAWN_EXCLUSION_RADIUS)
+                            continue;
+
+                        double enemyChoice = rng.NextDouble();
+                        EnemyShip enemy;
+
+                        if (enemyChoice < WOOD_THRESHOLD)
+                        {
+                            enemy = WoodEnemyScene.Instantiate<WoodEnemyShip>();
+                        }
+                        else if (enemyChoice < IRON_THRESHOLD)
+                        {
+                            enemy = IronEnemyScene.Instantiate<IronEnemyShip>();
+                        }
+                        else
+                        {
+                            enemy = SteelEnemyScene.Instantiate<SteelEnemyShip>();
+                        }
 
                         enemy.Position = spawnPos;
                         groundLayer.GetParent().AddChild(enemy);

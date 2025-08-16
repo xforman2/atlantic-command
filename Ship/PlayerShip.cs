@@ -208,7 +208,6 @@ public partial class PlayerShip : Ship
             _shotCooldownTimer.Start();
         }
     }
-
     public bool IsPointWithinMiningRange(Vector2 point)
     {
         float width = _maxX - _minX;

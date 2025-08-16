@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://b4tqkuo0krv02"]
+
+[ext_resource type="Script" uid="uid://c52t1buxt4it5" path="res://Ship/IronEnemyShip.cs" id="1_s3r5h"]
+
+[node name="IronEnemyShip" type="CharacterBody2D"]
+script = ExtResource("1_s3r5h")
+
+[node name="EnemyNavigationAgent" type="NavigationAgent2D" parent="."]
+target_desired_distance = 100.0
