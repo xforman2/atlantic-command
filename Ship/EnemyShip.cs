@@ -1,13 +1,13 @@
 using Godot;
+using System;
 
-public partial class EnemyShip : Ship
+public abstract partial class EnemyShip : Ship
 {
-    private NavigationAgent2D navAgent;
-    private new float Speed = 800;
-    private const float DetectionRadius = 1000f;
-    private PlayerShip _target;
-    private Timer _cannonShotCooldownTimer;
-    private const int DROP_TRIDENTS = 10;
+    protected NavigationAgent2D navAgent;
+    protected new float Speed = 800f;
+    protected const float DetectionRadius = 1000f;
+    protected PlayerShip _target;
+    protected Timer _cannonShotCooldownTimer;
 
     public override void _Ready()
     {
@@ -16,22 +16,16 @@ public partial class EnemyShip : Ship
         _cannonShotCooldownTimer.WaitTime = 3.0;
         _cannonShotCooldownTimer.OneShot = true;
         AddChild(_cannonShotCooldownTimer);
+
         _target = ShipManager.Instance.CurrentShip;
 
-        AddFloor(new Vector2I(-16, 16), FloorTileType.Wood);
-        AddFloor(new Vector2I(-16, 48), FloorTileType.Wood);
-        AddFloor(new Vector2I(-16, 80), FloorTileType.Wood);
-        AddFloor(new Vector2I(-16, 112), FloorTileType.Wood);
-        AddFloor(new Vector2I(16, 16), FloorTileType.Wood);
-        AddFloor(new Vector2I(16, 48), FloorTileType.Wood);
-        AddFloor(new Vector2I(16, 80), FloorTileType.Wood);
-        AddFloor(new Vector2I(16, 112), FloorTileType.Wood);
-        PlaceStructure(new Vector2I(0, 32), GunType.Cannon, 0);
+        InitializeShipSpecifics();
     }
+
+    protected abstract void InitializeShipSpecifics();
 
     public override void _PhysicsProcess(double delta)
     {
-
         if (_target == null || navAgent == null || _target.IsDestroyed())
             return;
 
@@ -51,8 +45,8 @@ public partial class EnemyShip : Ship
             }
 
             ShootCannons();
+            ShootTorpedos();
         }
-
 
         Velocity = Velocity.Lerp(Vector2.Zero, 0.1f);
         Velocity = Velocity.LimitLength(1000);
@@ -60,10 +54,7 @@ public partial class EnemyShip : Ship
         MoveAndSlide();
     }
 
-    public override void DropResources()
-    {
-        ShipManager.Instance.CurrentShip.playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, DROP_TRIDENTS);
-    }
+    public abstract override void DropResources();
 
     protected override void ShootCannons()
     {
@@ -74,6 +65,20 @@ public partial class EnemyShip : Ship
                 if (structure is Cannon2x2 cannon)
                 {
                     cannon.Shoot();
+                }
+            }
+        }
+    }
+
+    protected void ShootTorpedos()
+    {
+        if (_cannonShotCooldownTimer.IsStopped())
+        {
+            foreach (var structure in StructuresOrigin.Values)
+            {
+                if (structure is TorpedoLauncher torpedoLauncher)
+                {
+                    torpedoLauncher.Shoot();
                 }
             }
             _cannonShotCooldownTimer.Start();

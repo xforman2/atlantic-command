@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=29 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -7,10 +7,12 @@
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
 [ext_resource type="Texture2D" uid="uid://c57gdrgvkpsor" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
 [ext_resource type="Texture2D" uid="uid://c5h16q0aad8fq" path="res://Assets/build_mode_button.png" id="6_2vekm"]
-[ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/EnemyShip.tscn" id="7_3mrqo"]
+[ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/WoodEnemyShip.tscn" id="7_3mrqo"]
 [ext_resource type="Texture2D" uid="uid://j0gerj62nx2g" path="res://Assets/you_died.png" id="7_yhmtn"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
+[ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
+[ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -166,7 +168,9 @@ SpawnPosition = Vector2i(8140, 4530)
 
 [node name="EnemySpawner" type="Node" parent="."]
 script = ExtResource("10_yx171")
-EnemyScene = ExtResource("7_3mrqo")
+WoodEnemyScene = ExtResource("7_3mrqo")
+IronEnemyScene = ExtResource("12_lvtmh")
+SteelEnemyScene = ExtResource("13_yyih5")
 
 [node name="GhostTile" type="Sprite2D" parent="."]
 visible = false

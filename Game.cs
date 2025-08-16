@@ -194,7 +194,7 @@ public partial class Game : Node2D
             }
         }
 
-        _enemySpawner.SpawnEnemiesInChunk(chunkPos, _groundLayer);
+        _enemySpawner.SpawnEnemiesInChunk(_ship.Position, chunkPos, _groundLayer);
     }
 
     private void UnloadChunk(Vector2I chunkPos)
