@@ -14,6 +14,12 @@ public partial class Game : Node2D
     private Label _modeLabel;
     private Timer _modeLabelTimer;
 
+    private bool _isMining = false;
+    private float _miningTimer = 0f;
+    private float _miningTime = 2f; // seconds it takes to mine a tile, adjust as you want
+    private Vector2I _miningCell;
+    private TextureProgressBar _miningProgressBar;
+
     [Export] public int ActiveChunkRadius = 2;
     [Export] public float NoiseScale = 0.05f;
     public const float SandThreshold = 0.15f;
@@ -47,6 +53,9 @@ public partial class Game : Node2D
         _groundLayer = GetNode<TileMapLayer>("GroundLayer");
         _environmentLayer = GetNode<TileMapLayer>("EnvironmentLayer");
         _enemySpawner = GetNode<EnemySpawner>("EnemySpawner");
+
+        _miningProgressBar = GetNode<TextureProgressBar>("GameOverlay/MiningProgressBar");
+        _miningProgressBar.Visible = false;
 
         _modeLabel = GetNode<Label>("GameOverlay/ModeLabel");
         _diedScreen = GetNode<ColorRect>("GameOverlay/YouDied");
@@ -93,10 +102,55 @@ public partial class Game : Node2D
         {
             UpdateMiningHoverUI();
         }
+        if (_isMining)
+        {
+            HandleMining();
+        }
         if (_currentMode == InputMode.RocketFiring)
         {
             _rocketGhostTile.Position = GetGlobalMousePosition();
         }
+    }
+
+    private void HandleMining()
+    {
+        if (!_isMining)
+            return;
+
+        _miningTimer += (float)GetProcessDeltaTime();
+        _miningProgressBar.Value = (_miningTimer / _miningTime) * 100;
+
+        if (_miningTimer >= _miningTime)
+        {
+            FinishMining();
+        }
+    }
+    private void FinishMining()
+    {
+        MineTile(_miningCell);
+        _isMining = false;
+        _miningTimer = 0f;
+        _miningProgressBar.Visible = false;
+    }
+    private void StartMining(Vector2I cell)
+    {
+        _isMining = true;
+        _miningTimer = 0f;
+        _miningCell = cell;
+        _miningProgressBar.Visible = true;
+        _miningProgressBar.Value = 0;
+    }
+
+    private void MineTile(Vector2I cell)
+    {
+        int tileId = _environmentLayer.GetCellSourceId(cell);
+        if (!_tileDrops.TryGetValue(tileId, out var drop))
+            return;
+
+        _ship.playerResourceManager.IncreaseResource(drop.Resource, drop.Amount);
+        _environmentLayer.SetCell(cell, -1, Vector2I.Zero);
+        _hoverHighlight.Visible = false;
+        _canMine = false;
     }
 
     private void UpdateMiningHoverUI()
@@ -107,7 +161,8 @@ public partial class Game : Node2D
         int tileId = _environmentLayer.GetCellSourceId(_hoverCell);
         bool isMineable = _tileDrops.ContainsKey(tileId);
         float distanceToShip = _ship.Position.DistanceTo(mouseWorld);
-        _canMine = isMineable && distanceToShip <= Globals.MAX_MINING_DISTANCE;
+
+        _canMine = isMineable && _ship.IsPointWithinMiningRange(mouseWorld);
 
         if (isMineable)
         {
@@ -228,7 +283,7 @@ public partial class Game : Node2D
             switch (_currentMode)
             {
                 case InputMode.Mining:
-                    if (_canMine) MineTile(_hoverCell);
+                    if (_canMine) StartMining(_hoverCell);
                     break;
                 case InputMode.RocketFiring:
                     _ship.ShootRockets(GetGlobalMousePosition());
@@ -316,17 +371,6 @@ public partial class Game : Node2D
         _ship.ToggleHpLabelsVisibility(visible);
     }
 
-    private void MineTile(Vector2I cell)
-    {
-        int tileId = _environmentLayer.GetCellSourceId(cell);
-        if (!_tileDrops.TryGetValue(tileId, out var drop))
-            return;
-
-        _ship.playerResourceManager.IncreaseResource(drop.Resource, drop.Amount);
-        _environmentLayer.SetCell(cell, -1, Vector2I.Zero);
-        _hoverHighlight.Visible = false;
-        _canMine = false;
-    }
 
     private GroundTextureEnum GetGroundType(float heightValue) => heightValue switch
     {

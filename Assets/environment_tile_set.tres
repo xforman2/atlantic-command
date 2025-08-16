@@ -1,9 +1,9 @@
 [gd_resource type="TileSet" load_steps=9 format=3 uid="uid://dcba7dtxq7a6k"]
 
-[ext_resource type="Texture2D" uid="uid://cqyx3wwdwkwcl" path="res://Assets/rock.png" id="1_cjaix"]
-[ext_resource type="Texture2D" uid="uid://d4lv7o246v2vd" path="res://Assets/gear_wheel_scrap1.png" id="1_eo6tn"]
-[ext_resource type="Texture2D" uid="uid://b3u8c1u8i0rpf" path="res://Assets/palm_small.png" id="2_q3kub"]
-[ext_resource type="Texture2D" uid="uid://c3fckxgweqhgy" path="res://Assets/Irone_ore.png" id="4_hitke"]
+[ext_resource type="Texture2D" uid="uid://reddt45uori2" path="res://Assets/rock.png" id="1_cjaix"]
+[ext_resource type="Texture2D" uid="uid://bvyfe81gto0ha" path="res://Assets/gear_wheel_scrap1.png" id="1_eo6tn"]
+[ext_resource type="Texture2D" uid="uid://fpjtphakih2f" path="res://Assets/palm_small.png" id="2_q3kub"]
+[ext_resource type="Texture2D" uid="uid://bd3usc0y2jcmi" path="res://Assets/Irone_ore.png" id="4_hitke"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_cjaix"]
 texture = ExtResource("2_q3kub")
