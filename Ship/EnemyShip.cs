@@ -56,7 +56,7 @@ public abstract partial class EnemyShip : Ship
 
     public abstract override void DropResources();
 
-    protected override void ShootCannons()
+    public override void ShootCannons()
     {
         if (_cannonShotCooldownTimer.IsStopped())
         {
@@ -75,7 +75,7 @@ public abstract partial class EnemyShip : Ship
         return Structures.Count == 0;
     }
 
-    protected void ShootTorpedos()
+    public void ShootTorpedos()
     {
         if (_cannonShotCooldownTimer.IsStopped())
         {

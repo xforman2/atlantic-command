@@ -311,6 +311,12 @@ public partial class Game : Node2D
                 case Key.H:
                     ToggleMode(InputMode.HpStatus);
                     break;
+                case Key.F:
+                    _ship.ShootCannons();
+                    break;
+                case Key.T:
+                    _ship.ShootTorpedos();
+                    break;
             }
         }
     }
@@ -425,7 +431,7 @@ public partial class Game : Node2D
     {
 
         GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
-        _ship.DisableCamera();
+        _ship.GoToDock();
         ShipManager.Instance.ReparentShip(_ship);
         GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
 

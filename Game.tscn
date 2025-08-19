@@ -1,4 +1,4 @@
-[gd_scene load_steps=44 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=37 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://btp1dkj1ccyb8" path="res://Assets/mining_apple_flavor.png" id="9_yyih5"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
 [ext_resource type="Texture2D" uid="uid://csfn18b0j6hjv" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
+[ext_resource type="Texture2D" uid="uid://dhkn18hxgmcur" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
 
@@ -53,27 +54,14 @@ noise = SubResource("FastNoiseLite_r0x5m")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bvhbk"]
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_cpsxm"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_bvhbk"]
+texture = ExtResource("11_wuoie")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hmewc"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_cpsxm"]
+texture = ExtResource("11_wuoie")
 
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_7ged1"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_0mevm"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w2501"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_jsoai"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_bisgb"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_y5ctq"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_w7ht3"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_8ktx7"]
-
-[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_hwsgv"]
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_hmewc"]
+texture = ExtResource("11_0yprl")
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_wbfu4")
@@ -204,18 +192,9 @@ offset_right = 289.0
 offset_bottom = -94.0
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_styles/focus = SubResource("StyleBoxEmpty_cpsxm")
-theme_override_styles/disabled_mirrored = SubResource("StyleBoxEmpty_hmewc")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_7ged1")
-theme_override_styles/hover_pressed_mirrored = SubResource("StyleBoxEmpty_0mevm")
-theme_override_styles/hover_pressed = SubResource("StyleBoxEmpty_w2501")
-theme_override_styles/hover_mirrored = SubResource("StyleBoxEmpty_jsoai")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_bisgb")
-theme_override_styles/pressed_mirrored = SubResource("StyleBoxEmpty_y5ctq")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_w7ht3")
-theme_override_styles/normal_mirrored = SubResource("StyleBoxEmpty_8ktx7")
-theme_override_styles/normal = SubResource("StyleBoxEmpty_hwsgv")
-icon = ExtResource("11_0yprl")
+theme_override_styles/hover = SubResource("StyleBoxTexture_bvhbk")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_cpsxm")
+theme_override_styles/normal = SubResource("StyleBoxTexture_hmewc")
 
 [node name="CoordinatesLabel" type="Label" parent="GameOverlay"]
 anchors_preset = 6

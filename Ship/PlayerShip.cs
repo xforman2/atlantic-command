@@ -41,24 +41,6 @@ public partial class PlayerShip : Ship
         AddChild(_shotCooldownTimer);
     }
 
-    public override void _Input(InputEvent @event)
-    {
-        if (@event is InputEventKey keyEvent && keyEvent.Pressed && !keyEvent.Echo)
-        {
-            switch (keyEvent.Keycode)
-            {
-                case Key.F:
-                    ShootCannons();
-                    break;
-                case Key.T:
-                    ShootTorpedos();
-                    break;
-                default:
-                    break;
-            }
-        }
-    }
-
     private Vector2 GetCenterWorldPosition()
     {
         if (_minX > _maxX || _minY > _maxY)
@@ -166,7 +148,7 @@ public partial class PlayerShip : Ship
         return Floors.Count == 0;
     }
 
-    protected override void ShootCannons()
+    public override void ShootCannons()
     {
 
         if (_shotCooldownTimer.IsStopped())
@@ -183,7 +165,7 @@ public partial class PlayerShip : Ship
         }
     }
 
-    protected void ShootTorpedos()
+    public void ShootTorpedos()
     {
         if (_shotCooldownTimer.IsStopped())
         {

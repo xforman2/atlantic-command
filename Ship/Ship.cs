@@ -98,7 +98,7 @@ public abstract partial class Ship : CharacterBody2D
         return buildable;
     }
 
-    protected abstract void ShootCannons();
+    public abstract void ShootCannons();
 
     public bool CanPlaceStructure(List<Vector2I> occupiedPositions)
     {
