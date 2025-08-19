@@ -130,10 +130,8 @@ public abstract partial class Ship : CharacterBody2D
         StructuresOrigin[structure.Origin] = structure;
         AddChild(structure);
     }
-    public bool IsDestroyed()
-    {
-        return Floors.Count == 0;
-    }
+
+    public abstract bool IsDestroyed();
 
     public virtual void DropResources()
     {
