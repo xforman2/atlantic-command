@@ -12,6 +12,7 @@ public partial class Game : Node2D
     private EnemySpawner _enemySpawner;
     private Sprite2D _rocketGhostTile;
     private Label _modeLabel;
+    private Label _coordinatesLabel;
     private Timer _modeLabelTimer;
 
     private bool _isMining = false;
@@ -57,6 +58,7 @@ public partial class Game : Node2D
         _miningProgressBar = GetNode<TextureProgressBar>("GameOverlay/MiningProgressBar");
         _miningProgressBar.Visible = false;
 
+        _coordinatesLabel = GetNode<Label>("GameOverlay/CoordinatesLabel");
         _modeLabel = GetNode<Label>("GameOverlay/ModeLabel");
         _diedScreen = GetNode<ColorRect>("GameOverlay/YouDied");
 
@@ -110,6 +112,8 @@ public partial class Game : Node2D
         {
             _rocketGhostTile.Position = GetGlobalMousePosition();
         }
+
+        _coordinatesLabel.Text = $"{_ship.Position.X:0}    {_ship.Position.Y:0}";
     }
 
     private void HandleMining()
