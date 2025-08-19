@@ -13,6 +13,7 @@ public partial class Game : Node2D
     private Sprite2D _rocketGhostTile;
     private Label _modeLabel;
     private Label _coordinatesLabel;
+    private Button _backToMenuButton;
     private Timer _modeLabelTimer;
 
     private bool _isMining = false;
@@ -61,6 +62,7 @@ public partial class Game : Node2D
         _coordinatesLabel = GetNode<Label>("GameOverlay/CoordinatesLabel");
         _modeLabel = GetNode<Label>("GameOverlay/ModeLabel");
         _diedScreen = GetNode<ColorRect>("GameOverlay/YouDied");
+        _backToMenuButton = GetNode<Button>("GameOverlay/YouDied/BackToMenuButton");
 
         var buildButton = GetNode<Button>("GameOverlay/BuildButton");
         buildButton.Pressed += EnterBuildMode;
@@ -92,6 +94,7 @@ public partial class Game : Node2D
         _modeLabelTimer.OneShot = true;
         AddChild(_modeLabelTimer);
         _modeLabelTimer.Timeout += OnTimerTimeout;
+        _backToMenuButton.Pressed += OnBackToMenu;
         UpdateModeLabel();
     }
 
@@ -416,5 +419,15 @@ public partial class Game : Node2D
     private void OnShipDestroyedHandler()
     {
         _diedScreen.Visible = true;
+    }
+
+    private void OnBackToMenu()
+    {
+
+        GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
+        _ship.DisableCamera();
+        ShipManager.Instance.ReparentShip(_ship);
+        GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
+
     }
 }

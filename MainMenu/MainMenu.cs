@@ -18,7 +18,6 @@ public partial class MainMenu : Control
     private void OnStartPressed()
     {
         var ship = ShipManager.Instance.CurrentShip;
-        GD.Print("LAST ORIGIN:", GameState.Instance.LastOrigin);
 
         if (GameState.Instance.LastOrigin == SceneOrigin.Game)
         {

@@ -8,9 +8,11 @@ public abstract partial class Projectile : Area2D
     protected virtual int DefaultDamage => 100;
     private int Damage;
     private bool _hasHit = false;
+    private EnemySpawner _enemySpawner;
 
     public override void _Ready()
     {
+        _enemySpawner = GetTree().Root.GetNode<EnemySpawner>("Game/EnemySpawner");
         Damage = DefaultDamage;
     }
 
@@ -69,6 +71,7 @@ public abstract partial class Projectile : Area2D
             ship.OnShipDestroyed();
             if (ship is EnemyShip enemyShip)
             {
+                _enemySpawner.ActiveEnemies.Remove(enemyShip);
                 enemyShip.QueueFree();
             }
         }
