@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using Godot.NativeInterop;
+using System;
 using System.Collections.Generic;
 
 public partial class PlayerShip : Ship
