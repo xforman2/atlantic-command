@@ -65,8 +65,12 @@ public abstract partial class Projectile : Area2D
 
         if (ship.IsDestroyed())
         {
-            ship.OnShipDestroyed();
             ship.DropResources();
+            ship.OnShipDestroyed();
+            if (ship is EnemyShip enemyShip)
+            {
+                enemyShip.QueueFree();
+            }
         }
     }
 }

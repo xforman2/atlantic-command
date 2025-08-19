@@ -70,6 +70,11 @@ public abstract partial class EnemyShip : Ship
         }
     }
 
+    public override bool IsDestroyed()
+    {
+        return Structures.Count == 0;
+    }
+
     protected void ShootTorpedos()
     {
         if (_cannonShotCooldownTimer.IsStopped())

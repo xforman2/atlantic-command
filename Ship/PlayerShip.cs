@@ -72,6 +72,7 @@ public partial class PlayerShip : Ship
         return new Vector2(centerX, centerY);
     }
 
+
     public void UpdateBounds(Vector2I worldPos)
     {
         var offset = Globals.TILE_SIZE / 2;
@@ -158,6 +159,11 @@ public partial class PlayerShip : Ship
 
         Velocity = velocity;
         MoveAndSlide();
+    }
+
+    public override bool IsDestroyed()
+    {
+        return Floors.Count == 0;
     }
 
     protected override void ShootCannons()
