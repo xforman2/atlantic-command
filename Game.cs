@@ -119,6 +119,14 @@ public partial class Game : Node2D
         _coordinatesLabel.Text = $"{_ship.Position.X:0}    {_ship.Position.Y:0}";
     }
 
+    public override void _ExitTree()
+    {
+        if (_ship != null)
+        {
+            _ship.ShipDestroyed -= OnShipDestroyedHandler;
+        }
+    }
+
     private void HandleMining()
     {
         if (!_isMining)
@@ -424,6 +432,7 @@ public partial class Game : Node2D
 
     private void OnShipDestroyedHandler()
     {
+        GD.Print(_diedScreen);
         _diedScreen.Visible = true;
     }
 
@@ -431,8 +440,10 @@ public partial class Game : Node2D
     {
 
         GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
-        _ship.GoToDock();
-        ShipManager.Instance.ReparentShip(_ship);
+        _ship.QueueFree();
+        _ship = null;
+        ShipManager.Instance.CurrentShip = null;
+
         GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
 
     }
