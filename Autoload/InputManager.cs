@@ -7,16 +7,21 @@ public partial class InputManager : Node
         if (@event.IsActionPressed("ui_cancel"))
         {
             var ship = ShipManager.Instance.CurrentShip;
-            if (ship.IsDestroyed())
+
+            if (ship is not null)
             {
-                GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
-                ship.QueueFree();
-                ShipManager.Instance.CurrentShip = null;
-            }
-            else
-            {
-                ship.DisableCamera();
-                ShipManager.Instance.ReparentShip(ship);
+
+                if (ship.IsDestroyed())
+                {
+                    GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
+                    ship.QueueFree();
+                    ShipManager.Instance.CurrentShip = null;
+                }
+                else
+                {
+                    ship.DisableCamera();
+                    ShipManager.Instance.ReparentShip(ship);
+                }
             }
             GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
         }

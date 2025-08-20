@@ -14,8 +14,8 @@
 [ext_resource type="Texture2D" uid="uid://d2723qa175ikd" path="res://Assets/mining_time_frame.png" id="8_qjyg3"]
 [ext_resource type="Texture2D" uid="uid://cq4quommtwv1y" path="res://Assets/mining_apple_flavor.png" id="9_yyih5"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
-[ext_resource type="Texture2D" uid="uid://csfn18b0j6hjv" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
-[ext_resource type="Texture2D" uid="uid://dhkn18hxgmcur" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
+[ext_resource type="Texture2D" uid="uid://71ne3mfpin68" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
+[ext_resource type="Texture2D" uid="uid://hywxr2bshwtv" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
 
