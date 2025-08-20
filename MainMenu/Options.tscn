@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cv4s6hhp5j24m"]
 
 [ext_resource type="Script" uid="uid://nvbnj0c0bbkt" path="res://MainMenu/Options.cs" id="1_klhoi"]
-[ext_resource type="Texture2D" uid="uid://cj2diy8jjsvbv" path="res://Assets/options_bg_v1.png" id="1_mldbs"]
+[ext_resource type="Texture2D" uid="uid://baik8aqxjxum3" path="res://Assets/options_bg_v2.png" id="2_klhoi"]
 
 [node name="Options" type="Control"]
 z_index = 10
@@ -30,7 +30,7 @@ offset_right = 960.0
 offset_bottom = 540.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_mldbs")
+texture = ExtResource("2_klhoi")
 
 [node name="OptionsContainer" type="VBoxContainer" parent="."]
 layout_mode = 1
