@@ -448,7 +448,6 @@ public partial class Game : Node2D
 
     private void OnShipDestroyedHandler()
     {
-        GD.Print(_diedScreen);
         _diedScreen.Visible = true;
     }
 
