@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://d2ubo147hsvmd"]
+[gd_scene load_steps=70 format=3 uid="uid://d2ubo147hsvmd"]
 
 [ext_resource type="Script" uid="uid://ro24xdwy0v5c" path="res://Game.cs" id="1_wbfu4"]
 [ext_resource type="TileSet" uid="uid://c37xxsfmjhjom" path="res://Assets/ground_tile_set.tres" id="4_sb48q"]
@@ -18,8 +18,10 @@
 [ext_resource type="Texture2D" uid="uid://dhkn18hxgmcur" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
-[ext_resource type="Texture2D" uid="uid://che2qpqf30nnn" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
-[ext_resource type="Texture2D" uid="uid://bqktur6dxq5uv" path="res://Assets/warships_on_the_sea.png" id="19_cpsxm"]
+[ext_resource type="Texture2D" uid="uid://dnnekyn1oo83" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
+[ext_resource type="Texture2D" uid="uid://lc6sg2rj2f3h" path="res://Assets/warships_on_the_sea.png" id="19_cpsxm"]
+[ext_resource type="AudioStream" uid="uid://ikq28wi0v6rw" path="res://Audio/waves-53479.mp3" id="21_hmewc"]
+
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -466,3 +468,8 @@ position = Vector2(1800, 950)
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_dyvha")
 autoplay = "default"
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
+stream = ExtResource("21_hmewc")
+autoplay = true
+bus = &"Music"
