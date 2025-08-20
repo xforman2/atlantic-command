@@ -46,14 +46,14 @@ public partial class Options : Node
     public void SetMusicVolume(float volume)
     {
         Globals.MusicVolume = volume;
-        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), LinearToDb(volume));
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), Globals.LinearToDb(volume));
         SaveOptions();
     }
 
     public void SetSfxVolume(float volume)
     {
         Globals.SfxVolume = volume;
-        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), LinearToDb(volume));
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), Globals.LinearToDb(volume));
         SaveOptions();
     }
 

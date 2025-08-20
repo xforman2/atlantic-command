@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://t2tnu0qdh1uu"]
+[gd_scene load_steps=25 format=3 uid="uid://t2tnu0qdh1uu"]
 
 [ext_resource type="Script" uid="uid://cnvrq4q053t8n" path="res://ShipBuilder/ShipBuilder.cs" id="1_7vw3h"]
 [ext_resource type="Texture2D" uid="uid://brp43268ourfu" path="res://Assets/build_mode_button_exit.png" id="2_cx8ke"]
@@ -12,6 +12,7 @@
 [ext_resource type="Texture2D" uid="uid://dhswqfkkn2vbt" path="res://Assets/rocket_launcher.png" id="7_8gudx"]
 [ext_resource type="AudioStream" uid="uid://my2adjp4qtn7" path="res://Audio/harbor.mp3" id="7_7017h"]
 [ext_resource type="Texture2D" uid="uid://b2bta6dqyhm8s" path="res://Assets/torpedo_launcher.png" id="8_ua7a5"]
+[ext_resource type="Texture2D" uid="uid://bnx6ay5fnkcck" path="res://Assets/save_button.png" id="10_qvwg5"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_7017h"]
 texture = ExtResource("2_cygug")
@@ -36,6 +37,15 @@ texture = ExtResource("2_cx8ke")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_g5y3i"]
 texture = ExtResource("2_cx8ke")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_62fk6"]
+texture = ExtResource("10_qvwg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gi224"]
+texture = ExtResource("10_qvwg5")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_3j035"]
+texture = ExtResource("10_qvwg5")
+
 [node name="ShipBuilder" type="Node2D" node_paths=PackedStringArray("GhostTile")]
 script = ExtResource("1_7vw3h")
 GhostTile = NodePath("GhostTile/Sprite2D")
@@ -53,8 +63,10 @@ z_index = 5
 anchors_preset = 1
 anchor_left = 1.0
 anchor_right = 1.0
-offset_left = -207.0
-offset_bottom = 86.0
+offset_left = -220.0
+offset_top = 20.0
+offset_right = -13.0
+offset_bottom = 106.0
 grow_horizontal = 0
 theme_override_styles/hover = SubResource("StyleBoxTexture_7017h")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_jaduu")
@@ -139,6 +151,22 @@ size_flags_vertical = 4
 theme_override_styles/hover = SubResource("StyleBoxTexture_cygug")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_4wo41")
 theme_override_styles/normal = SubResource("StyleBoxTexture_g5y3i")
+
+[node name="SaveButton" type="Button" parent="UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -220.0
+offset_top = -100.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 0
+grow_vertical = 0
+theme_override_styles/hover = SubResource("StyleBoxTexture_62fk6")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_gi224")
+theme_override_styles/normal = SubResource("StyleBoxTexture_3j035")
 
 [node name="SharedOverlay" parent="." instance=ExtResource("2_kyq75")]
 

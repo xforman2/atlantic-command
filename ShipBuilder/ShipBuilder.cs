@@ -45,6 +45,8 @@ public partial class ShipBuilder : Node2D
     private BuildMode currentBuildMode = BuildMode.None;
 
     private Button buildMenuButton;
+    private Button saveButton;
+    private Button quitButton;
     private PanelContainer buildMenuPanel;
     private Button woodTileButton;
     private Button ironTileButton;
@@ -78,8 +80,11 @@ public partial class ShipBuilder : Node2D
         ghostTileRemoveTextureValid = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
         ghostTileRemoveTextureInvalid = GD.Load<Texture2D>("res://Assets/ghost_tile.png");
 
-        var exitButton = GetNode<Button>("UI/QuitButton");
-        exitButton.Pressed += EnterNormalMode;
+        quitButton = GetNode<Button>("UI/QuitButton");
+        quitButton.Pressed += EnterNormalMode;
+
+        saveButton = GetNode<Button>("UI/SaveButton");
+        saveButton.Pressed += OnSaveButtonPressed;
 
         _ship = ShipManager.Instance.CurrentShip;
 
@@ -114,6 +119,7 @@ public partial class ShipBuilder : Node2D
 
         buildMenuPanel.Visible = false;
     }
+
 
     public override void _Process(double delta)
     {
@@ -527,6 +533,11 @@ public partial class ShipBuilder : Node2D
     {
         buildMenuButton.Visible = false;
         buildMenuPanel.Visible = true;
+    }
+
+    private void OnSaveButtonPressed()
+    {
+        SaveSystem.SaveGame(ShipManager.Instance.CurrentShip.ToSaveData());
     }
 
     private void SelectFloorTile(FloorTileType tileType)

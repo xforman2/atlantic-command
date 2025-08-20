@@ -4,6 +4,7 @@ using System;
 public abstract partial class FloorTile : Node2D
 {
     protected virtual int DefaultHP => 100;
+    public virtual FloorTileType TileType => FloorTileType.Wood;
 
     public int HP { get; private set; }
     public Vector2I Origin { get; set; }

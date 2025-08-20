@@ -30,10 +30,10 @@ public partial class PlayerShip : Ship
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
         // _camera.Zoom = new Vector2(0.25f, 0.25f);
-        playerResourceManager.IncreaseResource(ResourceEnum.Wood, 100);
-        playerResourceManager.IncreaseResource(ResourceEnum.Iron, 100);
-        playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 100);
-        playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 100);
+        playerResourceManager.IncreaseResource(ResourceEnum.Wood, 1000);
+        playerResourceManager.IncreaseResource(ResourceEnum.Iron, 1000);
+        playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 1000);
+        playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 1000);
         _shotCooldownTimer = new Timer
         {
             OneShot = true,
@@ -212,5 +212,45 @@ public partial class PlayerShip : Ship
 
         return distance <= totalRadius;
 
+    }
+
+    public ShipSaveData ToSaveData()
+    {
+        var data = new ShipSaveData
+        {
+            Position = new Vector2Save(ShipManager.Instance.GetSavedShipWorldPosition()),
+            RotationDegrees = RotationDegrees,
+            Wood = playerResourceManager.Wood,
+            Iron = playerResourceManager.Iron,
+            Scrap = playerResourceManager.Scrap,
+            Tridentis = playerResourceManager.Tridentis
+
+        };
+
+        foreach (var kv in Floors)
+        {
+            var floor = kv.Value.Item1;
+            data.Floors.Add(new FloorSaveData
+            {
+                Position = new Vector2Save(kv.Key),
+                Type = floor.TileType,
+                HP = floor.HP
+            });
+        }
+
+        foreach (var kv in StructuresOrigin)
+        {
+            var structure = kv.Value;
+            data.Structures.Add(new StructureSaveData
+            {
+                Origin = new Vector2Save(structure.Origin),
+                OccupiedPositions = structure.OccupiedPositions
+                .ConvertAll(pos => new Vector2Save(pos)),
+                Type = structure.GunType,
+                RotationDegrees = structure.RotationDegrees
+            });
+        }
+
+        return data;
     }
 }

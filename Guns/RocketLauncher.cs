@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public partial class RocketLauncher : Gun
 {
+
+    public override GunType GunType => GunType.RocketLauncher;
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
 

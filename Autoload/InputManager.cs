@@ -9,11 +9,17 @@ public partial class InputManager : Node
             var ship = ShipManager.Instance.CurrentShip;
             if (ship is not null)
             {
+
                 if (ship.IsDestroyed())
                 {
                     GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
                     ship.QueueFree();
                     ShipManager.Instance.CurrentShip = null;
+                    GameState.Instance.HasStartedGame = false;
+                    if (SaveSystem.HasSave())
+                    {
+                        SaveSystem.DeleteSave();
+                    }
                 }
                 else
                 {
