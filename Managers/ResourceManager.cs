@@ -29,6 +29,31 @@ public abstract partial class ResourceManager : GodotObject
         }
     }
 
+    public virtual void SetResource(ResourceEnum resource, int amount)
+    {
+        if (amount <= 0) return;
+
+        switch (resource)
+        {
+            case ResourceEnum.Wood:
+                Wood = amount;
+                ResourceMediator.NotifyResourceChanged(this, nameof(Wood), Wood);
+                break;
+            case ResourceEnum.Scrap:
+                Scrap = amount;
+                ResourceMediator.NotifyResourceChanged(this, nameof(Scrap), Scrap);
+                break;
+            case ResourceEnum.Iron:
+                Iron = amount;
+                ResourceMediator.NotifyResourceChanged(this, nameof(Iron), Iron);
+                break;
+            case ResourceEnum.Tridentis:
+                Tridentis = amount;
+                ResourceMediator.NotifyResourceChanged(this, nameof(Tridentis), Tridentis);
+                break;
+        }
+    }
+
     public virtual void DecreaseResource(ResourceEnum resource, int amount)
     {
         if (amount <= 0) return;

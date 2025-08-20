@@ -314,6 +314,34 @@ script = ExtResource("5_t88pq")
 layout_mode = 2
 texture = ExtResource("5_yx171")
 
+[node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
+
+[node name="Dock" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(1080, 750)
+SpawnPosition = Vector2i(1080, 190)
+
+[node name="Dock2" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(5040, -4720)
+SpawnPosition = Vector2i(5040, -5260)
+
+[node name="Dock3" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(-4675, 1150)
+SpawnPosition = Vector2i(-4675, 600)
+
+[node name="Dock4" parent="." instance=ExtResource("8_joorw")]
+position = Vector2(8140, 5060)
+SpawnPosition = Vector2i(8140, 4530)
+
+[node name="EnemySpawner" type="Node" parent="."]
+script = ExtResource("10_yx171")
+WoodEnemyScene = ExtResource("7_3mrqo")
+IronEnemyScene = ExtResource("12_lvtmh")
+SteelEnemyScene = ExtResource("13_yyih5")
+
+[node name="GhostTile" type="Sprite2D" parent="."]
+visible = false
+z_index = 5
+
 [node name="GameOverlay" type="CanvasLayer" parent="."]
 
 [node name="BuildButton" type="Button" parent="GameOverlay"]
@@ -434,31 +462,3 @@ position = Vector2(1800, 950)
 scale = Vector2(3.5, 3.5)
 sprite_frames = SubResource("SpriteFrames_dyvha")
 autoplay = "default"
-
-[node name="SharedOverlay" parent="." instance=ExtResource("5_r0x5m")]
-
-[node name="Dock" parent="." instance=ExtResource("8_joorw")]
-position = Vector2(1080, 750)
-SpawnPosition = Vector2i(1080, 190)
-
-[node name="Dock2" parent="." instance=ExtResource("8_joorw")]
-position = Vector2(5040, -4720)
-SpawnPosition = Vector2i(5040, -5260)
-
-[node name="Dock3" parent="." instance=ExtResource("8_joorw")]
-position = Vector2(-4675, 1150)
-SpawnPosition = Vector2i(-4675, 600)
-
-[node name="Dock4" parent="." instance=ExtResource("8_joorw")]
-position = Vector2(8140, 5060)
-SpawnPosition = Vector2i(8140, 4530)
-
-[node name="EnemySpawner" type="Node" parent="."]
-script = ExtResource("10_yx171")
-WoodEnemyScene = ExtResource("7_3mrqo")
-IronEnemyScene = ExtResource("12_lvtmh")
-SteelEnemyScene = ExtResource("13_yyih5")
-
-[node name="GhostTile" type="Sprite2D" parent="."]
-visible = false
-z_index = 5

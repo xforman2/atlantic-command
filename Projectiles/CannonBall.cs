@@ -4,7 +4,7 @@ using System.Linq;
 
 public partial class CannonBall : Projectile
 {
-    [Export] public float Speed { get; set; } = 300f;
+    [Export] public float Speed { get; set; } = 400f;
     protected override int DefaultDamage => 25;
 
     public Vector2 Direction { get; set; }

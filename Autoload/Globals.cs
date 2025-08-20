@@ -29,15 +29,15 @@ public partial class Globals : Node
     public static readonly Dictionary<FloorTileType, Dictionary<ResourceEnum, int>> tileCosts = new()
     {
         { FloorTileType.Wood, new Dictionary<ResourceEnum, int> { { ResourceEnum.Wood, 4 } } },
-        { FloorTileType.Iron, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 6 } } },
-        { FloorTileType.Steel, new Dictionary<ResourceEnum, int> { { ResourceEnum.Scrap, 8 } } }
+        { FloorTileType.Iron, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 5 } } },
+        { FloorTileType.Steel, new Dictionary<ResourceEnum, int> { { ResourceEnum.Iron, 2 }, { ResourceEnum.Scrap, 4 } } }
     };
 
     public static readonly Dictionary<GunType, Dictionary<ResourceEnum, int>> gunCosts = new()
     {
-        { GunType.Cannon, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 50 } } },
-        { GunType.RocketLauncher, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 250 } } },
-        { GunType.Torpedo, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 500 } } }
+        { GunType.Cannon, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 100 } } },
+        { GunType.RocketLauncher, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 500 } } },
+        { GunType.Torpedo, new Dictionary<ResourceEnum, int> { { ResourceEnum.Tridentis, 300 } } }
     };
 
 

@@ -2,7 +2,8 @@ using Godot;
 
 public partial class WoodEnemyShip : EnemyShip
 {
-    private const int DROP_AMOUNT = 10;
+    private const int DROP_AMOUNT = 25;
+    protected override float EnemySpeed => 800f;
 
     protected override void InitializeShipSpecifics()
     {
