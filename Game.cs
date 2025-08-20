@@ -272,10 +272,10 @@ public partial class Game : Node2D
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
                     else if (envValue > ScrapThreshold)
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Scrap, Vector2I.Zero);
-                    else if (envValue < IronThreshold)
-                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
                     else if (envValue < RockThreshold)
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
+                    else if (envValue < IronThreshold)
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
                 }
             }
         }
