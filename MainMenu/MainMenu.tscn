@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c5q022ru6fc8l"]
+[gd_scene load_steps=34 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://d1wiu1av3ku2t" path="res://Assets/background_final.png" id="2_bsanu"]
@@ -12,7 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://krskmcibld3e" path="res://Assets/quit_button_v1.0.1.png" id="8_npjie"]
 [ext_resource type="AudioStream" uid="uid://d2k7mx6jl7tfj" path="res://Audio/main_menu.mp3" id="9_kftou"]
 [ext_resource type="Texture2D" uid="uid://u77ynaoa1hlv" path="res://Assets/new_game_button.png" id="12_g1826"]
+[ext_resource type="Texture2D" uid="uid://45k42qniv4dn" path="res://Assets/new_game_button_pressed.png" id="12_gej64"]
 [ext_resource type="Texture2D" uid="uid://cax1bpdjnt8ug" path="res://Assets/load_game_button.png" id="13_npjie"]
+[ext_resource type="Texture2D" uid="uid://dpnf1heq28uqv" path="res://Assets/load_game_button_pressed.png" id="14_qvidt"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gej64"]
 texture = ExtResource("4_nre7b")
@@ -50,8 +52,20 @@ texture = ExtResource("7_g1826")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
 texture = ExtResource("8_npjie")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_guwyo"]
+texture = ExtResource("12_gej64")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c1m2a"]
+texture = ExtResource("12_gej64")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_167x7"]
 texture = ExtResource("12_g1826")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fnqav"]
+texture = ExtResource("14_qvidt")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v3xbx"]
+texture = ExtResource("14_qvidt")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_24r6y"]
 texture = ExtResource("13_npjie")
@@ -148,9 +162,13 @@ alignment = 1
 [node name="NewGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/hover = SubResource("StyleBoxTexture_guwyo")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_c1m2a")
 theme_override_styles/normal = SubResource("StyleBoxTexture_167x7")
 
 [node name="SavedGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/hover = SubResource("StyleBoxTexture_fnqav")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_v3xbx")
 theme_override_styles/normal = SubResource("StyleBoxTexture_24r6y")
