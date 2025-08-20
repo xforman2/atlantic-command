@@ -4,17 +4,21 @@ using System.Collections.Generic;
 
 public partial class RocketLauncher : Gun
 {
-
     public override GunType GunType => GunType.RocketLauncher;
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
+    private AudioStreamPlayer2D _shootSound;
 
     public override void _Ready()
     {
         _projectileScene = GD.Load<PackedScene>("res://Projectiles/Rocket.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
-    }
 
+        _shootSound = new AudioStreamPlayer2D();
+        _shootSound.Stream = GD.Load<AudioStream>("res://Audio/rocket.mp3");
+        _shootSound.Bus = "SFX";
+        AddChild(_shootSound);
+    }
 
     public override void Init(Vector2I origin, List<Vector2I> occupiedPositions, float rotation)
     {
@@ -46,5 +50,6 @@ public partial class RocketLauncher : Gun
         }
 
         GetTree().Root.AddChild(projectile);
+        _shootSound?.Play();
     }
 }

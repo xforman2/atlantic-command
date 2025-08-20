@@ -7,19 +7,23 @@ public partial class TorpedoLauncher : Gun
     public override GunType GunType => GunType.Torpedo;
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
+    private AudioStreamPlayer2D _shootSound;
 
     public override void _Ready()
     {
         _projectileScene = GD.Load<PackedScene>("res://Projectiles/Torpedo.tscn");
         _muzzle = GetNode<Marker2D>("Muzzle");
+
+        _shootSound = new AudioStreamPlayer2D();
+        _shootSound.Stream = GD.Load<AudioStream>("res://Audio/torpedo.mp3");
+        _shootSound.Bus = "SFX";
+        AddChild(_shootSound);
     }
 
     public override void Init(Vector2I origin, List<Vector2I> occupiedPositions, float rotation)
     {
         Origin = origin;
-
         OccupiedPositions = occupiedPositions;
-
         Position = origin;
         RotationDegrees = rotation;
         Size = new Vector2I(64, 64);
@@ -45,5 +49,6 @@ public partial class TorpedoLauncher : Gun
         }
 
         GetTree().Root.AddChild(projectile);
+        _shootSound?.Play();
     }
 }
