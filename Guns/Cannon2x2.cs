@@ -3,6 +3,8 @@ using Godot;
 
 public partial class Cannon2x2 : Gun
 {
+
+    public override GunType GunType => GunType.Cannon;
     private PackedScene _projectileScene;
     private Marker2D _muzzle;
     private AudioStreamPlayer2D _shootSound;
