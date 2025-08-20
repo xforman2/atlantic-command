@@ -7,7 +7,6 @@ public partial class InputManager : Node
         if (@event.IsActionPressed("ui_cancel"))
         {
             var ship = ShipManager.Instance.CurrentShip;
-
             if (ship is not null)
             {
 

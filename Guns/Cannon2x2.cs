@@ -15,6 +15,7 @@ public partial class Cannon2x2 : Gun
         _muzzle = GetNode<Marker2D>("Muzzle");
         _shootSound = new AudioStreamPlayer2D();
         _shootSound.Stream = GD.Load<AudioStream>("res://Audio/cannon.mp3");
+        _shootSound.Bus = "SFX";
         AddChild(_shootSound);
     }
 
