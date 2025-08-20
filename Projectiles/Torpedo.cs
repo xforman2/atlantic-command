@@ -4,8 +4,8 @@ using System;
 public partial class Torpedo : Projectile
 {
 
-    [Export] public float Speed { get; set; } = 400;
-    protected override int DefaultDamage => 75;
+    [Export] public float Speed { get; set; } = 500f;
+    protected override int DefaultDamage => 150;
 
     public Vector2 Direction { get; set; }
 

@@ -9,8 +9,7 @@ public partial class PlayerShip : Ship
 
     public PlayerResourceManager playerResourceManager;
 
-    private PackedScene _shipSlotScene;
-    private Camera2D _camera;
+    private PackedScene _shipSlotScene; private Camera2D _camera;
 
     private int _minX = int.MaxValue;
     private int _maxX = int.MinValue;
@@ -19,7 +18,9 @@ public partial class PlayerShip : Ship
 
     private Vector2 velocity = Vector2.Zero;
     private float rotationSpeed = 0.5f;
-    private Timer _shotCooldownTimer;
+    private Timer _cannonCooldownTimer;
+    private Timer _torpedoCooldownTimer;
+    private Timer _rocketCooldownTimer;
 
     public override void _Ready()
     {
@@ -30,16 +31,29 @@ public partial class PlayerShip : Ship
         _shipSlotScene = GD.Load<PackedScene>("res://Tiles/ShipSlot.tscn");
         _camera = GetNode<Camera2D>("Camera");
         // _camera.Zoom = new Vector2(0.25f, 0.25f);
-        playerResourceManager.IncreaseResource(ResourceEnum.Wood, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Iron, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Scrap, 1000);
-        playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, 1000);
-        _shotCooldownTimer = new Timer
+        playerResourceManager.SetResource(ResourceEnum.Wood, 4);
+        playerResourceManager.SetResource(ResourceEnum.Iron, 0);
+        playerResourceManager.SetResource(ResourceEnum.Scrap, 0);
+        playerResourceManager.SetResource(ResourceEnum.Tridentis, 0);
+        _cannonCooldownTimer = new Timer
         {
             OneShot = true,
-            WaitTime = 1.0f
+            WaitTime = 1.5f
         };
-        AddChild(_shotCooldownTimer);
+        AddChild(_cannonCooldownTimer);
+        _torpedoCooldownTimer = new Timer
+        {
+            OneShot = true,
+            WaitTime = 5f,
+        };
+        AddChild(_torpedoCooldownTimer);
+
+        _rocketCooldownTimer = new Timer
+        {
+            OneShot = true,
+            WaitTime = 3f,
+        };
+        AddChild(_rocketCooldownTimer);
     }
 
     private Vector2 GetCenterWorldPosition()
@@ -152,7 +166,7 @@ public partial class PlayerShip : Ship
     public override void ShootCannons()
     {
 
-        if (_shotCooldownTimer.IsStopped())
+        if (_cannonCooldownTimer.IsStopped())
         {
             foreach (var structure in StructuresOrigin.Values)
             {
@@ -162,13 +176,13 @@ public partial class PlayerShip : Ship
                 }
             }
 
-            _shotCooldownTimer.Start();
+            _cannonCooldownTimer.Start();
         }
     }
 
     public void ShootTorpedos()
     {
-        if (_shotCooldownTimer.IsStopped())
+        if (_torpedoCooldownTimer.IsStopped())
         {
             foreach (var structure in StructuresOrigin.Values)
             {
@@ -178,13 +192,13 @@ public partial class PlayerShip : Ship
                 }
             }
 
-            _shotCooldownTimer.Start();
+            _torpedoCooldownTimer.Start();
         }
     }
 
     public void ShootRockets(Vector2 target)
     {
-        if (_shotCooldownTimer.IsStopped())
+        if (_rocketCooldownTimer.IsStopped())
         {
             foreach (var structure in StructuresOrigin.Values)
             {
@@ -194,7 +208,7 @@ public partial class PlayerShip : Ship
                 }
             }
 
-            _shotCooldownTimer.Start();
+            _rocketCooldownTimer.Start();
         }
     }
     public bool IsPointWithinMiningRange(Vector2 point)

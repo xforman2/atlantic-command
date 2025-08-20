@@ -5,7 +5,7 @@ public partial class Rocket : Projectile
 {
 
     protected override int DefaultDamage => 50;
-    [Export] public float Speed { get; set; } = 500f;
+    [Export] public float Speed { get; set; } = 600;
 
     public Vector2 Direction { get; set; }
 

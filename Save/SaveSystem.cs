@@ -56,10 +56,10 @@ public static class SaveSystem
     {
         if (saveData == null) return;
 
-        ship.playerResourceManager.IncreaseResource(ResourceEnum.Wood, saveData.Wood);
-        ship.playerResourceManager.IncreaseResource(ResourceEnum.Scrap, saveData.Scrap);
-        ship.playerResourceManager.IncreaseResource(ResourceEnum.Iron, saveData.Iron);
-        ship.playerResourceManager.IncreaseResource(ResourceEnum.Tridentis, saveData.Tridentis);
+        ship.playerResourceManager.SetResource(ResourceEnum.Wood, saveData.Wood);
+        ship.playerResourceManager.SetResource(ResourceEnum.Scrap, saveData.Scrap);
+        ship.playerResourceManager.SetResource(ResourceEnum.Iron, saveData.Iron);
+        ship.playerResourceManager.SetResource(ResourceEnum.Tridentis, saveData.Tridentis);
 
         ship.Position = saveData.Position.ToVector2();
         GD.Print("Ships position: ", ship.Position);

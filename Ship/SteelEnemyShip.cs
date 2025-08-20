@@ -3,7 +3,7 @@ using System;
 
 public partial class SteelEnemyShip : EnemyShip
 {
-    private const int DROP_AMOUNT = 30;
+    private const int DROP_AMOUNT = 80;
 
     protected override void InitializeShipSpecifics()
     {

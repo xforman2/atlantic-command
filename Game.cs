@@ -26,9 +26,9 @@ public partial class Game : Node2D
     [Export] public float NoiseScale = 0.05f;
     public const float SandThreshold = 0.15f;
     public const float GrassThreshold = 0.2f;
-    public const float TreeThreshold = 0.5f;
-    public const float RockThreshold = -0.5f;
-    public const float ScrapThreshold = 0.4f;
+    public const float TreeThreshold = 0.45f;
+    public const float RockThreshold = -0.45f;
+    public const float ScrapThreshold = 0.42f;
     public const float IronThreshold = -0.4f;
     [Export] public NoiseTexture2D HeightNoise;
     [Export] public NoiseTexture2D EnvironmentNoise;
