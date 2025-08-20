@@ -5,21 +5,21 @@
 [ext_resource type="TileSet" uid="uid://dcba7dtxq7a6k" path="res://Assets/environment_tile_set.tres" id="4_t88pq"]
 [ext_resource type="PackedScene" uid="uid://bw2y1vyi1cohm" path="res://UIOverlay/SharedOverlay.tscn" id="5_r0x5m"]
 [ext_resource type="Script" uid="uid://d3r6ylubs224c" path="res://Minimap/Minimap.cs" id="5_t88pq"]
-[ext_resource type="Texture2D" uid="uid://c57gdrgvkpsor" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
-[ext_resource type="Texture2D" uid="uid://c5h16q0aad8fq" path="res://Assets/build_mode_button.png" id="6_2vekm"]
+[ext_resource type="Texture2D" uid="uid://bhtlcnxn3vyvl" path="res://Assets/minimap_frame_v1.0.1.png" id="5_yx171"]
+[ext_resource type="Texture2D" uid="uid://ba4qs7h1xlhc" path="res://Assets/build_mode_button.png" id="6_2vekm"]
 [ext_resource type="PackedScene" uid="uid://7ghcgpiljds3" path="res://Ship/WoodEnemyShip.tscn" id="7_3mrqo"]
-[ext_resource type="Texture2D" uid="uid://dyo70xqfqdmq6" path="res://Assets/you_died_v2.0.0.png" id="7_yhmtn"]
-[ext_resource type="Texture2D" uid="uid://v7v0txyl7p2o" path="res://Assets/mining_bg.png" id="7_yyih5"]
+[ext_resource type="Texture2D" uid="uid://cd0cqc61lla8q" path="res://Assets/you_died_v2.0.0.png" id="7_yhmtn"]
+[ext_resource type="Texture2D" uid="uid://6qlmgrke8kmc" path="res://Assets/mining_bg.png" id="7_yyih5"]
 [ext_resource type="PackedScene" uid="uid://xrf6cwewcodv" path="res://Dock/Dock.tscn" id="8_joorw"]
-[ext_resource type="Texture2D" uid="uid://b78f2anb53ken" path="res://Assets/mining_time_frame.png" id="8_qjyg3"]
-[ext_resource type="Texture2D" uid="uid://btp1dkj1ccyb8" path="res://Assets/mining_apple_flavor.png" id="9_yyih5"]
+[ext_resource type="Texture2D" uid="uid://brhj1carkietj" path="res://Assets/mining_time_frame.png" id="8_qjyg3"]
+[ext_resource type="Texture2D" uid="uid://dhrhbsi4q8fov" path="res://Assets/mining_apple_flavor.png" id="9_yyih5"]
 [ext_resource type="Script" uid="uid://bkrcd55ce51yu" path="res://Managers/EnemySpawner.cs" id="10_yx171"]
-[ext_resource type="Texture2D" uid="uid://csfn18b0j6hjv" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
-[ext_resource type="Texture2D" uid="uid://dhkn18hxgmcur" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
+[ext_resource type="Texture2D" uid="uid://dsg3gnl17mxxj" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
+[ext_resource type="Texture2D" uid="uid://bykb7ln0p8r58" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
-[ext_resource type="Texture2D" uid="uid://dfut7t552vidl" path="res://Assets/load_screen.png" id="13_cpsxm"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
-[ext_resource type="Texture2D" uid="uid://che2qpqf30nnn" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
+[ext_resource type="Texture2D" uid="uid://dnnekyn1oo83" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
+[ext_resource type="Texture2D" uid="uid://lc6sg2rj2f3h" path="res://Assets/warships_on_the_sea.png" id="19_cpsxm"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
@@ -453,9 +453,13 @@ theme_override_font_sizes/font_size = 24
 metadata/_edit_use_anchors_ = true
 
 [node name="LoadingScreen" type="TextureRect" parent="GameOverlay"]
-offset_right = 40.0
-offset_bottom = 40.0
-texture = ExtResource("13_cpsxm")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("19_cpsxm")
+expand_mode = 2
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="GameOverlay/LoadingScreen"]
 position = Vector2(1800, 950)
