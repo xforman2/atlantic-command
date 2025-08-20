@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://c5q022ru6fc8l"]
+[gd_scene load_steps=34 format=3 uid="uid://c5q022ru6fc8l"]
 
 [ext_resource type="Script" uid="uid://b47lcyri5ndkd" path="res://MainMenu/MainMenu.cs" id="1_3w4mj"]
 [ext_resource type="Texture2D" uid="uid://db04q61ukn68h" path="res://Assets/background_final.png" id="2_bsanu"]
@@ -12,7 +12,9 @@
 [ext_resource type="Texture2D" uid="uid://danf8q8mcsu0p" path="res://Assets/quit_button_v1.0.1.png" id="8_npjie"]
 [ext_resource type="AudioStream" uid="uid://d2k7mx6jl7tfj" path="res://Audio/main_menu.mp3" id="9_kftou"]
 [ext_resource type="Texture2D" uid="uid://bgoaxlije7gjr" path="res://Assets/new_game_button.png" id="12_g1826"]
+[ext_resource type="Texture2D" uid="uid://caymyd77du0gw" path="res://Assets/new_game_button_pressed.png" id="12_gej64"]
 [ext_resource type="Texture2D" uid="uid://cpeuvc05aaso7" path="res://Assets/load_game_button.png" id="13_npjie"]
+[ext_resource type="Texture2D" uid="uid://k7yc0xfumaq5" path="res://Assets/load_game_button_pressed.png" id="14_qvidt"]
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_gej64"]
 texture = ExtResource("4_nre7b")
@@ -50,8 +52,20 @@ texture = ExtResource("7_g1826")
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_nre7b"]
 texture = ExtResource("8_npjie")
 
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_guwyo"]
+texture = ExtResource("12_gej64")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_c1m2a"]
+texture = ExtResource("12_gej64")
+
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_167x7"]
 texture = ExtResource("12_g1826")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_fnqav"]
+texture = ExtResource("14_qvidt")
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_v3xbx"]
+texture = ExtResource("14_qvidt")
 
 [sub_resource type="StyleBoxTexture" id="StyleBoxTexture_24r6y"]
 texture = ExtResource("13_npjie")
@@ -83,34 +97,24 @@ autoplay = true
 bus = &"Music"
 parameters/looping = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -140.0
-offset_right = 250.0
-offset_bottom = 360.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MainMenu" type="VBoxContainer" parent="HBoxContainer"]
+[node name="MainMenu" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
+offset_left = 710.0
+offset_top = 350.0
+offset_right = 1210.0
+offset_bottom = 950.0
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="Resume" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Resume" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_gej64")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_qvidt")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5lv0r")
 
-[node name="Start" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Start" type="Button" parent="MainMenu"]
 z_index = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -119,7 +123,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
 theme_override_styles/normal = SubResource("StyleBoxTexture_3clmd")
 action_mode = 0
 
-[node name="Options" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Options" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_bsanu")
@@ -128,7 +132,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_kftou")
 text = "
 "
 
-[node name="Quit" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Quit" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_nxm3p")
@@ -137,20 +141,34 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_nre7b")
 text = "
 "
 
-[node name="PlaySubMenu" type="VBoxContainer" parent="HBoxContainer"]
+[node name="PlaySubMenu" type="VBoxContainer" parent="."]
 visible = false
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="NewGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
+[node name="NewGame" type="Button" parent="PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/hover = SubResource("StyleBoxTexture_guwyo")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_c1m2a")
 theme_override_styles/normal = SubResource("StyleBoxTexture_167x7")
 
-[node name="SavedGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
+[node name="SavedGame" type="Button" parent="PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_styles/hover = SubResource("StyleBoxTexture_fnqav")
+theme_override_styles/pressed = SubResource("StyleBoxTexture_v3xbx")
 theme_override_styles/normal = SubResource("StyleBoxTexture_24r6y")

@@ -15,6 +15,7 @@ public partial class Game : Node2D
     private Label _coordinatesLabel;
     private Button _backToMenuButton;
     private Timer _modeLabelTimer;
+    private TextureRect _loadingScreen;
 
     private bool _isMining = false;
     private float _miningTimer = 0f;
@@ -49,6 +50,16 @@ public partial class Game : Node2D
     public override void _Ready()
     {
         GameState.Instance.LastOrigin = SceneOrigin.Game;
+        _loadingScreen = GetNode<TextureRect>("GameOverlay/LoadingScreen");
+
+        var loadingTimer = new Timer
+        {
+            WaitTime = 7,
+            OneShot = true,
+            Autostart = true
+        };
+        AddChild(loadingTimer);
+        loadingTimer.Timeout += () => _loadingScreen.Visible = false;
 
         _rocketGhostTile = GetNode<Sprite2D>("GhostTile");
         _rocketGhostTile.Texture = GD.Load<Texture2D>("res://Assets/ghost_tile_rocket_launcher.png");
@@ -261,10 +272,10 @@ public partial class Game : Node2D
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Tree, Vector2I.Zero);
                     else if (envValue > ScrapThreshold)
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Scrap, Vector2I.Zero);
-                    else if (envValue < IronThreshold)
-                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
                     else if (envValue < RockThreshold)
                         _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Rock, Vector2I.Zero);
+                    else if (envValue < IronThreshold)
+                        _environmentLayer.SetCell(tilePos, (int)EnvironmentTextureEnum.Iron, Vector2I.Zero);
                 }
             }
         }
