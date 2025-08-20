@@ -18,7 +18,7 @@ public partial class Game : Node2D
 
     private bool _isMining = false;
     private float _miningTimer = 0f;
-    private float _miningTime = 2f; // seconds it takes to mine a tile, adjust as you want
+    private float _miningTime = 0f;
     private Vector2I _miningCell;
     private TextureProgressBar _miningProgressBar;
 
@@ -39,11 +39,11 @@ public partial class Game : Node2D
     private Vector2I _hoverCell;
     private ColorRect _hoverHighlight;
     private ColorRect _diedScreen;
-    private Dictionary<int, (ResourceEnum Resource, int Amount)> _tileDrops = new()
+    private Dictionary<int, (ResourceEnum Resource, int Amount, int Time)> _tileDrops = new()
     {
-        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1) },
-        { (int)EnvironmentTextureEnum.Iron, (ResourceEnum.Iron, 1) },
-        { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 1) },
+        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1, 2) },
+        { (int)EnvironmentTextureEnum.Iron, (ResourceEnum.Iron, 1, 3) },
+        { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 1, 4) },
     };
 
     public override void _Ready()
@@ -149,8 +149,13 @@ public partial class Game : Node2D
     }
     private void StartMining(Vector2I cell)
     {
+        int tileId = _environmentLayer.GetCellSourceId(cell);
+
+        if (!_tileDrops.TryGetValue(tileId, out var drop))
+            return;
         _isMining = true;
         _miningTimer = 0f;
+        _miningTime = drop.Time;
         _miningCell = cell;
         _miningProgressBar.Visible = true;
         _miningProgressBar.Value = 0;
