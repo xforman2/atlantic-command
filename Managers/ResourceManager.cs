@@ -31,7 +31,6 @@ public abstract partial class ResourceManager : GodotObject
 
     public virtual void SetResource(ResourceEnum resource, int amount)
     {
-        if (amount <= 0) return;
 
         switch (resource)
         {

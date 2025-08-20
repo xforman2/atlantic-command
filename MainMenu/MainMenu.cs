@@ -136,6 +136,7 @@ public partial class MainMenu : Control
         var loadedShip = SaveSystem.LoadShip();
         AddChild(ship);
         SaveSystem.LoadFromSave(ship, loadedShip);
+        GD.Print(ship.playerResourceManager.Tridentis);
         ShipManager.Instance.CurrentShip = ship;
         ShipManager.Instance.ReparentShip(ship);
         ShipManager.Instance.SetShipWorldPosition(loadedShip.Position.ToVector2I());

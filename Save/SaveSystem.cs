@@ -59,6 +59,7 @@ public static class SaveSystem
         ship.playerResourceManager.SetResource(ResourceEnum.Wood, saveData.Wood);
         ship.playerResourceManager.SetResource(ResourceEnum.Scrap, saveData.Scrap);
         ship.playerResourceManager.SetResource(ResourceEnum.Iron, saveData.Iron);
+        GD.Print(saveData.Tridentis);
         ship.playerResourceManager.SetResource(ResourceEnum.Tridentis, saveData.Tridentis);
 
         ship.Position = saveData.Position.ToVector2();
