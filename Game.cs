@@ -440,9 +440,18 @@ public partial class Game : Node2D
     {
 
         GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
-        _ship.QueueFree();
-        _ship = null;
-        ShipManager.Instance.CurrentShip = null;
+        if (_ship is not null)
+        {
+            _ship.QueueFree();
+            _ship = null;
+            ShipManager.Instance.CurrentShip = null;
+        }
+
+        GameState.Instance.HasStartedGame = false;
+        if (SaveSystem.HasSave())
+        {
+            SaveSystem.DeleteSave();
+        }
 
         GetTree().ChangeSceneToFile("res://MainMenu/MainMenu.tscn");
 
