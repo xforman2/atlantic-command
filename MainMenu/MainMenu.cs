@@ -9,8 +9,8 @@ public partial class MainMenu : Control
     public override void _Ready()
     {
         LoadOptions();
-        _mainMenu = GetNode<VBoxContainer>("HBoxContainer/MainMenu");
-        _playSubMenu = GetNode<VBoxContainer>("HBoxContainer/PlaySubMenu");
+        _mainMenu = GetNode<VBoxContainer>("MainMenu");
+        _playSubMenu = GetNode<VBoxContainer>("PlaySubMenu");
 
         Button resumeButton = _mainMenu.GetNode<Button>("Resume");
         Button startButton = _mainMenu.GetNode<Button>("Start");
@@ -29,7 +29,13 @@ public partial class MainMenu : Control
         newGameButton.Pressed += OnNewGamePressed;
         savedGameButton.Pressed += OnSavedGamePressed;
         resumeButton.Visible = GameState.Instance.HasStartedGame;
-        savedGameButton.Visible = SaveSystem.HasSave();
+        var hasSave = SaveSystem.HasSave();
+        savedGameButton.Visible = hasSave;
+        GD.Print(hasSave);
+        if (hasSave)
+        {
+            _playSubMenu.Size = new Vector2I(500, 400);
+        }
 
     }
 

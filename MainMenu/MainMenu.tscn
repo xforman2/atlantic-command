@@ -97,34 +97,24 @@ autoplay = true
 bus = &"Music"
 parameters/looping = true
 
-[node name="HBoxContainer" type="HBoxContainer" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -250.0
-offset_top = -140.0
-offset_right = 250.0
-offset_bottom = 360.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="MainMenu" type="VBoxContainer" parent="HBoxContainer"]
+[node name="MainMenu" type="VBoxContainer" parent="."]
 custom_minimum_size = Vector2(500, 600)
 layout_mode = 2
+offset_left = 710.0
+offset_top = 350.0
+offset_right = 1210.0
+offset_bottom = 950.0
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="Resume" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Resume" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_gej64")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_qvidt")
 theme_override_styles/normal = SubResource("StyleBoxTexture_5lv0r")
 
-[node name="Start" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Start" type="Button" parent="MainMenu"]
 z_index = 1
 layout_mode = 2
 size_flags_vertical = 3
@@ -133,7 +123,7 @@ theme_override_styles/pressed = SubResource("StyleBoxTexture_g1826")
 theme_override_styles/normal = SubResource("StyleBoxTexture_3clmd")
 action_mode = 0
 
-[node name="Options" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Options" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_bsanu")
@@ -142,7 +132,7 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_kftou")
 text = "
 "
 
-[node name="Quit" type="Button" parent="HBoxContainer/MainMenu"]
+[node name="Quit" type="Button" parent="MainMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_nxm3p")
@@ -151,22 +141,32 @@ theme_override_styles/normal = SubResource("StyleBoxTexture_nre7b")
 text = "
 "
 
-[node name="PlaySubMenu" type="VBoxContainer" parent="HBoxContainer"]
+[node name="PlaySubMenu" type="VBoxContainer" parent="."]
 visible = false
-custom_minimum_size = Vector2(500, 500)
-layout_mode = 2
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -100.0
+offset_right = 250.0
+offset_bottom = 100.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_constants/separation = 50
 alignment = 1
 
-[node name="NewGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
+[node name="NewGame" type="Button" parent="PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_guwyo")
 theme_override_styles/pressed = SubResource("StyleBoxTexture_c1m2a")
 theme_override_styles/normal = SubResource("StyleBoxTexture_167x7")
 
-[node name="SavedGame" type="Button" parent="HBoxContainer/PlaySubMenu"]
+[node name="SavedGame" type="Button" parent="PlaySubMenu"]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/hover = SubResource("StyleBoxTexture_fnqav")
