@@ -5,14 +5,35 @@ public partial class MainMenu : Control
 {
     public override void _Ready()
     {
+        LoadOptions();
         Button startButton = GetNode<Button>("VBoxContainer/Start");
         Button optionsButton = GetNode<Button>("VBoxContainer/Options");
         Button quitButton = GetNode<Button>("VBoxContainer/Quit");
+
 
         startButton.Pressed += OnStartPressed;
         optionsButton.Pressed += OnOptionsPressed;
         quitButton.Pressed += OnQuitPressed;
 
+    }
+
+    private void LoadOptions()
+    {
+        var config = new ConfigFile();
+        var err = config.Load(Globals.ConfigPath);
+        if (err != Error.Ok)
+        {
+            GD.Print("No config file found, using defaults.");
+            return;
+        }
+
+        Globals.MusicVolume = (float)config.GetValue("Audio", "MusicVolume", Globals.MusicVolume);
+        Globals.SfxVolume = (float)config.GetValue("Audio", "SfxVolume", Globals.SfxVolume);
+        Globals.FPS = (int)config.GetValue("Game", "FPS", Globals.FPS);
+
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("Music"), Globals.LinearToDb(Globals.MusicVolume));
+        AudioServer.SetBusVolumeDb(AudioServer.GetBusIndex("SFX"), Globals.LinearToDb(Globals.SfxVolume));
+        Engine.MaxFps = Globals.FPS > 0 ? Globals.FPS : int.MaxValue;
     }
 
     private void OnStartPressed()

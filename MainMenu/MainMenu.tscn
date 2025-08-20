@@ -104,4 +104,5 @@ text = "
 [node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="."]
 stream = ExtResource("9_kftou")
 autoplay = true
+bus = &"Music"
 parameters/looping = true

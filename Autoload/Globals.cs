@@ -69,4 +69,14 @@ public partial class Globals : Node
 
         return result;
     }
+
+    public static string ConfigPath = "user://options.cfg";
+    public static float MusicVolume { get; set; } = 1.0f;
+    public static float SfxVolume { get; set; } = 1.0f;
+    public static int FPS { get; set; } = 60;
+
+    public static float LinearToDb(float linear)
+    {
+        return linear <= 0 ? -80f : 20f * Mathf.Log(linear);
+    }
 }
