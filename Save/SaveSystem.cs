@@ -62,7 +62,6 @@ public static class SaveSystem
         ship.playerResourceManager.SetResource(ResourceEnum.Tridentis, saveData.Tridentis);
 
         ship.Position = saveData.Position.ToVector2();
-        GD.Print("Ships position: ", ship.Position);
         ship.RotationDegrees = saveData.RotationDegrees;
 
         foreach (var (floor, collision) in ship.Floors.Values)

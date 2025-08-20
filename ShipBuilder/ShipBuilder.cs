@@ -54,6 +54,7 @@ public partial class ShipBuilder : Node2D
     private Button cannonGunButton;
     private Button rocketGunButton;
     private Button torpedoGunButton;
+    private TextureRect _loadingScreen;
 
 
     private readonly Dictionary<FloorTileType, Texture2D> tilePreviewTextures = new(){
@@ -76,6 +77,16 @@ public partial class ShipBuilder : Node2D
     public override void _Ready()
     {
         GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
+        _loadingScreen = GetNode<TextureRect>("UI/LoadingScreen");
+
+        var loadingTimer = new Timer
+        {
+            WaitTime = 7,
+            OneShot = true,
+            Autostart = true
+        };
+        AddChild(loadingTimer);
+        loadingTimer.Timeout += () => _loadingScreen.Visible = false;
 
         ghostTileRemoveTextureValid = GD.Load<Texture2D>("res://Assets/ghost_tile_green.png");
         ghostTileRemoveTextureInvalid = GD.Load<Texture2D>("res://Assets/ghost_tile.png");

@@ -31,7 +31,6 @@ public partial class MainMenu : Control
         resumeButton.Visible = GameState.Instance.HasStartedGame;
         var hasSave = SaveSystem.HasSave();
         savedGameButton.Visible = hasSave;
-        GD.Print(hasSave);
         if (hasSave)
         {
             _playSubMenu.Size = new Vector2I(500, 400);
