@@ -4,7 +4,7 @@ using System;
 public abstract partial class EnemyShip : Ship
 {
     protected NavigationAgent2D navAgent;
-    protected new float Speed = 800f;
+    protected virtual float EnemySpeed => 0;
     protected const float DetectionRadius = 1000f;
     protected PlayerShip _target;
     protected Timer _cannonShotCooldownTimer;
@@ -41,7 +41,7 @@ public abstract partial class EnemyShip : Ship
                 Vector2 direction = (nextPoint - GlobalPosition).Normalized();
                 float targetAngle = direction.Angle() + Mathf.Pi / 2;
                 Rotation = Mathf.LerpAngle(Rotation, targetAngle, (float)(delta * 2.0));
-                Velocity += -Transform.Y * Speed * (float)delta;
+                Velocity += -Transform.Y * EnemySpeed * (float)delta;
             }
 
             ShootCannons();

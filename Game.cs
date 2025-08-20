@@ -29,7 +29,7 @@ public partial class Game : Node2D
     public const float GrassThreshold = 0.2f;
     public const float TreeThreshold = 0.45f;
     public const float RockThreshold = -0.45f;
-    public const float ScrapThreshold = 0.42f;
+    public const float ScrapThreshold = 0.41f;
     public const float IronThreshold = -0.4f;
     [Export] public NoiseTexture2D HeightNoise;
     [Export] public NoiseTexture2D EnvironmentNoise;
@@ -42,9 +42,9 @@ public partial class Game : Node2D
     private ColorRect _diedScreen;
     private Dictionary<int, (ResourceEnum Resource, int Amount, int Time)> _tileDrops = new()
     {
-        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 1, 2) },
-        { (int)EnvironmentTextureEnum.Iron, (ResourceEnum.Iron, 1, 3) },
-        { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 1, 4) },
+        { (int)EnvironmentTextureEnum.Tree, (ResourceEnum.Wood, 5, 2) },
+        { (int)EnvironmentTextureEnum.Iron, (ResourceEnum.Iron, 4, 3) },
+        { (int)EnvironmentTextureEnum.Scrap, (ResourceEnum.Scrap, 3, 4) },
     };
 
     public override void _Ready()

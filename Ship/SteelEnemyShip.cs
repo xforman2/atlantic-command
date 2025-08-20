@@ -4,6 +4,7 @@ using System;
 public partial class SteelEnemyShip : EnemyShip
 {
     private const int DROP_AMOUNT = 80;
+    protected override float EnemySpeed => 1200f;
 
     protected override void InitializeShipSpecifics()
     {

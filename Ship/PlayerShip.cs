@@ -34,7 +34,7 @@ public partial class PlayerShip : Ship
         playerResourceManager.SetResource(ResourceEnum.Wood, 4);
         playerResourceManager.SetResource(ResourceEnum.Iron, 0);
         playerResourceManager.SetResource(ResourceEnum.Scrap, 0);
-        playerResourceManager.SetResource(ResourceEnum.Tridentis, 0);
+        playerResourceManager.SetResource(ResourceEnum.Tridentis, 100);
         _cannonCooldownTimer = new Timer
         {
             OneShot = true,

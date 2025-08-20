@@ -17,9 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://71ne3mfpin68" path="res://Assets/back_to_menu_button.png" id="11_0yprl"]
 [ext_resource type="Texture2D" uid="uid://hywxr2bshwtv" path="res://Assets/back_to_menu_button_red.png" id="11_wuoie"]
 [ext_resource type="PackedScene" uid="uid://b4tqkuo0krv02" path="res://Ship/IronEnemyShip.tscn" id="12_lvtmh"]
-[ext_resource type="Texture2D" uid="uid://dfut7t552vidl" path="res://Assets/load_screen.png" id="13_cpsxm"]
+[ext_resource type="Texture2D" uid="uid://dla63yulvk4m6" path="res://Assets/load_screen.png" id="13_cpsxm"]
 [ext_resource type="PackedScene" uid="uid://bksvtatn18isk" path="res://Ship/SteelEnemyShip.tscn" id="13_yyih5"]
-[ext_resource type="Texture2D" uid="uid://che2qpqf30nnn" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
+[ext_resource type="Texture2D" uid="uid://dfxybydri7a07" path="res://Assets/loading_icon_sheet.png" id="14_hmewc"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_sb48q"]
 seed = 8
