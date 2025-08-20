@@ -3,20 +3,39 @@ using System;
 
 public partial class MainMenu : Control
 {
+    private VBoxContainer _mainMenu;
+    private VBoxContainer _playSubMenu;
+
     public override void _Ready()
     {
-        Button startButton = GetNode<Button>("VBoxContainer/Start");
-        Button optionsButton = GetNode<Button>("VBoxContainer/Options");
-        Button quitButton = GetNode<Button>("VBoxContainer/Quit");
+        _mainMenu = GetNode<VBoxContainer>("HBoxContainer/MainMenu");
+        _playSubMenu = GetNode<VBoxContainer>("HBoxContainer/PlaySubMenu");
 
+        Button resumeButton = _mainMenu.GetNode<Button>("Resume");
+        Button startButton = _mainMenu.GetNode<Button>("Start");
+        Button optionsButton = _mainMenu.GetNode<Button>("Options");
+        Button quitButton = _mainMenu.GetNode<Button>("Quit");
+
+        Button newGameButton = _playSubMenu.GetNode<Button>("NewGame");
+        Button savedGameButton = _playSubMenu.GetNode<Button>("SavedGame");
+
+        resumeButton.Pressed += OnResumePressed;
         startButton.Pressed += OnStartPressed;
         optionsButton.Pressed += OnOptionsPressed;
         quitButton.Pressed += OnQuitPressed;
 
+
+        newGameButton.Pressed += OnNewGamePressed;
+        savedGameButton.Pressed += OnSavedGamePressed;
+        resumeButton.Visible = GameState.Instance.HasStartedGame;
+        savedGameButton.Visible = SaveSystem.HasSave();
+
     }
 
-    private void OnStartPressed()
+
+    private void OnResumePressed()
     {
+
         var ship = ShipManager.Instance.CurrentShip;
 
         if (GameState.Instance.LastOrigin == SceneOrigin.Game)
@@ -40,6 +59,12 @@ public partial class MainMenu : Control
 
     }
 
+    private void OnStartPressed()
+    {
+        _mainMenu.Visible = false;
+        _playSubMenu.Visible = true;
+    }
+
     private void OnQuitPressed()
     {
         GetTree().Quit();
@@ -50,5 +75,50 @@ public partial class MainMenu : Control
     {
         GetTree().ChangeSceneToFile("res://MainMenu/Options.tscn");
 
+    }
+
+
+    private void OnNewGamePressed()
+    {
+
+        GameState.Instance.HasStartedGame = true;
+        SaveSystem.DeleteSave();
+        var ship = ShipManager.Instance.CurrentShip;
+        if (ship is not null)
+        {
+            ShipManager.Instance.CurrentShip.QueueFree();
+            ShipManager.Instance.CurrentShip = null;
+        }
+        GameState.Instance.LastOrigin = SceneOrigin.ShipBuilder;
+
+        GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
+
+
+    }
+
+    private void OnSavedGamePressed()
+    {
+
+        var ship = ShipManager.Instance.CurrentShip;
+        if (ship is not null)
+        {
+            ShipManager.Instance.CurrentShip.QueueFree();
+            ShipManager.Instance.CurrentShip = null;
+        }
+
+        GameState.Instance.HasStartedGame = true;
+        var scene = GD.Load<PackedScene>("Ship/PlayerShip.tscn");
+        ship = scene.Instantiate<PlayerShip>();
+        var loadedShip = SaveSystem.LoadShip();
+        AddChild(ship);
+        SaveSystem.LoadFromSave(ship, loadedShip);
+        ShipManager.Instance.CurrentShip = ship;
+        ShipManager.Instance.ReparentShip(ship);
+        ShipManager.Instance.SetShipWorldPosition(loadedShip.Position.ToVector2I());
+        ship.DisableCamera();
+        ship.GoToDock();
+
+
+        GetTree().ChangeSceneToFile("res://ShipBuilder/ShipBuilder.tscn");
     }
 }
